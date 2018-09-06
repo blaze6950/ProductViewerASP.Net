@@ -72,7 +72,7 @@ namespace ProductViewer.Domain.Concrete
             DataRow dataRow = null;
             foreach (DataRow dr in _context.GetProducts().Rows) // search whole table
             {
-                if ((int)dr["ProductID"] == item.ProductId) // if id==2
+                if ((int)dr["ProductID"] == item.ProductId) 
                 {
                     dataRow = dr;
                     break;
@@ -96,7 +96,7 @@ namespace ProductViewer.Domain.Concrete
         {
             foreach (DataRow dr in _context.GetProducts().Rows)
             {
-                if ((int)dr["ProductID"] == id) // if id==2
+                if ((int)dr["ProductID"] == id) 
                 {
                     dr.Delete();
                     break;
