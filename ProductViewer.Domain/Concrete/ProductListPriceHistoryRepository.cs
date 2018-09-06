@@ -6,40 +6,40 @@ using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Concrete
 {
-    public class ProductInventoryRepository : IProductInventoriesRepository
+    public class ProductListPriceHistoryRepository : IProductListPriceHistoriesRepository
     {
         private ProductInfoContext _context;
 
-        public ProductInventoryRepository(ProductInfoContext context)
+        public ProductListPriceHistoryRepository(ProductInfoContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<ProductInventory> GetProductInventoryList()
+        public IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList()
         {
-            return _context.ProductInventories;
+            return _context.ProductListPriceHistories;
         }
 
-        public ProductInventory GetProductInventory(int id)
+        public ProductListPriceHistory GetProductListPriceHistory(int id)
         {
-            return _context.ProductInventories.Find(id);
+            return _context.ProductListPriceHistories.Find(id);
         }
 
-        public void Create(ProductInventory item)
+        public void Create(ProductListPriceHistory item)
         {
-            _context.ProductInventories.Add(item);
+            _context.ProductListPriceHistories.Add(item);
         }
 
-        public void Update(ProductInventory item)
+        public void Update(ProductListPriceHistory item)
         {
             _context.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            ProductInventory productInventory = _context.ProductInventories.Find(id);
-            if (productInventory != null)
-                _context.ProductInventories.Remove(productInventory);
+            ProductListPriceHistory productListPriceHistory = _context.ProductListPriceHistories.Find(id);
+            if (productListPriceHistory != null)
+                _context.ProductListPriceHistories.Remove(productListPriceHistory);
         }
 
         public void Save()

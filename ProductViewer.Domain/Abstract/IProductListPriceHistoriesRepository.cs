@@ -6,9 +6,9 @@ namespace ProductViewer.Domain.Abstract
 {
     public interface IProductListPriceHistoriesRepository : IDisposable
     {
-        IEnumerable<ProductListPriceHistory> GetProductList(); // получение всех объектов
+        IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList(); // получение всех объектов
 
-        ProductListPriceHistory GetProduct(int id); // получение одного объекта по id
+        ProductListPriceHistory GetProductListPriceHistory(int id); // получение одного объекта по id
 
         void Create(ProductListPriceHistory item); // создание объекта
 

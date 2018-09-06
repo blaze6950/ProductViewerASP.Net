@@ -56,6 +56,7 @@
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInfoContext.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
+    <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />

@@ -15,12 +15,12 @@ namespace ProductViewer.Domain.Concrete
             _context = context;
         }
 
-        public IEnumerable<ProductDescription> GetProductList()
+        public IEnumerable<ProductDescription> GetProductDescriptionList()
         {
             return _context.ProductDescriptions;
         }
 
-        public ProductDescription GetProduct(int id)
+        public ProductDescription GetProductDescription(int id)
         {
             return _context.ProductDescriptions.Find(id);
         }

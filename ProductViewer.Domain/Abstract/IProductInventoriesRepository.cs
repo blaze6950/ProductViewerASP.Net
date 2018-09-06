@@ -6,9 +6,9 @@ namespace ProductViewer.Domain.Abstract
 {
     public interface IProductInventoriesRepository : IDisposable
     {
-        IEnumerable<ProductInventory> GetProductList(); // получение всех объектов
+        IEnumerable<ProductInventory> GetProductInventoryList(); // получение всех объектов
 
-        ProductInventory GetProduct(int id); // получение одного объекта по id
+        ProductInventory GetProductInventory(int id); // получение одного объекта по id
 
         void Create(ProductInventory item); // создание объекта
 
