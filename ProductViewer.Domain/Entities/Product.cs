@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProductViewer.Domain.Entities
 {
-    class Product // Products sold or used in the manfacturing of sold products.
+    public class Product // Products sold or used in the manfacturing of sold products.
     {
         public int ProductId { get; set; } // Primary key for Product records.
         public string Name { get; set; } // Name of the product.

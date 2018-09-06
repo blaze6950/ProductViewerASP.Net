@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IProductDescriptionsRepository.cs" />
+    <Compile Include="Abstract\IProductInventoriesRepository.cs" />
+    <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
+    <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />
@@ -49,7 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract\" />
     <Folder Include="Concrete\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
