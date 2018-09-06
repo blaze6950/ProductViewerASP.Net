@@ -78,15 +78,18 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
-            dataRow["ProductID"] = item.ProductId;
-            dataRow["DaysToManufacture"] = item.DaysToManufacture;
-            dataRow["ListPrice"] = item.ListPrice;
-            dataRow["Name"] = item.Name;
-            dataRow["ProductNumber"] = item.ProductNumber;
-            dataRow["ReorderPoint"] = item.ReorderPoint;
-            dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
-            dataRow["SellStartDate"] = item.SellStartDate;
-            dataRow["StandartCost"] = item.StandartCost;
+            if (dataRow != null)
+            {
+                dataRow["ProductID"] = item.ProductId;
+                dataRow["DaysToManufacture"] = item.DaysToManufacture;
+                dataRow["ListPrice"] = item.ListPrice;
+                dataRow["Name"] = item.Name;
+                dataRow["ProductNumber"] = item.ProductNumber;
+                dataRow["ReorderPoint"] = item.ReorderPoint;
+                dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
+                dataRow["SellStartDate"] = item.SellStartDate;
+                dataRow["StandartCost"] = item.StandartCost;
+            }
         }
 
         public void Delete(int id)
