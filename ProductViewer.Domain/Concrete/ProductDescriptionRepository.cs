@@ -6,40 +6,40 @@ using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Concrete
 {
-    public class ProductRepository : IProductsRepository
+    public class ProductDescriptionRepository : IProductDescriptionsRepository
     {
         private ProductInfoContext _context;
 
-        public ProductRepository(ProductInfoContext context)
+        public ProductDescriptionRepository(ProductInfoContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Product> GetProductList()
+        public IEnumerable<ProductDescription> GetProductList()
         {
-            return _context.Products;
+            return _context.ProductDescriptions;
         }
 
-        public Product GetProduct(int id)
+        public ProductDescription GetProduct(int id)
         {
-            return _context.Products.Find(id);
+            return _context.ProductDescriptions.Find(id);
         }
 
-        public void Create(Product item)
+        public void Create(ProductDescription item)
         {
-            _context.Products.Add(item);
+            _context.ProductDescriptions.Add(item);
         }
 
-        public void Update(Product item)
+        public void Update(ProductDescription item)
         {
             _context.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            Product product = _context.Products.Find(id);
-            if (product != null)
-                _context.Products.Remove(product);
+            ProductDescription productDescription = _context.ProductDescriptions.Find(id);
+            if (productDescription != null)
+                _context.ProductDescriptions.Remove(productDescription);
         }
 
         public void Save()
