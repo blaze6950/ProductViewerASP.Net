@@ -8,13 +8,13 @@ namespace ProductViewer.Domain.Abstract
     {
         IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList(); // получение всех объектов
 
-        ProductListPriceHistory GetProductListPriceHistory(int id); // получение одного объекта по id
+        ProductListPriceHistory GetProductListPriceHistory(int productId, DateTime startDate); // получение одного объекта по id
 
         void Create(ProductListPriceHistory item); // создание объекта
 
         void Update(ProductListPriceHistory item); // обновление объекта
 
-        void Delete(int id); // удаление объекта по id
+        void Delete(int productId, DateTime startDate); // удаление объекта по id
 
         void Save();  // сохранение изменений
     }
