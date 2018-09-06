@@ -46,6 +46,7 @@
     <Compile Include="Abstract\IProductInventoriesRepository.cs" />
     <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
     <Compile Include="Abstract\IProductsRepository.cs" />
+    <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Concrete\AdoNetContext.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
