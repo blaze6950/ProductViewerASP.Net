@@ -49,6 +49,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Concrete\AdoNetContext.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
+    <Compile Include="Concrete\ProductInventoryRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />
