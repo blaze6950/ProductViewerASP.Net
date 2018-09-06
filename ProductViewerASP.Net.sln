@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductViewer.Domain", "ProductViewer.Domain\ProductViewer.Domain.csproj", "{A70588F5-C54A-4865-A96B-B6ADA3ED4EEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductViewer.WebUI", "ProductViewer.WebUI\ProductViewer.WebUI.csproj", "{CAB0EAB8-294D-4B1A-A3D6-4E3EA439168B}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A70588F5-C54A-4865-A96B-B6ADA3ED4EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70588F5-C54A-4865-A96B-B6ADA3ED4EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70588F5-C54A-4865-A96B-B6ADA3ED4EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70588F5-C54A-4865-A96B-B6ADA3ED4EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB0EAB8-294D-4B1A-A3D6-4E3EA439168B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB0EAB8-294D-4B1A-A3D6-4E3EA439168B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB0EAB8-294D-4B1A-A3D6-4E3EA439168B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB0EAB8-294D-4B1A-A3D6-4E3EA439168B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
