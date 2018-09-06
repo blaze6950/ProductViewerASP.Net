@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
+using System.Linq;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -8,63 +9,106 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductRepository : IProductsRepository
     {
-        private ProductInfoContext _context;
+        private AdoNetContext _context;
 
-        public ProductRepository(ProductInfoContext context)
+        public ProductRepository(AdoNetContext context)
         {
             _context = context;
         }
 
         public IEnumerable<Product> GetProductList()
         {
-            return _context.Products;
+            var products = _context.GetProducts().Select();
+            var productList = (from p in products
+                                  select new Product(){
+                                      DaysToManufacture = (int)p["DaysToManufacture"],
+                                      ProductId = (int)p["ProductID"],
+                                      ListPrice = (decimal)p["ListPrice"],
+                                      Name = (string)p["Name"],
+                                      ProductNumber = (string)p["ProductNumber"],
+                                      ReorderPoint = (int)p["ReorderPoint"],
+                                      SafetyStockLevel = (int)p["SafetyStockLevel"],
+                                      SellStartDate = (DateTime)p["SellStartDate"],
+                                      StandartCost = (decimal)p["StandartCost"]
+                                  });
+            return productList;
         }
 
         public Product GetProduct(int id)
         {
-            return _context.Products.Find(id);
+            var products = _context.GetProducts().Select();
+            var product = (products.Where(p => ((int) p["ProductID"]) == id)).Select(p => new Product()
+            {
+                DaysToManufacture = (int)p["DaysToManufacture"],
+                ProductId = (int)p["ProductID"],
+                ListPrice = (decimal)p["ListPrice"],
+                Name = (string)p["Name"],
+                ProductNumber = (string)p["ProductNumber"],
+                ReorderPoint = (int)p["ReorderPoint"],
+                SafetyStockLevel = (int)p["SafetyStockLevel"],
+                SellStartDate = (DateTime)p["SellStartDate"],
+                StandartCost = (decimal)p["StandartCost"]
+            })?.FirstOrDefault();
+            return product;
         }
 
         public void Create(Product item)
         {
-            _context.Products.Add(item);
+            var newRow = _context.GetProducts().NewRow();
+            newRow["ProductID"] = item.ProductId;
+            newRow["DaysToManufacture"] = item.DaysToManufacture;
+            newRow["ListPrice"] = item.ListPrice;
+            newRow["Name"] = item.Name;
+            newRow["ProductNumber"] = item.ProductNumber;
+            newRow["ReorderPoint"] = item.ReorderPoint;
+            newRow["SafetyStockLevel"] = item.SafetyStockLevel;
+            newRow["SellStartDate"] = item.SellStartDate;
+            newRow["StandartCost"] = item.StandartCost;
+            _context.GetProducts().Rows.Add(newRow);
         }
 
         public void Update(Product item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            DataRow dataRow = null;
+            foreach (DataRow dr in _context.GetProducts().Rows) // search whole table
+            {
+                if ((int)dr["ProductID"] == item.ProductId) // if id==2
+                {
+                    dataRow = dr;
+                    break;
+                }
+            }
+            dataRow["ProductID"] = item.ProductId;
+            dataRow["DaysToManufacture"] = item.DaysToManufacture;
+            dataRow["ListPrice"] = item.ListPrice;
+            dataRow["Name"] = item.Name;
+            dataRow["ProductNumber"] = item.ProductNumber;
+            dataRow["ReorderPoint"] = item.ReorderPoint;
+            dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
+            dataRow["SellStartDate"] = item.SellStartDate;
+            dataRow["StandartCost"] = item.StandartCost;
         }
 
         public void Delete(int id)
         {
-            Product product = _context.Products.Find(id);
-            if (product != null)
-                _context.Products.Remove(product);
+            foreach (DataRow dr in _context.GetProducts().Rows)
+            {
+                if ((int)dr["ProductID"] == id) // if id==2
+                {
+                    dr.Delete();
+                    break;
+                }
+            }
         }
 
         public void Save()
         {
-            _context.SaveChanges();
-        }
-
-        private bool _disposed = false;
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this._disposed = true;
+            _context.CommitChanges();
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _context?.Dispose();
         }
     }
 }

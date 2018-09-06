@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,7 +18,7 @@ namespace ProductViewer.WebUI.Controllers
 
         public HomeController()
         {
-            var productInfoContext = new ProductInfoContext();
+            var productInfoContext = new AdoNetContext(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             _products = new ProductRepository(productInfoContext);
             _productDescriptions = new ProductDescriptionRepository(productInfoContext);
             _productInventories = new ProductInventoryRepository(productInfoContext);

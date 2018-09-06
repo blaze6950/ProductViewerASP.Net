@@ -1,4 +1,6 @@
-﻿namespace ProductViewer.Domain.Entities
+﻿using ProductViewer.Domain.Abstract;
+
+namespace ProductViewer.Domain.Entities
 {
     public class ProductInventory // Product inventory information
     {
