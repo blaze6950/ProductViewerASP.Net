@@ -54,6 +54,7 @@
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Concrete\ProductInfoContext.cs" />
+    <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />
     <Compile Include="Entities\ProductInventory.cs" />
