@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Abstract
 {
-    public interface IProductInventoriesRepository : IDisposable
+    public interface IProductInventoriesRepository
     {
         IEnumerable<ProductInventory> GetProductInventoryList(); // получение всех объектов
 
@@ -15,7 +14,5 @@ namespace ProductViewer.Domain.Abstract
         void Update(ProductInventory item); // обновление объекта
 
         void Delete(int locationId, int productId); // удаление объекта по id
-
-        void Save();  // сохранение изменений
     }
 }

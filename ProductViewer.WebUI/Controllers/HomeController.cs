@@ -11,18 +11,12 @@ namespace ProductViewer.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private IProductsRepository _products;
-        private IProductDescriptionsRepository _productDescriptions;
-        private IProductInventoriesRepository _productInventories;
-        private IProductListPriceHistoriesRepository _productListPriceHistories;
+        private IUnitOfWork _unitOfWork;
 
         public HomeController()
         {
             var productInfoContext = new AdoNetContext(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-            _products = new ProductRepository(productInfoContext);
-            _productDescriptions = new ProductDescriptionRepository(productInfoContext);
-            _productInventories = new ProductInventoryRepository(productInfoContext);
-            _productListPriceHistories = new ProductListPriceHistoryRepository(productInfoContext);
+            _unitOfWork = new UnitOfWork(productInfoContext);
         }
 
         public ActionResult Index()

@@ -87,15 +87,5 @@ namespace ProductViewer.Domain.Concrete
                 }
             }
         }
-
-        public void Save()
-        {
-            _context.CommitChanges();
-        }
-
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
     }
 }

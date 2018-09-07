@@ -4,7 +4,7 @@ using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Abstract
 {
-    public interface IProductListPriceHistoriesRepository : IDisposable
+    public interface IProductListPriceHistoriesRepository
     {
         IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList(); // получение всех объектов
 
@@ -15,7 +15,5 @@ namespace ProductViewer.Domain.Abstract
         void Update(ProductListPriceHistory item); // обновление объекта
 
         void Delete(int productId, DateTime startDate); // удаление объекта по id
-
-        void Save();  // сохранение изменений
     }
 }

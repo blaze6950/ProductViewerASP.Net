@@ -7,7 +7,9 @@ namespace ProductViewer.Domain.Concrete
     public class AdoNetContext : IDisposable
     {
         private DataSet _productsDataSet;
-        private DataSet _producrDescriptionsDataSet;        private DataSet _productInventoriesDataSet;        private DataSet _productListPriceHistoriesDataSet;
+        private DataSet _producrDescriptionsDataSet;
+        private DataSet _productInventoriesDataSet;
+        private DataSet _productListPriceHistoriesDataSet;
 
         private DbDataAdapter _productsAdapter;
         private DbDataAdapter _producrDescriptionsAdapter;
@@ -17,23 +19,31 @@ namespace ProductViewer.Domain.Concrete
         private String _connectionString;
         private String _factoryName;
         private DbProviderFactory _factory;
-        private DbConnection _connection;
+        private DbConnection _connection;
+
         public AdoNetContext(string connectionString)
         {
             DbConnectionStringBuilder dbConnectionStringBuilder = new DbConnectionStringBuilder();
             dbConnectionStringBuilder.ConnectionString = connectionString;
-            _connectionString = connectionString;            _factoryName = (string)dbConnectionStringBuilder["Provider"];
-            _factory = DbProviderFactories.GetFactory(_factoryName);            _connection = _factory.CreateConnection();
+            _connectionString = connectionString;
+            _factoryName = (string)dbConnectionStringBuilder["Provider"];
+
+            _factory = DbProviderFactories.GetFactory(_factoryName);
+            _connection = _factory.CreateConnection();
             if (_connection == null)
             {
                 throw new Exception("_connection contain null value");
-            }            _connection.ConnectionString = _connectionString;
+            }
+            _connection.ConnectionString = _connectionString;
 
             _productsDataSet = new DataSet();
             _producrDescriptionsDataSet = new DataSet();
             _productInventoriesDataSet = new DataSet();
-            _productListPriceHistoriesDataSet = new DataSet();
-            LoadData();        }
+            _productListPriceHistoriesDataSet = new DataSet();
+
+            LoadData();
+        }
+
         private void LoadData()
         {
             // _productsAdapter
@@ -67,11 +77,13 @@ namespace ProductViewer.Domain.Concrete
             command.CommandText = "SELECT * FROM ProductListPriceHistory";
             _productListPriceHistoriesAdapter.SelectCommand = command;
             _productListPriceHistoriesAdapter.Fill(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
-        }        
+        }
+        
         public DataTable GetProducts()
         {
             return _productsDataSet.Tables["Product"];
-        }
+        }
+
         public DataTable GetProductDescriptions()
         {
             return _producrDescriptionsDataSet.Tables["ProductDescription"];
@@ -85,18 +97,21 @@ namespace ProductViewer.Domain.Concrete
         public DataTable GetProductListPriceHistories()
         {
             return _productListPriceHistoriesDataSet.Tables["ProductListPriceHistory"];
-        }
+        }
+
         public void CommitChanges()
         {
             _productsAdapter.Update(_productsDataSet, "Product");
             _producrDescriptionsAdapter.Update(_producrDescriptionsDataSet, "Productdescription");
             _productInventoriesAdapter.Update(_productInventoriesDataSet, "ProductInventory");
             _productListPriceHistoriesAdapter.Update(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
-        }
+        }
+
         public void RefreshData()
         {
             CommitChanges();
-        }
+        }
+
         public void Dispose()
         {
             CommitChanges();

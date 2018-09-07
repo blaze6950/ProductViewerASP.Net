@@ -47,12 +47,14 @@
     <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Concrete\AdoNetContext.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
     <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
+    <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />
     <Compile Include="Entities\ProductInventory.cs" />
