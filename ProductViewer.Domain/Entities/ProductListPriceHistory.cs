@@ -8,8 +8,6 @@ namespace ProductViewer.Domain.Entities
 
         public DateTime StartDate { get; set; } // List price start date.
 
-        public DateTime EndDate { get; set; } // List price end date.
-
         public decimal ListPrice { get; set; } // Product list price.
     }
 }

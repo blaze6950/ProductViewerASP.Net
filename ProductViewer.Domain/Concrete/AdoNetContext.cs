@@ -17,18 +17,14 @@ namespace ProductViewer.Domain.Concrete
         private DbDataAdapter _productListPriceHistoriesAdapter;
 
         private String _connectionString;
-        private String _factoryName;
         private DbProviderFactory _factory;
         private DbConnection _connection;
 
         public AdoNetContext(string connectionString)
         {
-            DbConnectionStringBuilder dbConnectionStringBuilder = new DbConnectionStringBuilder();
-            dbConnectionStringBuilder.ConnectionString = connectionString;
             _connectionString = connectionString;
-            _factoryName = (string)dbConnectionStringBuilder["Provider"];
-
-            _factory = DbProviderFactories.GetFactory(_factoryName);
+            var factoryName = "System.Data.SqlClient";
+            _factory = DbProviderFactories.GetFactory(factoryName);
             _connection = _factory.CreateConnection();
             if (_connection == null)
             {
@@ -50,7 +46,7 @@ namespace ProductViewer.Domain.Concrete
             _productsAdapter = _factory.CreateDataAdapter();
             DbCommand command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM Product";
+            command.CommandText = "SELECT * FROM Production.Product";
             _productsAdapter.SelectCommand = command;
             _productsAdapter.Fill(_productsDataSet, "Product");
 
@@ -58,7 +54,7 @@ namespace ProductViewer.Domain.Concrete
             _producrDescriptionsAdapter = _factory.CreateDataAdapter();
             DbCommand command1 = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM ProductDescription";
+            command.CommandText = "SELECT * FROM Production.ProductDescription";
             _producrDescriptionsAdapter.SelectCommand = command;
             _producrDescriptionsAdapter.Fill(_producrDescriptionsDataSet, "ProductDescription");
 
@@ -66,7 +62,7 @@ namespace ProductViewer.Domain.Concrete
             _productInventoriesAdapter = _factory.CreateDataAdapter();
             DbCommand command2 = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM ProductInventory";
+            command.CommandText = "SELECT * FROM Production.ProductInventory";
             _productInventoriesAdapter.SelectCommand = command;
             _productInventoriesAdapter.Fill(_productInventoriesDataSet, "ProductInventory");
 
@@ -74,7 +70,7 @@ namespace ProductViewer.Domain.Concrete
             _productListPriceHistoriesAdapter = _factory.CreateDataAdapter();
             DbCommand command3 = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM ProductListPriceHistory";
+            command.CommandText = "SELECT * FROM Production.ProductListPriceHistory";
             _productListPriceHistoriesAdapter.SelectCommand = command;
             _productListPriceHistoriesAdapter.Fill(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
         }

@@ -1,0 +1,50 @@
+﻿@using ProductViewer.WebUI.Models
+@model ProductViewModel[]
+
+@{
+    ViewBag.Title = "List of products";
+}
+
+<div class="card-body">
+    <div class="card-panel teal lighten-5">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">search</i>
+            <input id="search" type="text" class="validate">
+            <label for="search">Search:</label>
+        </div>
+    </div>
+    <a class="waves-effect waves-light btn-large" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    <div class="card-panel grey lighten-5">
+        <table class="highlight">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var p in @Model)
+                {
+                    <tr>
+                        <td>@p.ProductName</td>
+                        <td>@p.ProductDescription</td>
+                        <td>@p.ProductPrice</td>
+                        <td>@p.ProductQuantity</td>
+                        <td>
+                            <a class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                        </td>
+                        <td>
+                            <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

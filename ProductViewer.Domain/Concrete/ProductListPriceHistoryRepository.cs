@@ -24,7 +24,6 @@ namespace ProductViewer.Domain.Concrete
                                         {
                                             ProductID = (int)p["ProductID"],
                                             ListPrice = (decimal)p["ListPrice"],
-                                            EndDate = (DateTime)p["EndDate"],
                                             StartDate = (DateTime)p["StartDate"]
                                         });
             return productListPriceHistoryList;
@@ -37,7 +36,6 @@ namespace ProductViewer.Domain.Concrete
             {
                 ProductID = (int)p["ProductID"],
                 ListPrice = (decimal)p["ListPrice"],
-                EndDate = (DateTime)p["EndDate"],
                 StartDate = (DateTime)p["StartDate"]
             })?.FirstOrDefault();
             return productListPriceHistory;
@@ -48,7 +46,6 @@ namespace ProductViewer.Domain.Concrete
             var newRow = _context.GetProductListPriceHistories().NewRow();
             newRow["ProductID"] = item.ProductID;
             newRow["ListPrice"] = item.ListPrice;
-            newRow["EndDate"] = item.EndDate;
             newRow["StartDate"] = item.StartDate;
             _context.GetProductListPriceHistories().Rows.Add(newRow);
         }
@@ -68,7 +65,6 @@ namespace ProductViewer.Domain.Concrete
             {
                 dataRow["ProductID"] = item.ProductID;
                 dataRow["ListPrice"] = item.ListPrice;
-                dataRow["EndDate"] = item.EndDate;
                 dataRow["StartDate"] = item.StartDate;
             }
         }

@@ -26,10 +26,10 @@ namespace ProductViewer.Domain.Concrete
                                       ListPrice = (decimal)p["ListPrice"],
                                       Name = (string)p["Name"],
                                       ProductNumber = (string)p["ProductNumber"],
-                                      ReorderPoint = (int)p["ReorderPoint"],
-                                      SafetyStockLevel = (int)p["SafetyStockLevel"],
+                                      ReorderPoint = (Int16)p["ReorderPoint"],
+                                      SafetyStockLevel = (Int16)p["SafetyStockLevel"],
                                       SellStartDate = (DateTime)p["SellStartDate"],
-                                      StandartCost = (decimal)p["StandartCost"]
+                                      StandardCost = (decimal)p["StandardCost"]
                                   });
             return productList;
         }
@@ -44,10 +44,10 @@ namespace ProductViewer.Domain.Concrete
                 ListPrice = (decimal)p["ListPrice"],
                 Name = (string)p["Name"],
                 ProductNumber = (string)p["ProductNumber"],
-                ReorderPoint = (int)p["ReorderPoint"],
-                SafetyStockLevel = (int)p["SafetyStockLevel"],
+                ReorderPoint = (Int16)p["ReorderPoint"],
+                SafetyStockLevel = (Int16)p["SafetyStockLevel"],
                 SellStartDate = (DateTime)p["SellStartDate"],
-                StandartCost = (decimal)p["StandartCost"]
+                StandardCost = (decimal)p["StandardCost"]
             })?.FirstOrDefault();
             return product;
         }
@@ -63,7 +63,7 @@ namespace ProductViewer.Domain.Concrete
             newRow["ReorderPoint"] = item.ReorderPoint;
             newRow["SafetyStockLevel"] = item.SafetyStockLevel;
             newRow["SellStartDate"] = item.SellStartDate;
-            newRow["StandartCost"] = item.StandartCost;
+            newRow["StandartCost"] = item.StandardCost;
             _context.GetProducts().Rows.Add(newRow);
         }
 
@@ -88,7 +88,7 @@ namespace ProductViewer.Domain.Concrete
                 dataRow["ReorderPoint"] = item.ReorderPoint;
                 dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
                 dataRow["SellStartDate"] = item.SellStartDate;
-                dataRow["StandartCost"] = item.StandartCost;
+                dataRow["StandartCost"] = item.StandardCost;
             }
         }
 

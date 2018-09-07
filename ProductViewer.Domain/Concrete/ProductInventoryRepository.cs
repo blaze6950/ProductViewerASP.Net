@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using ProductViewer.Domain.Abstract;
@@ -21,10 +22,10 @@ namespace ProductViewer.Domain.Concrete
             var productInventoryList = (from p in productInventories
                                           select new ProductInventory()
                                           {
-                                              Bin = (int)p["Bin"],
-                                              LocationID = (int)p["LocationID"],
+                                              Bin = (byte)p["Bin"],
+                                              LocationID = (Int16)p["LocationID"],
                                               ProductID = (int)p["ProductID"],
-                                              Quantity = (int)p["Quantity"],
+                                              Quantity = (Int16)p["Quantity"],
                                               Shelf = (string)p["Shelf"]
                                           });
             return productInventoryList;
@@ -35,10 +36,10 @@ namespace ProductViewer.Domain.Concrete
             var productInventories = _context.GetProductInventories().Select();
             var productInventory = (productInventories.Where(p => (((int)p["ProductID"]) == productId) && ((int)p["LocationID"]) == locationId)).Select(p => new ProductInventory()
             {
-                Bin = (int)p["Bin"],
-                LocationID = (int)p["LocationID"],
+                Bin = (byte)p["Bin"],
+                LocationID = (Int16)p["LocationID"],
                 ProductID = (int)p["ProductID"],
-                Quantity = (int)p["Quantity"],
+                Quantity = (Int16)p["Quantity"],
                 Shelf = (string)p["Shelf"]
             })?.FirstOrDefault();
             return productInventory;
