@@ -1,0 +1,98 @@
+﻿@model ProductViewer.WebUI.Models.ProductViewModel
+
+<div class="card-panel grey lighten-5">
+    <h1 class="h1 align-content-center">Enter information:</h1>
+    @using (Html.BeginForm())
+    {
+<div class="card-panel blue-grey lighten-5 hoverable">
+    <h3 class="h3">Product info:</h3>
+    @Html.ValidationSummary()
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityName, new { @class = "validate" })
+        <label style="font-size: large">Name</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Name of the product.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityNumber, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Number</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Unique product identification number.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntitySafetyStockLevel, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Safety stock level</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Minimum inventory quantity.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityReorderPoint, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Reorder point</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Inventory level that trigers a purchase order or work order.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityStandardCost, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Standard cost</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Standard cost of the product.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityListPrice, new { @class = "validate", type = "number" })
+        <label style="font-size: large">List price</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Selling price.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntityDaysToManufacture, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Days to manufacture</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Number of days required to manufacture the product.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductEntitySellStartDate, new { @class = "validate", type = "date" })
+        @*<label for="ProductSellStartDate" style="font-size: large">Sell start date</label>*@
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Date the product was available for sale.</span>
+    </div>
+</div>
+<div class="card-panel blue-grey lighten-5 hoverable">
+    <h3 class="h3">Product description info:</h3>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextAreaFor(x => x.ProductDescriptionEntityDescription, new { @class = "materialize-textarea validate", type = "text" })
+        <label style="font-size: large">Description</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Description of the product.</span>
+    </div>
+</div>
+<div class="card-panel blue-grey lighten-5 hoverable">
+    <h3 class="h3">Product inventory info:</h3>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductInventoryEntityShelf, new { @class = "validate", type = "text" })
+        <label style="font-size: large">Shelf</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Storage compartment within an inventory location.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductInventoryEntityBin, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Bin</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Storage container on a shelf in an inventory location.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductInventoryEntityQuantity, new { @class = "validate", type = "number" })
+        <label style="font-size: large">Quantity</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Quantity of products in the inventory location.</span>
+    </div>
+</div>
+<div class="card-panel blue-grey lighten-5 hoverable">
+    <h3 class="h3">Product price info:</h3>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductListPriceHistoryEntityStartDate, new { @class = "validate", type = "date" })
+        @*<label for="ProductStartDate" style="font-size: large">Start date</label>*@
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">List price start date.</span>
+    </div>
+    <div class="input-field col s12" style="margin-top: 2em">
+        @Html.TextBoxFor(x => x.ProductListPriceHistoryEntityListPrice, new { @class = "validate", type = "number" })
+        <label style="font-size: large">List price history</label>
+        <span class="text-monospace grey-text" data-error="wrong" data-success="right">Product list price.</span>
+    </div>
+</div>
+<div style="margin: 2em">
+    <a onclick="M.toast({html: 'Action canceled'})" href="@Url.Action("Index")" class="waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+    <button class="btn-large waves-effect waves-light" type="submit" name="action">
+        Submit
+        <i class="material-icons right">send</i>
+    </button>
+</div>
+}
+</div>

@@ -63,7 +63,7 @@ namespace ProductViewer.Domain.Concrete
             newRow["ReorderPoint"] = item.ReorderPoint;
             newRow["SafetyStockLevel"] = item.SafetyStockLevel;
             newRow["SellStartDate"] = item.SellStartDate;
-            newRow["StandartCost"] = item.StandardCost;
+            newRow["StandardCost"] = item.StandardCost;
             _context.GetProducts().Rows.Add(newRow);
         }
 
