@@ -1,5 +1,5 @@
 ﻿@using ProductViewer.WebUI.Models
-@model ProductViewModel[]
+@model ProductListViewModel
 
 @{
     ViewBag.Title = "List of products";
@@ -28,23 +28,27 @@
             </thead>
 
             <tbody>
-                @foreach (var p in @Model)
-                {
-                    <tr>
-                        <td>@p.ProductName</td>
-                        <td>@p.ProductDescription</td>
-                        <td>@p.ProductPrice</td>
-                        <td>@p.ProductQuantity</td>
-                        <td>
-                            <a class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
-                        </td>
-                        <td>
-                            <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
-                        </td>
-                    </tr>
-                }
+            @foreach (var p in @Model.Products)
+            {
+                <tr>
+                    <td>@p.ProductName</td>
+                    <td>@p.ProductDescription</td>
+                    <td>@p.ProductPrice</td>
+                    <td>@p.ProductQuantity</td>
+                    <td>
+                        <a class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                    </td>
+                    <td>
+                        <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                    </td>
+                </tr>
+            }
             </tbody>
+
         </table>
+        <div>
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+        </div>
     </div>
 </div>
 
