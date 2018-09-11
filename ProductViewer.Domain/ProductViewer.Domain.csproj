@@ -45,6 +45,8 @@
     <Compile Include="Abstract\IProductDescriptionsRepository.cs" />
     <Compile Include="Abstract\IProductInventoriesRepository.cs" />
     <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
+    <Compile Include="Abstract\IProductModelProductDescriptionCulturesRepository.cs" />
+    <Compile Include="Abstract\IProductModelsRepository.cs" />
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
