@@ -81,7 +81,7 @@ namespace ProductViewer.Domain.Concrete
         {
             foreach (DataRow dr in _context.GetProductInventories().Rows)
             {
-                if ((int)dr["ProductID"] == productId && (int)dr["LocationID"] == locationId)
+                if ((int)dr["ProductID"] == productId && (Int16)dr["LocationID"] == locationId)
                 {
                     dr.Delete();
                     break;

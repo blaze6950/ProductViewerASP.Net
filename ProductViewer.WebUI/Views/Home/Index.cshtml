@@ -42,10 +42,10 @@
                         <td>@p.ProductListPriceHistoryEntity.ListPrice</td>
                         <td>@p.ProductInventoryEntity.Quantity</td>
                         <td>
-                            <a class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                            <a id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                         </td>
                         <td>
-                            <a class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                            <a type="submit" href="@Url.Action("RemoveItem", "Home", new{id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
                         </td>
                     </tr>
                 }

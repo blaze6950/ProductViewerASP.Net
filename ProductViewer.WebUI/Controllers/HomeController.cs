@@ -21,15 +21,13 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = new UnitOfWork(productInfoContext);
         }
 
+        [HttpGet]
         public ViewResult Index(int page = 1)
         {
-            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
-                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
-                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
-                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
-                     select new ProductViewModel(p, pd, pi, plph));
+            if (_list == null)
+            {
+                InitialList();
+            }
             ProductListViewModel model = new ProductListViewModel()
             {
                 Products = _list
@@ -44,6 +42,35 @@ namespace ProductViewer.WebUI.Controllers
                 }
             };
             return View(model);
+        }
+
+        private void InitialList()
+        {
+            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
+                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
+                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
+                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
+                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
+                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
+                select new ProductViewModel(p, pd, pi, plph, pmpdc, pm));
+        }
+
+        //[HttpPost]
+        public void RemoveItem(int id)
+        {
+            if (_list == null)
+            {
+                InitialList();
+            }
+            var product = _list.First(p => p.ProductEntityId == id);
+            _unitOfWork.ProductDescriptionsRepository.Delete(product.ProductDescriptionEntity.ProductDescriptionID);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(product.ProductModelProductDescriptionCultureEntity.ProductModelID, product.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
+            _unitOfWork.ProductModelsRepository.Delete(product.ProductModelEntity.ProductModelID);
+            _unitOfWork.ProductInventoriesRepository.Delete(product.ProductInventoryEntity.LocationID, product.ProductInventoryEntity.ProductID);
+            _unitOfWork.ProductListPriceHistoriesRepository.Delete(product.ProductListPriceHistoryEntity.ProductID, product.ProductListPriceHistoryEntity.StartDate);
+            _unitOfWork.ProductsRepository.Delete(product.ProductEntityId);
+            _unitOfWork.Commit();
+            //return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -68,20 +95,24 @@ namespace ProductViewer.WebUI.Controllers
             {
                 if (product.ProductEntityId != 0)
                 {
-                    _unitOfWork.ProductsRepository.Update(product.ProductEntity);
                     _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
+                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
+                    _unitOfWork.ProductModelsRepository.Update(product.ProductModelEntity);
                     _unitOfWork.ProductInventoriesRepository.Update(product.ProductInventoryEntity);
                     _unitOfWork.ProductListPriceHistoriesRepository.Update(product.ProductListPriceHistoryEntity);
+                    _unitOfWork.ProductsRepository.Update(product.ProductEntity);
                     _unitOfWork.Commit();
                     TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    _unitOfWork.ProductsRepository.Create(product.ProductEntity);
                     _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
+                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
+                    _unitOfWork.ProductModelsRepository.Create(product.ProductModelEntity);
                     _unitOfWork.ProductInventoriesRepository.Create(product.ProductInventoryEntity);
                     _unitOfWork.ProductListPriceHistoriesRepository.Create(product.ProductListPriceHistoryEntity);
+                    _unitOfWork.ProductsRepository.Create(product.ProductEntity);
                     _unitOfWork.Commit();
                     TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                     return RedirectToAction("Index");

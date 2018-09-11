@@ -16,15 +16,25 @@ namespace ProductViewer.WebUI.Models
             ProductListPriceHistoryEntity = new ProductListPriceHistory();
         }
 
-        public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity)
+        public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
         {
             ProductEntity = productEntity;
             ProductDescriptionEntity = productDescriptionEntity;
             ProductInventoryEntity = productInventoryEntity;
             ProductListPriceHistoryEntity = productListPriceHistoryEntity;
+            ProductModelProductDescriptionCultureEntity = productModelProductDescriptionCultureEntity;
+            ProductModelEntity = productModelEntity;
         }
 
-        #region PrivateFields
+        //public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity)
+        //{
+        //    ProductEntity = productEntity;
+        //    ProductDescriptionEntity = productDescriptionEntity;
+        //    ProductInventoryEntity = productInventoryEntity;
+        //    ProductListPriceHistoryEntity = productListPriceHistoryEntity;
+        //}
+
+        #region HiddenFields
         [HiddenInput(DisplayValue = false)]
         public Product ProductEntity { get; private set; }
         [HiddenInput(DisplayValue = false)]
@@ -33,6 +43,10 @@ namespace ProductViewer.WebUI.Models
         public ProductInventory ProductInventoryEntity { get; private set; }
         [HiddenInput(DisplayValue = false)]
         public ProductListPriceHistory ProductListPriceHistoryEntity { get; private set; }
+        [HiddenInput(DisplayValue = false)]
+        public ProductModelProductDescriptionCulture ProductModelProductDescriptionCultureEntity { get; private set; }
+        [HiddenInput(DisplayValue = false)]
+        public ProductModel ProductModelEntity { get; private set; }
         #endregion
 
         [HiddenInput(DisplayValue = false)]
