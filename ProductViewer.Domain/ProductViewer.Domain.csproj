@@ -59,6 +59,8 @@
     <Compile Include="Entities\ProductDescription.cs" />
     <Compile Include="Entities\ProductInventory.cs" />
     <Compile Include="Entities\ProductListPriceHistory.cs" />
+    <Compile Include="Entities\ProductModel.cs" />
+    <Compile Include="Entities\ProductModelProductDescriptionCulture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
