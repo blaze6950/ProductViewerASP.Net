@@ -68,7 +68,7 @@ namespace ProductViewer.Domain.Concrete
             _productInventoriesAdapter = _factory.CreateDataAdapter();
             DbCommand command2 = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM Production.ProductInventory";
+            command.CommandText = "SELECT * FROM Production.ProductInventory WHERE LocationID = 1";
             _productInventoriesAdapter.SelectCommand = command;
             _productInventoriesAdapter.Fill(_productInventoriesDataSet, "ProductInventory");
 
@@ -92,7 +92,7 @@ namespace ProductViewer.Domain.Concrete
             _productModelProductDescriptionCulturesAdapter = _factory.CreateDataAdapter();
             DbCommand command5 = _factory.CreateCommand();
             command5.Connection = _connection;
-            command5.CommandText = "SELECT * FROM Production.ProductModelProductDescriptionCulture";
+            command5.CommandText = "SELECT * FROM Production.ProductModelProductDescriptionCulture WHERE CultureID = 'en'";
             _productModelProductDescriptionCulturesAdapter.SelectCommand = command5;
             _productModelProductDescriptionCulturesAdapter.Fill(_productModelProductDescriptionCultureDataSet,
                 "ProductModelProductDescriptionCulture");
@@ -120,13 +120,13 @@ namespace ProductViewer.Domain.Concrete
 
         public DataTable GetProductModels()
         {
-            return _productModelsDataSet.Tables["ProductModels"];
+            return _productModelsDataSet.Tables["ProductModel"];
         }
 
         public DataTable GetProductModelProductDescriptionCulture()
         {
             return _productModelProductDescriptionCultureDataSet.Tables
-                ["ProductModelProductDescriptionCultures"];
+                ["ProductModelProductDescriptionCulture"];
         }
 
         public void CommitChanges()

@@ -30,7 +30,7 @@ namespace ProductViewer.Domain.Concrete
                                       SafetyStockLevel = (Int16)p["SafetyStockLevel"],
                                       SellStartDate = (DateTime)p["SellStartDate"],
                                       StandardCost = (decimal)p["StandardCost"],
-                                      ProductModelID = (int?)p["ProductModelID"]
+                                      ProductModelID = p["ProductModelID"] as int?
                                   });
             return productList;
         }
