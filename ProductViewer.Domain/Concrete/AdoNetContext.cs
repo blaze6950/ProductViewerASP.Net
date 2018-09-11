@@ -92,10 +92,10 @@ namespace ProductViewer.Domain.Concrete
             _productModelProductDescriptionCulturesAdapter = _factory.CreateDataAdapter();
             DbCommand command5 = _factory.CreateCommand();
             command5.Connection = _connection;
-            command5.CommandText = "SELECT * FROM Production.ProductModelProductDescriptionCultures";
+            command5.CommandText = "SELECT * FROM Production.ProductModelProductDescriptionCulture";
             _productModelProductDescriptionCulturesAdapter.SelectCommand = command5;
             _productModelProductDescriptionCulturesAdapter.Fill(_productModelProductDescriptionCultureDataSet,
-                "ProductModelProductDescriptionCultures");
+                "ProductModelProductDescriptionCulture");
         }
 
         public DataTable GetProducts()
