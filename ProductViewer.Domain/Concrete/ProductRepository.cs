@@ -29,7 +29,8 @@ namespace ProductViewer.Domain.Concrete
                                       ReorderPoint = (Int16)p["ReorderPoint"],
                                       SafetyStockLevel = (Int16)p["SafetyStockLevel"],
                                       SellStartDate = (DateTime)p["SellStartDate"],
-                                      StandardCost = (decimal)p["StandardCost"]
+                                      StandardCost = (decimal)p["StandardCost"],
+                                      ProductModelID = (int?)p["ProductModelID"]
                                   });
             return productList;
         }
@@ -47,7 +48,8 @@ namespace ProductViewer.Domain.Concrete
                 ReorderPoint = (Int16)p["ReorderPoint"],
                 SafetyStockLevel = (Int16)p["SafetyStockLevel"],
                 SellStartDate = (DateTime)p["SellStartDate"],
-                StandardCost = (decimal)p["StandardCost"]
+                StandardCost = (decimal)p["StandardCost"],
+                ProductModelID = (int?)p["ProductModelID"]
             })?.FirstOrDefault();
             return product;
         }
@@ -64,6 +66,7 @@ namespace ProductViewer.Domain.Concrete
             newRow["SafetyStockLevel"] = item.SafetyStockLevel;
             newRow["SellStartDate"] = item.SellStartDate;
             newRow["StandardCost"] = item.StandardCost;
+            newRow["ProductModelID"] = item.ProductModelID;
             _context.GetProducts().Rows.Add(newRow);
         }
 
@@ -89,6 +92,7 @@ namespace ProductViewer.Domain.Concrete
                 dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
                 dataRow["SellStartDate"] = item.SellStartDate;
                 dataRow["StandartCost"] = item.StandardCost;
+                dataRow["ProductModelID"] = item.ProductModelID;
             }
         }
 

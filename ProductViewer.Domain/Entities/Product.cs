@@ -18,5 +18,6 @@ namespace ProductViewer.Domain.Entities
         public decimal ListPrice { get; set; } // Selling price.
         public int DaysToManufacture { get; set; } // Number of days required to manufacture the product.
         public DateTime SellStartDate { get; set; } // Date the product was available for sale.
+        public int? ProductModelID  { get; set; } // Product is a member of this product model. Foreign key to ProductModel.ProductModelID.
     }
 }

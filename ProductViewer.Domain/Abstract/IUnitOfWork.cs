@@ -9,6 +9,8 @@ namespace ProductViewer.Domain.Abstract
         IProductDescriptionsRepository ProductDescriptionsRepository { get; }
         IProductInventoriesRepository ProductInventoriesRepository { get; }
         IProductListPriceHistoriesRepository ProductListPriceHistoriesRepository { get; }
+        IProductModelsRepository ProductModelsRepository { get; }
+        IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository { get; }
 
         /// <summary>
         /// Commits all changes

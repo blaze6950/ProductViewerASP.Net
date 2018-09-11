@@ -24,13 +24,12 @@ namespace ProductViewer.WebUI.Controllers
         public ViewResult Index(int page = 1)
         {
             _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on p.ProductId equals
-                    pd.ProductDescriptionID
-                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi
-                    .ProductID
-                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on
-                    p.ProductId equals plph.ProductID
-                select new ProductViewModel(p, pd, pi, plph));
+                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
+                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
+                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
+                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
+                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
+                     select new ProductViewModel(p, pd, pi, plph));
             ProductListViewModel model = new ProductListViewModel()
             {
                 Products = _list
