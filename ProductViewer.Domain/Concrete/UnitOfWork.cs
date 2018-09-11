@@ -13,12 +13,16 @@ namespace ProductViewer.Domain.Concrete
             ProductDescriptionsRepository = new ProductDescriptionRepository(_context);
             ProductInventoriesRepository = new ProductInventoryRepository(_context);
             ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_context);
+            ProductModelsRepository = new ProductModelRepository(_context);
+            ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_context);
         }
 
         public IProductsRepository ProductsRepository { get; }
         public IProductDescriptionsRepository ProductDescriptionsRepository { get; }
         public IProductInventoriesRepository ProductInventoriesRepository { get; }
         public IProductListPriceHistoriesRepository ProductListPriceHistoriesRepository { get; }
+        public IProductModelsRepository ProductModelsRepository { get; set; }
+        public IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository { get; set; }
 
         public void Commit()
         {
