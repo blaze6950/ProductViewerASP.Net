@@ -50,7 +50,6 @@
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Concrete\AdoNetContext.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
