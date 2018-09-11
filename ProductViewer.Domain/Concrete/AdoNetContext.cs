@@ -10,11 +10,15 @@ namespace ProductViewer.Domain.Concrete
         private DataSet _producrDescriptionsDataSet;
         private DataSet _productInventoriesDataSet;
         private DataSet _productListPriceHistoriesDataSet;
+        private DataSet _productModelsDataSet;
+        private DataSet _productModelProductDescriptionCultureDataSet;
 
         private DbDataAdapter _productsAdapter;
         private DbDataAdapter _producrDescriptionsAdapter;
         private DbDataAdapter _productInventoriesAdapter;
         private DbDataAdapter _productListPriceHistoriesAdapter;
+        private DbDataAdapter _productModelsAdapter;
+        private DbDataAdapter _productModelProductDescriptionCulturesAdapter;
 
         private String _connectionString;
         private DbProviderFactory _factory;
@@ -36,6 +40,8 @@ namespace ProductViewer.Domain.Concrete
             _producrDescriptionsDataSet = new DataSet();
             _productInventoriesDataSet = new DataSet();
             _productListPriceHistoriesDataSet = new DataSet();
+            _productModelsDataSet = new DataSet();
+            _productModelProductDescriptionCultureDataSet = new DataSet();
 
             LoadData();
         }
@@ -73,8 +79,25 @@ namespace ProductViewer.Domain.Concrete
             command.CommandText = "SELECT * FROM Production.ProductListPriceHistory";
             _productListPriceHistoriesAdapter.SelectCommand = command;
             _productListPriceHistoriesAdapter.Fill(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
+
+            // _productModelsAdapter
+            _productModelsAdapter = _factory.CreateDataAdapter();
+            DbCommand command4 = _factory.CreateCommand();
+            command4.Connection = _connection;
+            command4.CommandText = "SELECT * FROM Production.ProductModel";
+            _productModelsAdapter.SelectCommand = command4;
+            _productModelsAdapter.Fill(_productModelsDataSet, "ProductModel");
+
+            // _productModelProductDescriptionCulturesAdapter
+            _productModelProductDescriptionCulturesAdapter = _factory.CreateDataAdapter();
+            DbCommand command5 = _factory.CreateCommand();
+            command5.Connection = _connection;
+            command5.CommandText = "SELECT * FROM Production.ProductModelProductDescriptionCultures";
+            _productModelProductDescriptionCulturesAdapter.SelectCommand = command5;
+            _productModelProductDescriptionCulturesAdapter.Fill(_productModelProductDescriptionCultureDataSet,
+                "ProductModelProductDescriptionCultures");
         }
-        
+
         public DataTable GetProducts()
         {
             return _productsDataSet.Tables["Product"];
@@ -95,12 +118,26 @@ namespace ProductViewer.Domain.Concrete
             return _productListPriceHistoriesDataSet.Tables["ProductListPriceHistory"];
         }
 
+        public DataTable GetProductModels()
+        {
+            return _productModelsDataSet.Tables["ProductModels"];
+        }
+
+        public DataTable GetProductModelProductDescriptionCulture()
+        {
+            return _productModelProductDescriptionCultureDataSet.Tables
+                ["ProductModelProductDescriptionCultures"];
+        }
+
         public void CommitChanges()
         {
             _productsAdapter.Update(_productsDataSet, "Product");
             _producrDescriptionsAdapter.Update(_producrDescriptionsDataSet, "Productdescription");
             _productInventoriesAdapter.Update(_productInventoriesDataSet, "ProductInventory");
             _productListPriceHistoriesAdapter.Update(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
+            _productModelsAdapter.Update(_productModelsDataSet, "ProductModel");
+            _productModelProductDescriptionCulturesAdapter.Update(_productModelProductDescriptionCultureDataSet,
+                "ProductModelProductDescriptionCultures");
         }
 
         public void RefreshData()
@@ -110,15 +147,18 @@ namespace ProductViewer.Domain.Concrete
 
         public void Dispose()
         {
-            CommitChanges();
             _productsDataSet?.Dispose();
             _producrDescriptionsDataSet?.Dispose();
             _productInventoriesDataSet?.Dispose();
             _productListPriceHistoriesDataSet?.Dispose();
+            _productModelsDataSet?.Dispose();
+            _productModelProductDescriptionCultureDataSet?.Dispose();
             _productsAdapter?.Dispose();
             _producrDescriptionsAdapter?.Dispose();
             _productInventoriesAdapter?.Dispose();
             _productListPriceHistoriesAdapter?.Dispose();
+            _productModelsAdapter?.Dispose();
+            _productModelProductDescriptionCulturesAdapter?.Dispose();
             _connection?.Dispose();
         }
     }

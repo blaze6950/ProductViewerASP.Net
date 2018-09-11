@@ -7,12 +7,12 @@ namespace ProductViewer.Domain.Abstract
     {
         IEnumerable<ProductModelProductDescriptionCulture> GetProductModelProductDescriptionCultureList(); // получение всех объектов
 
-        ProductModelProductDescriptionCulture GetProductModelProductDescriptionCulture(int id); // получение одного объекта по id
+        ProductModelProductDescriptionCulture GetProductModelProductDescriptionCulture(int productModelId, int productDescriptionId); // получение одного объекта по id
 
         void Create(ProductModelProductDescriptionCulture item); // создание объекта
 
         void Update(ProductModelProductDescriptionCulture item); // обновление объекта
 
-        void Delete(int id); // удаление объекта по id
+        void Delete(int productModelId, int productDescriptionId); // удаление объекта по id
     }
 }

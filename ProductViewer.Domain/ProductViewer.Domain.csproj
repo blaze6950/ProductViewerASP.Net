@@ -55,6 +55,8 @@
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
     <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />
+    <Compile Include="Concrete\ProductModelProductDescriptionCultureRepository.cs" />
+    <Compile Include="Concrete\ProductModelRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Entities\Product.cs" />

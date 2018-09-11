@@ -4,6 +4,9 @@
     {
         public int ProductModelID { get; set; } // Primary key. Foreign key to ProductModel.ProductModelID.
         public int ProductDescriptionID { get; set; } // Primary key. Foreign key to ProductDescription.ProductDescriptionID.
-        public string CultureID { get; set; } // Culture identification number. Foreign key to Culture.CultureID
+        public static string CultureID
+        {
+            get => "en";
+        } // Culture identification number. Foreign key to Culture.CultureID
     }
 }
