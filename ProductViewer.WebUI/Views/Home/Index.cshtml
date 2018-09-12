@@ -42,7 +42,7 @@
                         <td>@p.ProductListPriceHistoryEntity.ListPrice</td>
                         <td>@p.ProductInventoryEntity.Quantity</td>
                         <td>
-                            <a id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                            <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                         </td>
                         <td>
                             <a type="submit" href="@Url.Action("RemoveItem", "Home", new{id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>

@@ -134,12 +134,12 @@ namespace ProductViewer.Domain.Concrete
         public void CommitChanges()
         {
             InitialCommands();
-            _productDescriptionsAdapter.Update(_producrDescriptionsDataSet, "ProductDescription");
             _productModelProductDescriptionCulturesAdapter.Update(_productModelProductDescriptionCultureDataSet, "ProductModelProductDescriptionCulture");
-            _productModelsAdapter.Update(_productModelsDataSet, "ProductModel");
+            _productDescriptionsAdapter.Update(_producrDescriptionsDataSet, "ProductDescription");
             _productInventoriesAdapter.Update(_productInventoriesDataSet, "ProductInventory");
             _productListPriceHistoriesAdapter.Update(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
-            _productsAdapter.Update(_productsDataSet, "Product");                
+            _productsAdapter.Update(_productsDataSet, "Product");
+            _productModelsAdapter.Update(_productModelsDataSet, "ProductModel");
         }
 
         private void InitialCommands()
@@ -213,18 +213,17 @@ namespace ProductViewer.Domain.Concrete
             newParameter.SourceColumn = "ProductModelID";
             newParameter.IsNullable = true;
             command.Parameters.Add(newParameter);
-            _productInventoriesAdapter.InsertCommand = command;
+            _productsAdapter.InsertCommand = command;
             // _productsAdapter DELETE command
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "DELETE FROM Production.Product WHERE ProductID = @ProductID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.Int32;
             newParameter.SourceColumn = "ProductID";
             command.Parameters.Add(newParameter);
-            _productInventoriesAdapter.DeleteCommand = command;
+            _productsAdapter.DeleteCommand = command;
             // _productsAdapter UPDATE command
             command = _factory.CreateCommand();
             command.Connection = _connection;
@@ -297,7 +296,7 @@ namespace ProductViewer.Domain.Concrete
             newParameter.SourceColumn = "ProductModelID";
             newParameter.IsNullable = true;
             command.Parameters.Add(newParameter);
-            _productInventoriesAdapter.UpdateCommand = command;
+            _productsAdapter.UpdateCommand = command;
             #endregion
 
             #region _productDescriptionsAdapter Commands
@@ -342,7 +341,7 @@ namespace ProductViewer.Domain.Concrete
             newParameter.DbType = DbType.Int32;
             newParameter.SourceColumn = "ProductDescriptionID";
             command.Parameters.Add(newParameter);
-            _productDescriptionsAdapter.DeleteCommand = command;
+            _productDescriptionsAdapter.UpdateCommand = command;
             #endregion
 
             #region _productInventoriesAdapter Commands
@@ -417,7 +416,7 @@ namespace ProductViewer.Domain.Concrete
             newParameter.DbType = DbType.Int16;
             newParameter.SourceColumn = "Quantity";
             command.Parameters.Add(newParameter);
-            _productInventoriesAdapter.DeleteCommand = command;
+            _productInventoriesAdapter.UpdateCommand = command;
             #endregion
 
             #region _productListPriceHistoriesAdapter Commands
@@ -484,7 +483,7 @@ namespace ProductViewer.Domain.Concrete
             newParameter.DbType = DbType.Decimal;
             newParameter.SourceColumn = "ListPrice";
             command.Parameters.Add(newParameter);
-            _productListPriceHistoriesAdapter.DeleteCommand = command;
+            _productListPriceHistoriesAdapter.UpdateCommand = command;
             #endregion
 
             #region _productModelsAdapter Commands
@@ -510,12 +509,6 @@ namespace ProductViewer.Domain.Concrete
             newParameter.DbType = DbType.Int32;
             newParameter.SourceColumn = "ProductModelID";
             command.Parameters.Add(newParameter);
-            //
-            newParameter = _factory.CreateParameter();
-            newParameter.ParameterName = "@StartDate";
-            newParameter.DbType = DbType.DateTime;
-            newParameter.SourceColumn = "StartDate";
-            command.Parameters.Add(newParameter);
             _productModelsAdapter.DeleteCommand = command;
             // _productModelsAdapter UPDATE Command
             command = _factory.CreateCommand();
@@ -535,27 +528,32 @@ namespace ProductViewer.Domain.Concrete
             newParameter.Size = 50;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
-            _productModelsAdapter.DeleteCommand = command;
+            _productModelsAdapter.UpdateCommand = command;
             #endregion
 
-            #region _productModelProductDescriptionCulturesAdapter Commands Dodelat'
+            #region _productModelProductDescriptionCulturesAdapter Commands
             // _productModelProductDescriptionCulturesAdapter INSERT Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.ProductModelProductDescriptionCulture (Name)" +
-                                  "VALUES (@Name)";
+            command.CommandText = "INSERT INTO Production.ProductModelProductDescriptionCulture (ProductModelID, ProductDescriptionID, CultureID)" +
+                                  "VALUES (@ProductModelID, @ProductDescriptionID, 'en')";
             newParameter = _factory.CreateParameter();
-            newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
-            newParameter.SourceColumn = "Name";
+            newParameter.ParameterName = "@ProductModelID";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductModelID";
+            command.Parameters.Add(newParameter);
+            //
+            newParameter = _factory.CreateParameter();
+            newParameter.ParameterName = "@ProductDescriptionID";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductDescriptionID";
             command.Parameters.Add(newParameter);
             _productModelProductDescriptionCulturesAdapter.InsertCommand = command;
             // _productModelProductDescriptionCulturesAdapter DELETE Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "DELETE FROM Production.ProductModelProductDescriptionCulture " +
-                                  "WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = '1'";
+                                  "WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = 'en'";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";
             newParameter.DbType = DbType.Int32;
@@ -572,7 +570,7 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "UPDATE Production.ProductModelProductDescriptionCulture " +
-                                  "SET Name = @Name" +
+                                  "SET ProductModelID = @ProductModelID, ProductDescriptionID = @ProductDescriptionID, CultureID = 'en' " +
                                   "WHERE ProductModelID = @ProductModelID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";
@@ -581,12 +579,11 @@ namespace ProductViewer.Domain.Concrete
             command.Parameters.Add(newParameter);
             //
             newParameter = _factory.CreateParameter();
-            newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
-            newParameter.SourceColumn = "Name";
+            newParameter.ParameterName = "@ProductDescriptionID";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductDescriptionID";
             command.Parameters.Add(newParameter);
-            _productModelProductDescriptionCulturesAdapter.DeleteCommand = command;
+            _productModelProductDescriptionCulturesAdapter.UpdateCommand = command;
             #endregion
         }
 

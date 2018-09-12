@@ -116,9 +116,10 @@ namespace ProductViewer.WebUI.Models
 
         [Display(Name = "Sell start date")]
         [Required(ErrorMessage = "Please enter sell start date")]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProductEntitySellStartDate
         {
-            get => ProductEntity.SellStartDate;
+            get => ProductEntity.SellStartDate.Date;
             set => ProductEntity.SellStartDate = value;
         }
 
@@ -156,9 +157,10 @@ namespace ProductViewer.WebUI.Models
 
         [Display(Name = "Start date")]
         [Required(ErrorMessage = "Please enter start date")]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProductListPriceHistoryEntityStartDate
         {
-            get => ProductListPriceHistoryEntity.StartDate;
+            get => ProductListPriceHistoryEntity.StartDate.Date;
             set => ProductListPriceHistoryEntity.StartDate = value;
         }
 

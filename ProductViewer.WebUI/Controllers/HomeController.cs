@@ -55,7 +55,6 @@ namespace ProductViewer.WebUI.Controllers
                 select new ProductViewModel(p, pd, pi, plph, pmpdc, pm));
         }
 
-        //[HttpPost]
         public void RemoveItem(int id)
         {
             if (_list == null)
@@ -76,10 +75,15 @@ namespace ProductViewer.WebUI.Controllers
         [HttpGet]
         public ViewResult AddOrEditProduct(bool isEditing = false, int id = -1)
         {
+            if (_list == null)
+            {
+                InitialList();
+            }
             if (isEditing)
             {
                 ViewBag.Title = "Editing an existing product";
-                return View(_list.First(p => p.ProductEntityId == id));
+                var product = _list.First(p => p.ProductEntityId == id);
+                return View(product);
             }
             else
             {
