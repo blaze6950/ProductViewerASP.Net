@@ -6,6 +6,9 @@
     {
     <div class="card-panel blue-grey lighten-5 hoverable">
         <h3 class="h3">Product info:</h3>
+        @if (TempData["error"] != null) {
+            <div class="alert alert-success">@TempData["error"]</div>
+        }
         @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
         @{
             if (Model != null)

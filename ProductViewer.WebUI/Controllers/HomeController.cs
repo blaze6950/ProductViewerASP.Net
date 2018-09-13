@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
@@ -97,29 +98,37 @@ namespace ProductViewer.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (product.ProductEntityId != 0)
+                try
                 {
-                    _unitOfWork.ProductModelsRepository.Update(product.ProductModelEntity);
-                    _unitOfWork.ProductsRepository.Update(product.ProductEntity);
-                    _unitOfWork.ProductInventoriesRepository.Update(product.ProductInventoryEntity);
-                    _unitOfWork.ProductListPriceHistoriesRepository.Update(product.ProductListPriceHistoryEntity);
-                    _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
-                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
-                    _unitOfWork.Commit();
-                    TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
-                    return RedirectToAction("Index");
+                    if (product.ProductEntityId != 0)
+                    {
+                        _unitOfWork.ProductModelsRepository.Update(product.ProductModelEntity);
+                        _unitOfWork.ProductsRepository.Update(product.ProductEntity);
+                        _unitOfWork.ProductInventoriesRepository.Update(product.ProductInventoryEntity);
+                        _unitOfWork.ProductListPriceHistoriesRepository.Update(product.ProductListPriceHistoryEntity);
+                        _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
+                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
+                        _unitOfWork.Commit();
+                        TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _unitOfWork.ProductModelsRepository.Create(product.ProductModelEntity);
+                        _unitOfWork.ProductsRepository.Create(product.ProductEntity);
+                        _unitOfWork.ProductInventoriesRepository.Create(product.ProductInventoryEntity);
+                        _unitOfWork.ProductListPriceHistoriesRepository.Create(product.ProductListPriceHistoryEntity);
+                        _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
+                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
+                        _unitOfWork.Commit();
+                        TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
+                        return RedirectToAction("Index");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    _unitOfWork.ProductModelsRepository.Create(product.ProductModelEntity);
-                    _unitOfWork.ProductsRepository.Create(product.ProductEntity);
-                    _unitOfWork.ProductInventoriesRepository.Create(product.ProductInventoryEntity);
-                    _unitOfWork.ProductListPriceHistoriesRepository.Create(product.ProductListPriceHistoryEntity);
-                    _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
-                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
-                    _unitOfWork.Commit();
-                    TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
-                    return RedirectToAction("Index");
+                    TempData["error"] = string.Format("Something went wrong... {0} has not been saved! Error mesaage: {1}", product.ProductEntity.Name, e.Message);
+                    return RedirectToAction("AddOrEditProduct", product);
                 }
             }
             else
