@@ -99,12 +99,12 @@ namespace ProductViewer.WebUI.Controllers
             {
                 if (product.ProductEntityId != 0)
                 {
-                    _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
-                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
                     _unitOfWork.ProductModelsRepository.Update(product.ProductModelEntity);
+                    _unitOfWork.ProductsRepository.Update(product.ProductEntity);
                     _unitOfWork.ProductInventoriesRepository.Update(product.ProductInventoryEntity);
                     _unitOfWork.ProductListPriceHistoriesRepository.Update(product.ProductListPriceHistoryEntity);
-                    _unitOfWork.ProductsRepository.Update(product.ProductEntity);
+                    _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
+                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
                     _unitOfWork.Commit();
                     TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                     return RedirectToAction("Index");

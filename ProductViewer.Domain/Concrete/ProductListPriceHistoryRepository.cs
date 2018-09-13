@@ -56,7 +56,7 @@ namespace ProductViewer.Domain.Concrete
             DataRow dataRow = null;
             foreach (DataRow dr in _context.GetProductListPriceHistories().Rows) // search whole table
             {
-                if ((int)dr["ProductID"] == item.ProductID && (DateTime)dr["StartDate"] == item.StartDate)
+                if (((int)dr["ProductID"] == item.ProductID) && ((DateTime)dr["StartDate"] == item.StartDate))
                 {
                     dataRow = dr;
                     break;

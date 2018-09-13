@@ -62,7 +62,7 @@ namespace ProductViewer.Domain.Concrete
             DataRow dataRow = null;
             foreach (DataRow dr in _context.GetProductInventories().Rows) // search whole table
             {
-                if ((int)dr["ProductID"] == item.ProductID && (int)dr["LocationID"] == item.LocationID)
+                if ((int)dr["ProductID"] == item.ProductID && (Int16)dr["LocationID"] == item.LocationID)
                 {
                     dataRow = dr;
                     break;

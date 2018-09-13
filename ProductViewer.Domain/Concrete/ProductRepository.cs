@@ -91,7 +91,7 @@ namespace ProductViewer.Domain.Concrete
                 dataRow["ReorderPoint"] = item.ReorderPoint;
                 dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
                 dataRow["SellStartDate"] = item.SellStartDate.ToString("yyyy-MM-dd HH:mm:ss.fff"); ;
-                dataRow["StandartCost"] = item.StandardCost;
+                dataRow["StandardCost"] = item.StandardCost;
                 dataRow["ProductModelID"] = item.ProductModelID;
                 _context.CommitChanges();
             }

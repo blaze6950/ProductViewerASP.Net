@@ -17,6 +17,23 @@ namespace ProductViewer.WebUI.Models
             ProductModelProductDescriptionCultureEntity = new ProductModelProductDescriptionCulture();
             ProductModelEntity = new ProductModel();
 
+            AddReferencesBetweenFiledsOfEntities();
+        }
+
+        public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
+        {
+            ProductEntity = productEntity;
+            ProductDescriptionEntity = productDescriptionEntity;
+            ProductInventoryEntity = productInventoryEntity;
+            ProductListPriceHistoryEntity = productListPriceHistoryEntity;
+            ProductModelProductDescriptionCultureEntity = productModelProductDescriptionCultureEntity;
+            ProductModelEntity = productModelEntity;
+
+            AddReferencesBetweenFiledsOfEntities();
+        }
+
+        private void AddReferencesBetweenFiledsOfEntities()
+        {
             ProductModelEntity.ProductModelIDUpdated += newId =>
             {
                 ProductEntity.ProductModelID = newId;
@@ -31,17 +48,10 @@ namespace ProductViewer.WebUI.Models
             {
                 ProductModelProductDescriptionCultureEntity.ProductDescriptionID = newId;
             };
-        }
 
-        public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
-        {
-            ProductEntity = productEntity;
-            ProductDescriptionEntity = productDescriptionEntity;
-            ProductInventoryEntity = productInventoryEntity;
-            ProductListPriceHistoryEntity = productListPriceHistoryEntity;
-            ProductModelProductDescriptionCultureEntity = productModelProductDescriptionCultureEntity;
-            ProductModelEntity = productModelEntity;
-            
+            ProductModelEntity.ProductModelID = ProductModelEntity.ProductModelID;
+            ProductEntity.ProductId = ProductEntity.ProductId;
+            ProductDescriptionEntity.ProductDescriptionID = ProductDescriptionEntity.ProductDescriptionID;
         }
 
         #region HiddenFields

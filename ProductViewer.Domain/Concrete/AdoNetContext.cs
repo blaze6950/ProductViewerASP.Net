@@ -404,7 +404,7 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "DELETE FROM Production.ProductInventory " +
-                                  "WHERE ProductID = @ProductID AND LocationID = '1'";
+                                  "WHERE ProductID = @ProductID AND LocationID = 1";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
             newParameter.DbType = DbType.Int32;
@@ -415,8 +415,8 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "UPDATE Production.ProductInventory " +
-                                  "SET ProductID = @ProductID, LocationID = 'en', Shelf = @Shelf, Bin = @Bin, Quantity = @Quantity" +
-                                  "WHERE ProductID = @ProductID AND LocationID = '1'";
+                                  "SET ProductID = @ProductID, LocationID = 1, Shelf = @Shelf, Bin = @Bin, Quantity = @Quantity " +
+                                  "WHERE ProductID = @ProductID AND LocationID = 1";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
             newParameter.DbType = DbType.Int32;
@@ -425,7 +425,7 @@ namespace ProductViewer.Domain.Concrete
             //
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Shelf";
-            newParameter.DbType = DbType.StringFixedLength;
+            newParameter.DbType = DbType.String;
             newParameter.Size = 10;
             newParameter.SourceColumn = "Shelf";
             command.Parameters.Add(newParameter);
@@ -489,7 +489,7 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "UPDATE Production.ProductListPriceHistory " +
-                                  "SET ProductID = @ProductID, EndDate = 'NULL', StartDate = @StartDate, ListPrice = @ListPrice" +
+                                  "SET ProductID = @ProductID, StartDate = @StartDate, ListPrice = @ListPrice " +
                                   "WHERE ProductID = @ProductID AND StartDate = @StartDate";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
@@ -548,7 +548,7 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "UPDATE Production.ProductModel " +
-                                  "SET Name = @Name" +
+                                  "SET Name = @Name " +
                                   "WHERE ProductModelID = @ProductModelID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";
@@ -569,7 +569,7 @@ namespace ProductViewer.Domain.Concrete
             // _productModelProductDescriptionCulturesAdapter INSERT Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.ProductModelProductDescriptionCulture (ProductModelID, ProductDescriptionID, CultureID)" +
+            command.CommandText = "INSERT INTO Production.ProductModelProductDescriptionCulture (ProductModelID, ProductDescriptionID, CultureID) " +
                                   "VALUES (@ProductModelID, @ProductDescriptionID, 'en')";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";
