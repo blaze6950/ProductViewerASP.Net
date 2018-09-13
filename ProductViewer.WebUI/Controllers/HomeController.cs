@@ -128,7 +128,7 @@ namespace ProductViewer.WebUI.Controllers
                 catch (Exception e)
                 {
                     TempData["error"] = string.Format("Something went wrong... {0} has not been saved! Error mesaage: {1}", product.ProductEntity.Name, e.Message);
-                    return RedirectToAction("AddOrEditProduct", product);
+                    return View(product);
                 }
             }
             else

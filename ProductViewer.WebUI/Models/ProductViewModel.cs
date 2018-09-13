@@ -77,28 +77,25 @@ namespace ProductViewer.WebUI.Models
         }
 
         #region FiledsForAddOrEditingView
-        [Display(Name = "Name")]
         [Required(ErrorMessage = "Please enter name of product")]
         public string ProductEntityName
         {
             get => ProductEntity.Name;
             set
             {
-                ProductEntity.Name = value;
-                ProductModelEntity.Name = value;
+                ProductEntity.Name = value?.TrimEnd(' ').TrimStart(' ');
+                ProductModelEntity.Name = ProductEntity.Name;
             }
         }
 
-        [Display(Name = "Number")]
         [Required(ErrorMessage = "Please enter unique number of product")]
         [RegularExpression("[A-Z]{2}-([A-Z]\\d{3})|[A-Z]{2}-(\\d{4})", ErrorMessage = "Please enter a valid unique number of product")]
         public string ProductEntityNumber
         {
             get => ProductEntity.ProductNumber;
-            set => ProductEntity.ProductNumber = value;
+            set => ProductEntity.ProductNumber = value?.TrimEnd(' ').TrimStart(' ');
         }
 
-        [Display(Name = "Safety stock level")]
         [Required(ErrorMessage = "Please enter safety stock level")]
         public Int16 ProductEntitySafetyStockLevel
         {
@@ -106,7 +103,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductEntity.SafetyStockLevel = value;
         }
 
-        [Display(Name = "Reorder point")]
         [Required(ErrorMessage = "Please enter reorder point")]
         public Int16 ProductEntityReorderPoint
         {
@@ -114,23 +110,22 @@ namespace ProductViewer.WebUI.Models
             set => ProductEntity.ReorderPoint = value;
         }
 
-        [Display(Name = "Standard cost")]
         [Required(ErrorMessage = "Please enter standard cost")]
+        [DataType(DataType.Currency)]
         public decimal ProductEntityStandardCost
         {
             get => ProductEntity.StandardCost;
             set => ProductEntity.StandardCost = value;
         }
 
-        [Display(Name = "List price")]
         [Required(ErrorMessage = "Please enter list price")]
+        [DataType(DataType.Currency)]
         public decimal ProductEntityListPrice
         {
             get => ProductEntity.ListPrice;
             set => ProductEntity.ListPrice = value;
         }
 
-        [Display(Name = "Days to manufacture")]
         [Required(ErrorMessage = "Please enter days to manufacture")]
         public int ProductEntityDaysToManufacture
         {
@@ -138,7 +133,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductEntity.DaysToManufacture = value;
         }
 
-        [Display(Name = "Sell start date")]
         [Required(ErrorMessage = "Please enter sell start date")]
         [DataType(DataType.Date), DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProductEntitySellStartDate
@@ -147,15 +141,14 @@ namespace ProductViewer.WebUI.Models
             set => ProductEntity.SellStartDate = value;
         }
 
-        [Display(Name = "Description")]
+        [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Please enter description")]
         public string ProductDescriptionEntityDescription
         {
             get => ProductDescriptionEntity.Description;
-            set => ProductDescriptionEntity.Description = value;
+            set => ProductDescriptionEntity.Description = value?.TrimEnd(' ').TrimStart(' ');
         }
 
-        [Display(Name = "Shelf")]
         [Required(ErrorMessage = "Please enter shelf")]
         public string ProductInventoryEntityShelf
         {
@@ -163,7 +156,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductInventoryEntity.Shelf = value;
         }
 
-        [Display(Name = "Bin")]
         [Required(ErrorMessage = "Please enter bin")]
         [RegularExpression("(100|\\d{2})", ErrorMessage = "Please enter a valid bin of product (0-100)")]
     public byte ProductInventoryEntityBin
@@ -172,7 +164,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductInventoryEntity.Bin = value;
         }
 
-        [Display(Name = "Quantity")]
         [Required(ErrorMessage = "Please enter quantity")]
         public Int16 ProductInventoryEntityQuantity
         {
@@ -180,7 +171,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductInventoryEntity.Quantity = value;
         }
 
-        [Display(Name = "Start date")]
         [Required(ErrorMessage = "Please enter start date")]
         [DataType(DataType.Date), DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProductListPriceHistoryEntityStartDate
@@ -189,8 +179,8 @@ namespace ProductViewer.WebUI.Models
             set => ProductListPriceHistoryEntity.StartDate = value;
         }
 
-        [Display(Name = "List price history")]
         [Required(ErrorMessage = "Please enter list price history")]
+        [DataType(DataType.Currency)]
         public decimal ProductListPriceHistoryEntityListPrice
         {
             get => ProductListPriceHistoryEntity.ListPrice;
