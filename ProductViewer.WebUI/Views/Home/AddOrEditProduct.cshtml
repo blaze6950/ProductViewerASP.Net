@@ -3,7 +3,10 @@
 <div class="card-panel grey lighten-5">
     <h1 class="h1 align-content-center">Enter information:</h1>
     @if (TempData["error"] != null) {
-        <div class="alert alert-success card-panel">@TempData["error"]</div>
+        <div class="alert alert-success card-panel red lighten-5">
+            <h3 class="h3 materialize-red-text">Something went wrong...</h3>
+            @TempData["error"]
+        </div>
     }
     @using (Html.BeginForm())
     {
