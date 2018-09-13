@@ -14,6 +14,23 @@ namespace ProductViewer.WebUI.Models
             ProductDescriptionEntity = new ProductDescription();
             ProductInventoryEntity = new ProductInventory();
             ProductListPriceHistoryEntity = new ProductListPriceHistory();
+            ProductModelProductDescriptionCultureEntity = new ProductModelProductDescriptionCulture();
+            ProductModelEntity = new ProductModel();
+
+            ProductModelEntity.ProductModelIDUpdated += newId =>
+            {
+                ProductEntity.ProductModelID = newId;
+                ProductModelProductDescriptionCultureEntity.ProductModelID = newId;
+            };
+            ProductEntity.ProductIDUpdated += newId =>
+            {
+                ProductListPriceHistoryEntity.ProductID = newId;
+                ProductInventoryEntity.ProductID = newId;
+            };
+            ProductDescriptionEntity.ProductDescriptionIDUpdated += newId =>
+            {
+                ProductModelProductDescriptionCultureEntity.ProductDescriptionID = newId;
+            };
         }
 
         public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
@@ -24,15 +41,8 @@ namespace ProductViewer.WebUI.Models
             ProductListPriceHistoryEntity = productListPriceHistoryEntity;
             ProductModelProductDescriptionCultureEntity = productModelProductDescriptionCultureEntity;
             ProductModelEntity = productModelEntity;
+            
         }
-
-        //public ProductViewModel(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity)
-        //{
-        //    ProductEntity = productEntity;
-        //    ProductDescriptionEntity = productDescriptionEntity;
-        //    ProductInventoryEntity = productInventoryEntity;
-        //    ProductListPriceHistoryEntity = productListPriceHistoryEntity;
-        //}
 
         #region HiddenFields
         [HiddenInput(DisplayValue = false)]
@@ -62,12 +72,16 @@ namespace ProductViewer.WebUI.Models
         public string ProductEntityName
         {
             get => ProductEntity.Name;
-            set => ProductEntity.Name = value;
+            set
+            {
+                ProductEntity.Name = value;
+                ProductModelEntity.Name = value;
+            }
         }
 
         [Display(Name = "Number")]
         [Required(ErrorMessage = "Please enter unique number of product")]
-        [RegularExpression("[0-9]", ErrorMessage = "Please enter a valid unique number of product")]
+        [RegularExpression("[A-Z]{2}-([A-Z]\\d{3})|[A-Z]{2}-(\\d{4})", ErrorMessage = "Please enter a valid unique number of product")]
         public string ProductEntityNumber
         {
             get => ProductEntity.ProductNumber;
@@ -141,7 +155,8 @@ namespace ProductViewer.WebUI.Models
 
         [Display(Name = "Bin")]
         [Required(ErrorMessage = "Please enter bin")]
-        public byte ProductInventoryEntityBin
+        [RegularExpression("(100|\\d{2})", ErrorMessage = "Please enter a valid bin of product (0-100)")]
+    public byte ProductInventoryEntityBin
         {
             get => ProductInventoryEntity.Bin;
             set => ProductInventoryEntity.Bin = value;
@@ -172,7 +187,6 @@ namespace ProductViewer.WebUI.Models
             set => ProductListPriceHistoryEntity.ListPrice = value;
         }
         #endregion
-
 
         public override string ToString()
         {

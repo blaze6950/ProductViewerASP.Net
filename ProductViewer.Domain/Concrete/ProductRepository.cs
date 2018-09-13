@@ -40,8 +40,8 @@ namespace ProductViewer.Domain.Concrete
             var products = _context.GetProducts().Select();
             var product = (products.Where(p => ((int) p["ProductID"]) == id)).Select(p => new Product()
             {
-                DaysToManufacture = (int)p["DaysToManufacture"],
                 ProductId = (int)p["ProductID"],
+                DaysToManufacture = (int)p["DaysToManufacture"],
                 ListPrice = (decimal)p["ListPrice"],
                 Name = (string)p["Name"],
                 ProductNumber = (string)p["ProductNumber"],
@@ -57,17 +57,18 @@ namespace ProductViewer.Domain.Concrete
         public void Create(Product item)
         {
             var newRow = _context.GetProducts().NewRow();
-            newRow["ProductID"] = item.ProductId;
             newRow["DaysToManufacture"] = item.DaysToManufacture;
             newRow["ListPrice"] = item.ListPrice;
             newRow["Name"] = item.Name;
             newRow["ProductNumber"] = item.ProductNumber;
             newRow["ReorderPoint"] = item.ReorderPoint;
             newRow["SafetyStockLevel"] = item.SafetyStockLevel;
-            newRow["SellStartDate"] = item.SellStartDate;
+            newRow["SellStartDate"] = item.SellStartDate.ToString("yyyy-MM-dd HH:mm:ss.fff"); ;
             newRow["StandardCost"] = item.StandardCost;
             newRow["ProductModelID"] = item.ProductModelID;
             _context.GetProducts().Rows.Add(newRow);
+            _context.CommitChanges();
+            item.ProductId = (int)newRow["ProductID"];
         }
 
         public void Update(Product item)
@@ -83,16 +84,16 @@ namespace ProductViewer.Domain.Concrete
             }
             if (dataRow != null)
             {
-                dataRow["ProductID"] = item.ProductId;
                 dataRow["DaysToManufacture"] = item.DaysToManufacture;
                 dataRow["ListPrice"] = item.ListPrice;
                 dataRow["Name"] = item.Name;
                 dataRow["ProductNumber"] = item.ProductNumber;
                 dataRow["ReorderPoint"] = item.ReorderPoint;
                 dataRow["SafetyStockLevel"] = item.SafetyStockLevel;
-                dataRow["SellStartDate"] = item.SellStartDate;
+                dataRow["SellStartDate"] = item.SellStartDate.ToString("yyyy-MM-dd HH:mm:ss.fff"); ;
                 dataRow["StandartCost"] = item.StandardCost;
                 dataRow["ProductModelID"] = item.ProductModelID;
+                _context.CommitChanges();
             }
         }
 
@@ -106,6 +107,7 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
+            _context.CommitChanges();
         }
     }
 }

@@ -46,8 +46,9 @@ namespace ProductViewer.Domain.Concrete
             var newRow = _context.GetProductListPriceHistories().NewRow();
             newRow["ProductID"] = item.ProductID;
             newRow["ListPrice"] = item.ListPrice;
-            newRow["StartDate"] = item.StartDate;
+            newRow["StartDate"] = item.StartDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             _context.GetProductListPriceHistories().Rows.Add(newRow);
+            _context.CommitChanges();
         }
 
         public void Update(ProductListPriceHistory item)
@@ -65,7 +66,8 @@ namespace ProductViewer.Domain.Concrete
             {
                 dataRow["ProductID"] = item.ProductID;
                 dataRow["ListPrice"] = item.ListPrice;
-                dataRow["StartDate"] = item.StartDate;
+                dataRow["StartDate"] = item.StartDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                _context.CommitChanges();
             }
         }
 
@@ -79,6 +81,7 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
+            _context.CommitChanges();
         }
     }
 }

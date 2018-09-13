@@ -55,21 +55,21 @@ namespace ProductViewer.WebUI.Controllers
                 select new ProductViewModel(p, pd, pi, plph, pmpdc, pm));
         }
 
-        public void RemoveItem(int id)
+        public RedirectToRouteResult RemoveItem(int id)
         {
             if (_list == null)
             {
                 InitialList();
             }
             var product = _list.First(p => p.ProductEntityId == id);
-            _unitOfWork.ProductDescriptionsRepository.Delete(product.ProductDescriptionEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(product.ProductModelProductDescriptionCultureEntity.ProductModelID, product.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelsRepository.Delete(product.ProductModelEntity.ProductModelID);
             _unitOfWork.ProductInventoriesRepository.Delete(product.ProductInventoryEntity.LocationID, product.ProductInventoryEntity.ProductID);
             _unitOfWork.ProductListPriceHistoriesRepository.Delete(product.ProductListPriceHistoryEntity.ProductID, product.ProductListPriceHistoryEntity.StartDate);
             _unitOfWork.ProductsRepository.Delete(product.ProductEntityId);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(product.ProductModelProductDescriptionCultureEntity.ProductModelID, product.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
+            _unitOfWork.ProductModelsRepository.Delete(product.ProductModelEntity.ProductModelID);
+            _unitOfWork.ProductDescriptionsRepository.Delete(product.ProductDescriptionEntity.ProductDescriptionID);
             _unitOfWork.Commit();
-            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -111,12 +111,12 @@ namespace ProductViewer.WebUI.Controllers
                 }
                 else
                 {
-                    _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
-                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
                     _unitOfWork.ProductModelsRepository.Create(product.ProductModelEntity);
+                    _unitOfWork.ProductsRepository.Create(product.ProductEntity);
                     _unitOfWork.ProductInventoriesRepository.Create(product.ProductInventoryEntity);
                     _unitOfWork.ProductListPriceHistoriesRepository.Create(product.ProductListPriceHistoryEntity);
-                    _unitOfWork.ProductsRepository.Create(product.ProductEntity);
+                    _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
+                    _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
                     _unitOfWork.Commit();
                     TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                     return RedirectToAction("Index");

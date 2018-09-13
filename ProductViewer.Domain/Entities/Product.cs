@@ -9,7 +9,19 @@ namespace ProductViewer.Domain.Entities
 {
     public class Product // Products sold or used in the manfacturing of sold products.
     {
-        public int ProductId { get; set; } // Primary key for Product records.
+        private int _productId;
+        public event Action<int> ProductIDUpdated;
+
+        public int ProductId
+        {
+            get { return _productId; }
+            set
+            {
+                _productId = value;
+                ProductIDUpdated?.Invoke(_productId);
+            }
+        } // Primary key for Product records.
+
         public string Name { get; set; } // Name of the product.
         public string ProductNumber { get; set; } // Unique product identification number.
         public Int16 SafetyStockLevel { get; set; } // Minimum inventory quantity.

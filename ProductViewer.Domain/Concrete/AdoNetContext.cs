@@ -54,7 +54,7 @@ namespace ProductViewer.Domain.Concrete
             _productsAdapter = _factory.CreateDataAdapter();
             DbCommand command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "SELECT * FROM Production.Product";
+            command.CommandText = "SELECT * FROM Production.Product WHERE ViewStatus = 1";
             _productsAdapter.SelectCommand = command;
             _productsAdapter.Fill(_productsDataSet, "Product");
 
@@ -86,7 +86,7 @@ namespace ProductViewer.Domain.Concrete
             _productModelsAdapter = _factory.CreateDataAdapter();
             DbCommand command4 = _factory.CreateCommand();
             command4.Connection = _connection;
-            command4.CommandText = "SELECT * FROM Production.ProductModel";
+            command4.CommandText = "SELECT * FROM Production.ProductModel WHERE ViewStatus = 1";
             _productModelsAdapter.SelectCommand = command4;
             _productModelsAdapter.Fill(_productModelsDataSet, "ProductModel");
 
@@ -133,31 +133,38 @@ namespace ProductViewer.Domain.Concrete
 
         public void CommitChanges()
         {
-            InitialCommands();
+            if (_productModelProductDescriptionCulturesAdapter.UpdateCommand == null)
+            {
+                InitialCommands();
+            }
+
             _productModelProductDescriptionCulturesAdapter.Update(_productModelProductDescriptionCultureDataSet, "ProductModelProductDescriptionCulture");
             _productDescriptionsAdapter.Update(_producrDescriptionsDataSet, "ProductDescription");
             _productInventoriesAdapter.Update(_productInventoriesDataSet, "ProductInventory");
             _productListPriceHistoriesAdapter.Update(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
             _productsAdapter.Update(_productsDataSet, "Product");
             _productModelsAdapter.Update(_productModelsDataSet, "ProductModel");
+
+            GetProductModelProductDescriptionCulture().AcceptChanges();
+            GetProductDescriptions().AcceptChanges();
+            GetProductInventories().AcceptChanges();
+            GetProductListPriceHistories().AcceptChanges();
+            GetProducts().AcceptChanges();
+            GetProductModels().AcceptChanges();
         }
 
         private void InitialCommands()
         {
             DbCommand command;
+            DbParameter newParameter;
 
             #region _productsAdapter Commands
             // _productsAdapter INSERT command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.Product " +
-                                  "(Name, ProductNumber, SafetyStockLevel, " +
-                                  "ReorderPoint, StandardCost, ListPrice, " +
-                                  "DaysToManufacture, SellStartDate, ProductModelID) " +
-                                  "VALUES (@Name, @ProductNumber, @SafetyStockLevel, " +
-                                  "@ReorderPoint, @StandardCost, @ListPrice, " +
-                                  "@DaysToManufacture, @SellStartDate, @ProductModelID)";
-            DbParameter newParameter = _factory.CreateParameter();
+            command.CommandText = "dbo.InsertProduct";
+            command.CommandType = CommandType.StoredProcedure;
+            newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
             newParameter.DbType = DbType.StringFixedLength;
             newParameter.Size = 50;
@@ -213,11 +220,21 @@ namespace ProductViewer.Domain.Concrete
             newParameter.SourceColumn = "ProductModelID";
             newParameter.IsNullable = true;
             command.Parameters.Add(newParameter);
+            //
+            newParameter = _factory.CreateParameter();
+            newParameter.ParameterName = "@Id";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductID";
+            newParameter.Direction = ParameterDirection.Output;
+            command.Parameters.Add(newParameter);
             _productsAdapter.InsertCommand = command;
+            _productsAdapter.InsertCommand.UpdatedRowSource = UpdateRowSource.Both;
             // _productsAdapter DELETE command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "DELETE FROM Production.Product WHERE ProductID = @ProductID";
+            command.CommandText = "UPDATE Production.Product " +
+                                  "SET ViewStatus = 0 " +
+                                  "WHERE ProductID = @ProductID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
             newParameter.DbType = DbType.Int32;
@@ -297,19 +314,27 @@ namespace ProductViewer.Domain.Concrete
             newParameter.IsNullable = true;
             command.Parameters.Add(newParameter);
             _productsAdapter.UpdateCommand = command;
+            _productsAdapter.UpdateCommand.UpdatedRowSource = UpdateRowSource.Both;
             #endregion
 
             #region _productDescriptionsAdapter Commands
             // _productDescriptionsAdapter INSERT Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.ProductDescription (Description) " +
-                                  "VALUES (@Description)";
+            command.CommandText = "dbo.InsertProductDescription";
+            command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Description";
             newParameter.DbType = DbType.StringFixedLength;
             newParameter.Size = 400;
             newParameter.SourceColumn = "Description";
+            command.Parameters.Add(newParameter);
+            //
+            newParameter = _factory.CreateParameter();
+            newParameter.ParameterName = "@Id";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductDescriptionID";
+            newParameter.Direction = ParameterDirection.Output;
             command.Parameters.Add(newParameter);
             _productDescriptionsAdapter.InsertCommand = command;
             // _productDescriptionsAdapter DELETE Command
@@ -348,8 +373,8 @@ namespace ProductViewer.Domain.Concrete
             // _productInventoriesAdapter INSERT Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.ProductInventory (ProductID, LocationID, Shelf, Bin, Quantity)" +
-                                  "VALUES (@ProductID, '1', @Shelf, @Bin, @Quantity)";
+            command.CommandText = "dbo.InsertProductInventory";
+            command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
             newParameter.DbType = DbType.Int32;
@@ -358,7 +383,7 @@ namespace ProductViewer.Domain.Concrete
             //
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Shelf";
-            newParameter.DbType = DbType.StringFixedLength;
+            newParameter.DbType = DbType.String;
             newParameter.Size = 10;
             newParameter.SourceColumn = "Shelf";
             command.Parameters.Add(newParameter);
@@ -424,7 +449,7 @@ namespace ProductViewer.Domain.Concrete
             command = _factory.CreateCommand();
             command.Connection = _connection;
             command.CommandText = "INSERT INTO Production.ProductListPriceHistory (ProductID, EndDate, StartDate, ListPrice)" +
-                                  "VALUES (@ProductID, 'NULL', @StartDate, @ListPrice)";
+                                  "VALUES (@ProductID, NULL, @StartDate, @ListPrice)";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
             newParameter.DbType = DbType.Int32;
@@ -490,19 +515,28 @@ namespace ProductViewer.Domain.Concrete
             // _productModelsAdapter INSERT Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "INSERT INTO Production.ProductModel (Name)" +
-                                  "VALUES (@Name)";
+            command.CommandText = "dbo.InsertProductModel";
+            command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
             newParameter.DbType = DbType.StringFixedLength;
             newParameter.Size = 50;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
+            //
+            newParameter = _factory.CreateParameter();
+            newParameter.ParameterName = "@Id";
+            newParameter.DbType = DbType.Int32;
+            newParameter.SourceColumn = "ProductModelID";
+            newParameter.Direction = ParameterDirection.Output;
+            command.Parameters.Add(newParameter);
             _productModelsAdapter.InsertCommand = command;
+            //_productModelsAdapter.InsertCommand.UpdatedRowSource = UpdateRowSource.Both;
             // _productModelsAdapter DELETE Command
             command = _factory.CreateCommand();
             command.Connection = _connection;
-            command.CommandText = "DELETE FROM Production.ProductModel " +
+            command.CommandText = "UPDATE Production.ProductModel " +
+                                  "SET ViewStatus = 0 " +
                                   "WHERE ProductModelID = @ProductModelID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";

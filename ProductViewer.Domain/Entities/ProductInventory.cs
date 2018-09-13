@@ -5,6 +5,11 @@ namespace ProductViewer.Domain.Entities
 {
     public class ProductInventory // Product inventory information
     {
+        public ProductInventory()
+        {
+            LocationID = 1;
+        }
+
         public int ProductID { get; set; } // Product identification number. Foreign key to Product.ProductID
         public Int16 LocationID { get; set; } // Inventory location identification number. Foreign key to Location.LocationID
         public string Shelf { get; set; } // Storage compartment within an inventory location.

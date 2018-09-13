@@ -1,10 +1,23 @@
-﻿using ProductViewer.Domain.Abstract;
+﻿using System;
+using ProductViewer.Domain.Abstract;
 
 namespace ProductViewer.Domain.Entities
 {
     public class ProductDescription // Product descriptions in several languages.
     {
-        public int ProductDescriptionID { get; set; } // Primary key for ProductDescription records.
+        private int _productDescriptionId;
+        public event Action<int> ProductDescriptionIDUpdated;
+
+        public int ProductDescriptionID
+        {
+            get { return _productDescriptionId; }
+            set
+            {
+                _productDescriptionId = value;
+                ProductDescriptionIDUpdated?.Invoke(_productDescriptionId);
+            }
+        } // Primary key for ProductDescription records.
+
         public string Description { get; set; } // Description of the product
     }
 }

@@ -31,7 +31,7 @@ namespace ProductViewer.Domain.Concrete
             int productDescriptionId)
         {
             var productModelsProductDescriptionCultures = _context.GetProductModelProductDescriptionCulture().Select();
-            var productModelProductDescriptionCulture = (productModelsProductDescriptionCultures.Where(pmpdc => ((int)pmpdc["ProductModelID"]) == productModelId && ((int)pmpdc["ProductDescriptionID"]) == productDescriptionId)).Select(pmpdc => new ProductModelProductDescriptionCulture()
+            var productModelProductDescriptionCulture = (productModelsProductDescriptionCultures.Where(pmpdc => ((int)pmpdc["ProductModelID"]) == productModelId)).Select(pmpdc => new ProductModelProductDescriptionCulture()
             {
                 ProductDescriptionID = (int)pmpdc["ProductDescriptionID"],
                 ProductModelID = (int)pmpdc["ProductModelID"]
@@ -44,7 +44,9 @@ namespace ProductViewer.Domain.Concrete
             var newRow = _context.GetProductModelProductDescriptionCulture().NewRow();
             newRow["ProductModelID"] = item.ProductModelID;
             newRow["ProductDescriptionID"] = item.ProductDescriptionID;
+            newRow["CultureID"] = item.CultureID;
             _context.GetProductModelProductDescriptionCulture().Rows.Add(newRow);
+            _context.CommitChanges();
         }
 
         public void Update(Entities.ProductModelProductDescriptionCulture item)
@@ -62,6 +64,7 @@ namespace ProductViewer.Domain.Concrete
             {
                 dataRow["ProductModelID"] = item.ProductModelID;
                 dataRow["ProductDescriptionID"] = item.ProductDescriptionID;
+                _context.CommitChanges();
             }
         }
 
@@ -75,6 +78,7 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
+            _context.CommitChanges();
         }
     }
 }

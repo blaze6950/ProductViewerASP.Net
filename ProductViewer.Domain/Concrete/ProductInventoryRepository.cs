@@ -54,6 +54,7 @@ namespace ProductViewer.Domain.Concrete
             newRow["Quantity"] = item.Quantity;
             newRow["Shelf"] = item.Shelf;
             _context.GetProductInventories().Rows.Add(newRow);
+            _context.CommitChanges();
         }
 
         public void Update(ProductInventory item)
@@ -74,6 +75,7 @@ namespace ProductViewer.Domain.Concrete
                 dataRow["ProductID"] = item.ProductID;
                 dataRow["Quantity"] = item.Quantity;
                 dataRow["Shelf"] = item.Shelf;
+                _context.CommitChanges();
             }
         }
 
@@ -87,6 +89,7 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
+            _context.CommitChanges();
         }
     }
 }

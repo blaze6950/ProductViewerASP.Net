@@ -41,9 +41,10 @@ namespace ProductViewer.Domain.Concrete
         public void Create(ProductDescription item)
         {
             var newRow = _context.GetProductDescriptions().NewRow();
-            newRow["ProductDescriptionID"] = item.ProductDescriptionID;
             newRow["Description"] = item.Description;
             _context.GetProductDescriptions().Rows.Add(newRow);
+            _context.CommitChanges();
+            item.ProductDescriptionID = (int)newRow["ProductDescriptionID"];
         }
 
         public void Update(ProductDescription item)
@@ -61,6 +62,7 @@ namespace ProductViewer.Domain.Concrete
             {
                 dataRow["ProductDescriptionID"] = item.ProductDescriptionID;
                 dataRow["Description"] = item.Description;
+                _context.CommitChanges();
             }
         }
 
@@ -74,6 +76,7 @@ namespace ProductViewer.Domain.Concrete
                     break;
                 }
             }
+            _context.CommitChanges();
         }
     }
 }
