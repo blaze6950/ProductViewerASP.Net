@@ -9,14 +9,18 @@
     <h1 class="h1">Products:</h1>
 </div>
 <div class="card-body">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    { 
     <div class="card-panel teal lighten-5">
         <div class="input-field col s12">
             <i class="material-icons prefix">search</i>
-            <input id="search" type="text" class="validate">
+            <input value="@Model.SearchValue" name="searchValue" id="search" type="text" class="validate" />
+            @Html.HiddenFor(x=>x.PagingInfo.CurrentPage)
             <label for="search">Search:</label>
         </div>
     </div>
-    <a class="waves-effect waves-light btn-large" href="@Url.Action("AddOrEditProduct", new { isEditing = false})" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    }
+    <a class="waves-effect waves-light btn-large" href="@Url.Action("AddOrEditProduct", new { isEditing = false })" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
     <div class="card-panel grey lighten-5">
         <table class="highlight">
             <thead>
@@ -39,10 +43,10 @@
                         <td>@p.ProductListPriceHistoryEntityListPrice</td>
                         <td>@p.ProductInventoryEntityQuantity</td>
                         <td>
-                            <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                            <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId })" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                         </td>
                         <td>
-                            <a type="submit" href="@Url.Action("RemoveItem", "Home", new{id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                            <a type="submit" href="@Url.Action("RemoveItem", "Home", new { id = p.ProductEntityId })" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light red"><i class="material-icons">delete</i></a>
                         </td>
                     </tr>
                 }
@@ -50,8 +54,7 @@
 
         </table>
         <div>
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue}))
         </div>
     </div>
 </div>
-

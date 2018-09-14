@@ -23,25 +23,48 @@ namespace ProductViewer.WebUI.Controllers
         }
 
         [HttpGet]
-        public ViewResult Index(int page = 1)
+        public ViewResult Index(string searchValue, int page = 1)
         {
             if (_list == null)
             {
                 InitialList();
             }
-            ProductListViewModel model = new ProductListViewModel()
+            ProductListViewModel model = null;
+            if (string.IsNullOrEmpty(searchValue) || string.IsNullOrWhiteSpace(searchValue))
             {
-                Products = _list
-                .OrderBy(p => p.ProductEntityName)
-                .Skip((page - 1) * _pageSize)
-                .Take(_pageSize),
-                PagingInfo = new PagingInfo()
+                model = new ProductListViewModel()
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = _pageSize,
-                    TotalItems = _list.Count()
-                }
-            };
+                    Products = _list
+                        .OrderBy(p => p.ProductEntityName)
+                        .Skip((page - 1) * _pageSize)
+                        .Take(_pageSize),
+                    PagingInfo = new PagingInfo()
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = _pageSize,
+                        TotalItems = _list.Count()
+                    }
+                };
+            }
+            else
+            {
+                var buffer = _list
+                    .Where(p => p.ProductEntityName.ToLower().Contains(searchValue.ToLower()))
+                    .OrderBy(p => p.ProductEntityName);
+                model = new ProductListViewModel()
+                {
+                    Products = buffer
+                        .Skip((page - 1) * _pageSize)
+                        .Take(_pageSize),
+                    PagingInfo = new PagingInfo()
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = _pageSize,
+                        TotalItems = buffer.Count()
+                    },
+                    SearchValue = searchValue
+                };
+            }
             return View(model);
         }
 
