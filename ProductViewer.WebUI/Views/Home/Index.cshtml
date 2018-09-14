@@ -34,10 +34,10 @@
                 @foreach (var p in @Model.Products)
                 {
                     <tr>
-                        <td>@p.ProductEntity.Name</td>
-                        <td>@p.ProductDescriptionEntity.Description</td>
-                        <td>@p.ProductListPriceHistoryEntity.ListPrice</td>
-                        <td>@p.ProductInventoryEntity.Quantity</td>
+                        <td>@p.ProductEntityName</td>
+                        <td>@p.ProductDescriptionEntityDescription</td>
+                        <td>@p.ProductListPriceHistoryEntityListPrice</td>
+                        <td>@p.ProductInventoryEntityQuantity</td>
                         <td>
                             <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId})" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                         </td>

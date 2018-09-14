@@ -32,7 +32,7 @@ namespace ProductViewer.WebUI.Controllers
             ProductListViewModel model = new ProductListViewModel()
             {
                 Products = _list
-                .OrderBy(p => p.ProductEntity.Name)
+                .OrderBy(p => p.ProductEntityName)
                 .Skip((page - 1) * _pageSize)
                 .Take(_pageSize),
                 PagingInfo = new PagingInfo()
@@ -53,7 +53,7 @@ namespace ProductViewer.WebUI.Controllers
                 join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
                 join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
                 join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
-                select new ProductViewModel(p, pd, pi, plph, pmpdc, pm));
+                select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
         }
 
         public RedirectToRouteResult RemoveItem(int id)
@@ -63,12 +63,13 @@ namespace ProductViewer.WebUI.Controllers
                 InitialList();
             }
             var product = _list.First(p => p.ProductEntityId == id);
-            _unitOfWork.ProductInventoriesRepository.Delete(product.ProductInventoryEntity.LocationID, product.ProductInventoryEntity.ProductID);
-            _unitOfWork.ProductListPriceHistoriesRepository.Delete(product.ProductListPriceHistoryEntity.ProductID, product.ProductListPriceHistoryEntity.StartDate);
-            _unitOfWork.ProductsRepository.Delete(product.ProductEntityId);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(product.ProductModelProductDescriptionCultureEntity.ProductModelID, product.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelsRepository.Delete(product.ProductModelEntity.ProductModelID);
-            _unitOfWork.ProductDescriptionsRepository.Delete(product.ProductDescriptionEntity.ProductDescriptionID);
+            var builder = product.GetBuilder();
+            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
+            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
+            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductId);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
+            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
+            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
             _unitOfWork.Commit();
             return RedirectToAction("Index", "Home");
         }
@@ -98,34 +99,36 @@ namespace ProductViewer.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                ProductViewModelBuilder builder = null;
                 try
                 {
+                    builder = product.GetBuilder();
                     if (product.ProductEntityId != 0)
                     {
-                        _unitOfWork.ProductModelsRepository.Update(product.ProductModelEntity);
-                        _unitOfWork.ProductsRepository.Update(product.ProductEntity);
-                        _unitOfWork.ProductInventoriesRepository.Update(product.ProductInventoryEntity);
-                        _unitOfWork.ProductListPriceHistoriesRepository.Update(product.ProductListPriceHistoryEntity);
-                        _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
-                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
+                        _unitOfWork.ProductModelsRepository.Update(builder.ProductModelEntity);
+                        _unitOfWork.ProductsRepository.Update(builder.ProductEntity);
+                        _unitOfWork.ProductInventoriesRepository.Update(builder.ProductInventoryEntity);
+                        _unitOfWork.ProductListPriceHistoriesRepository.Update(builder.ProductListPriceHistoryEntity);
+                        _unitOfWork.ProductDescriptionsRepository.Update(builder.ProductDescriptionEntity);
+                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(builder.ProductModelProductDescriptionCultureEntity);
                         _unitOfWork.Commit();
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        _unitOfWork.ProductModelsRepository.Create(product.ProductModelEntity);
-                        _unitOfWork.ProductsRepository.Create(product.ProductEntity);
-                        _unitOfWork.ProductInventoriesRepository.Create(product.ProductInventoryEntity);
-                        _unitOfWork.ProductListPriceHistoriesRepository.Create(product.ProductListPriceHistoryEntity);
-                        _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
-                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
+                        _unitOfWork.ProductModelsRepository.Create(builder.ProductModelEntity);
+                        _unitOfWork.ProductsRepository.Create(builder.ProductEntity);
+                        _unitOfWork.ProductInventoriesRepository.Create(builder.ProductInventoryEntity);
+                        _unitOfWork.ProductListPriceHistoriesRepository.Create(builder.ProductListPriceHistoryEntity);
+                        _unitOfWork.ProductDescriptionsRepository.Create(builder.ProductDescriptionEntity);
+                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(builder.ProductModelProductDescriptionCultureEntity);
                         _unitOfWork.Commit();
                         return RedirectToAction("Index");
                     }
                 }
                 catch (Exception e)
                 {
-                    TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", product.ProductEntity.Name, e.Message);
+                    TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
                     return View(product);
                 }
             }

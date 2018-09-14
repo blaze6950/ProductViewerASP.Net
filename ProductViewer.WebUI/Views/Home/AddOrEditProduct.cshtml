@@ -16,8 +16,8 @@
             if (Model != null)
             {
                 @Html.HiddenFor(x => x.ProductEntityId);
-                @Html.HiddenFor(x => x.ProductModelEntity.ProductModelID);
-                @Html.HiddenFor(x => x.ProductDescriptionEntity.ProductDescriptionID);
+                @Html.HiddenFor(x => x.GetBuilder().ProductModelEntity.ProductModelID);
+                @Html.HiddenFor(x => x.GetBuilder().ProductDescriptionEntity.ProductDescriptionID);
             }
         }
         <div class="input-field col s12" style="margin-top: 2em">

@@ -19,6 +19,20 @@ namespace ProductViewer.WebUI.Models
             AddReferencesBetweenFiledsOfEntities();
         }
 
+        public ProductViewModelBuilder(ProductViewModel productViewModel)
+        {
+            ProductEntity = new Product();
+            ProductDescriptionEntity = new ProductDescription();
+            ProductInventoryEntity = new ProductInventory();
+            ProductListPriceHistoryEntity = new ProductListPriceHistory();
+            ProductModelProductDescriptionCultureEntity = new ProductModelProductDescriptionCulture();
+            ProductModelEntity = new ProductModel();
+
+            ProductViewModel = productViewModel;
+
+            AddReferencesBetweenFiledsOfEntities();
+        }
+
         public ProductViewModelBuilder(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
         {
             ProductEntity = productEntity;
@@ -43,11 +57,15 @@ namespace ProductViewer.WebUI.Models
                 ProductListPriceHistoryEntity.ProductID = newId;
                 ProductInventoryEntity.ProductID = newId;
             };
+            ProductEntity.ProductNameUpdated += newName =>
+            {
+                ProductModelEntity.Name = newName;
+            };
             ProductDescriptionEntity.ProductDescriptionIDUpdated += newId =>
             {
                 ProductModelProductDescriptionCultureEntity.ProductDescriptionID = newId;
             };
-
+            ProductEntity.Name = ProductEntity.Name;
             ProductModelEntity.ProductModelID = ProductModelEntity.ProductModelID;
             ProductEntity.ProductId = ProductEntity.ProductId;
             ProductDescriptionEntity.ProductDescriptionID = ProductDescriptionEntity.ProductDescriptionID;
@@ -98,7 +116,7 @@ namespace ProductViewer.WebUI.Models
 
         private ProductViewModel BuildProductViewModel()
         {
-            var newProductViewModel = new ProductViewModel()
+            var newProductViewModel = new ProductViewModel(this)
             {
                 ProductDescriptionEntityDescription = ProductDescriptionEntity.Description,
                 ProductEntityDaysToManufacture = ProductEntity.DaysToManufacture,
