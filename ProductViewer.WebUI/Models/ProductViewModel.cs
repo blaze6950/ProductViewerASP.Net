@@ -19,9 +19,21 @@ namespace ProductViewer.WebUI.Models
         {
             _builder = builder;
         }
-
+        
         [HiddenInput(DisplayValue = false)]
         public int ProductEntityId
+        {
+            get;
+            set;
+        }
+        [HiddenInput(DisplayValue = false)]
+        public int ProductModelEntityProductModelID
+        {
+            get;
+            set;
+        }
+        [HiddenInput(DisplayValue = false)]
+        public int ProductDescriptionEntityProductDescriptionID
         {
             get;
             set;

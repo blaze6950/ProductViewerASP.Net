@@ -111,6 +111,8 @@ namespace ProductViewer.WebUI.Models
             ProductInventoryEntity.Shelf = value.ProductInventoryEntityShelf;
             ProductListPriceHistoryEntity.ListPrice = value.ProductListPriceHistoryEntityListPrice;
             ProductListPriceHistoryEntity.StartDate = value.ProductListPriceHistoryEntityStartDate;
+            ProductModelEntity.ProductModelID = value.ProductModelEntityProductModelID;
+            ProductDescriptionEntity.ProductDescriptionID = value.ProductDescriptionEntityProductDescriptionID;
             AddReferencesBetweenFiledsOfEntities();
         }
 
@@ -132,7 +134,9 @@ namespace ProductViewer.WebUI.Models
                 ProductInventoryEntityQuantity = ProductInventoryEntity.Quantity,
                 ProductInventoryEntityShelf = ProductInventoryEntity.Shelf,
                 ProductListPriceHistoryEntityListPrice = ProductListPriceHistoryEntity.ListPrice,
-                ProductListPriceHistoryEntityStartDate = ProductListPriceHistoryEntity.StartDate
+                ProductListPriceHistoryEntityStartDate = ProductListPriceHistoryEntity.StartDate,
+                ProductModelEntityProductModelID = ProductModelEntity.ProductModelID,
+                ProductDescriptionEntityProductDescriptionID = ProductDescriptionEntity.ProductDescriptionID
             };
             return newProductViewModel;
         }
