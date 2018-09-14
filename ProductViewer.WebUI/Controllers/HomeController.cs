@@ -64,13 +64,7 @@ namespace ProductViewer.WebUI.Controllers
             }
             var product = _list.First(p => p.ProductEntityId == id);
             var builder = product.GetBuilder();
-            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
-            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
-            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductId);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
-            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
-            _unitOfWork.Commit();
+            RemoveExistingProduct(builder);
             return RedirectToAction("Index", "Home");
         }
 
@@ -105,24 +99,12 @@ namespace ProductViewer.WebUI.Controllers
                     builder = product.GetBuilder();
                     if (product.ProductEntityId != 0)
                     {
-                        _unitOfWork.ProductModelsRepository.Update(builder.ProductModelEntity);
-                        _unitOfWork.ProductsRepository.Update(builder.ProductEntity);
-                        _unitOfWork.ProductInventoriesRepository.Update(builder.ProductInventoryEntity);
-                        _unitOfWork.ProductListPriceHistoriesRepository.Update(builder.ProductListPriceHistoryEntity);
-                        _unitOfWork.ProductDescriptionsRepository.Update(builder.ProductDescriptionEntity);
-                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(builder.ProductModelProductDescriptionCultureEntity);
-                        _unitOfWork.Commit();
+                        UpdateExistingProduct(builder);
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        _unitOfWork.ProductModelsRepository.Create(builder.ProductModelEntity);
-                        _unitOfWork.ProductsRepository.Create(builder.ProductEntity);
-                        _unitOfWork.ProductInventoriesRepository.Create(builder.ProductInventoryEntity);
-                        _unitOfWork.ProductListPriceHistoriesRepository.Create(builder.ProductListPriceHistoryEntity);
-                        _unitOfWork.ProductDescriptionsRepository.Create(builder.ProductDescriptionEntity);
-                        _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(builder.ProductModelProductDescriptionCultureEntity);
-                        _unitOfWork.Commit();
+                        CreateNewProduct(builder);
                         return RedirectToAction("Index");
                     }
                 }
@@ -137,6 +119,39 @@ namespace ProductViewer.WebUI.Controllers
                 // there is something wrong with the data values
                 return View(product);
             }
+        }
+
+        private void CreateNewProduct(ProductViewModelBuilder builder)
+        {
+            _unitOfWork.ProductModelsRepository.Create(builder.ProductModelEntity);
+            _unitOfWork.ProductsRepository.Create(builder.ProductEntity);
+            _unitOfWork.ProductInventoriesRepository.Create(builder.ProductInventoryEntity);
+            _unitOfWork.ProductListPriceHistoriesRepository.Create(builder.ProductListPriceHistoryEntity);
+            _unitOfWork.ProductDescriptionsRepository.Create(builder.ProductDescriptionEntity);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(builder.ProductModelProductDescriptionCultureEntity);
+            _unitOfWork.Commit();
+        }
+
+        private void UpdateExistingProduct(ProductViewModelBuilder builder)
+        {
+            _unitOfWork.ProductModelsRepository.Update(builder.ProductModelEntity);
+            _unitOfWork.ProductsRepository.Update(builder.ProductEntity);
+            _unitOfWork.ProductInventoriesRepository.Update(builder.ProductInventoryEntity);
+            _unitOfWork.ProductListPriceHistoriesRepository.Update(builder.ProductListPriceHistoryEntity);
+            _unitOfWork.ProductDescriptionsRepository.Update(builder.ProductDescriptionEntity);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(builder.ProductModelProductDescriptionCultureEntity);
+            _unitOfWork.Commit();
+        }
+
+        private void RemoveExistingProduct(ProductViewModelBuilder builder)
+        {
+            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
+            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
+            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductId);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
+            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
+            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
+            _unitOfWork.Commit();
         }
     }
 }
