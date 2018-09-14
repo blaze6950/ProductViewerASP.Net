@@ -166,15 +166,13 @@ namespace ProductViewer.Domain.Concrete
             command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
             //
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductNumber";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 25;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "ProductNumber";
             command.Parameters.Add(newParameter);
             //
@@ -253,21 +251,18 @@ namespace ProductViewer.Domain.Concrete
                                   "WHERE ProductID = @ProductID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductID";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "ProductID";
             command.Parameters.Add(newParameter);
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
             //
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductNumber";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 25;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "ProductNumber";
             command.Parameters.Add(newParameter);
             //
@@ -325,8 +320,7 @@ namespace ProductViewer.Domain.Concrete
             command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Description";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 400;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Description";
             command.Parameters.Add(newParameter);
             //
@@ -356,8 +350,7 @@ namespace ProductViewer.Domain.Concrete
                                   "WHERE ProductDescriptionID = @ProductDescriptionID";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Description";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 400;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Description";
             command.Parameters.Add(newParameter);
             //
@@ -384,7 +377,6 @@ namespace ProductViewer.Domain.Concrete
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Shelf";
             newParameter.DbType = DbType.String;
-            newParameter.Size = 10;
             newParameter.SourceColumn = "Shelf";
             command.Parameters.Add(newParameter);
             //
@@ -426,7 +418,6 @@ namespace ProductViewer.Domain.Concrete
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Shelf";
             newParameter.DbType = DbType.String;
-            newParameter.Size = 10;
             newParameter.SourceColumn = "Shelf";
             command.Parameters.Add(newParameter);
             //
@@ -519,8 +510,7 @@ namespace ProductViewer.Domain.Concrete
             command.CommandType = CommandType.StoredProcedure;
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
             //
@@ -558,8 +548,7 @@ namespace ProductViewer.Domain.Concrete
             //
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@Name";
-            newParameter.DbType = DbType.StringFixedLength;
-            newParameter.Size = 50;
+            newParameter.DbType = DbType.String;
             newParameter.SourceColumn = "Name";
             command.Parameters.Add(newParameter);
             _productModelsAdapter.UpdateCommand = command;
