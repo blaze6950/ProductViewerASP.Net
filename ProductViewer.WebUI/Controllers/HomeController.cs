@@ -109,7 +109,6 @@ namespace ProductViewer.WebUI.Controllers
                         _unitOfWork.ProductDescriptionsRepository.Update(product.ProductDescriptionEntity);
                         _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(product.ProductModelProductDescriptionCultureEntity);
                         _unitOfWork.Commit();
-                        TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                         return RedirectToAction("Index");
                     }
                     else
@@ -121,7 +120,6 @@ namespace ProductViewer.WebUI.Controllers
                         _unitOfWork.ProductDescriptionsRepository.Create(product.ProductDescriptionEntity);
                         _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(product.ProductModelProductDescriptionCultureEntity);
                         _unitOfWork.Commit();
-                        TempData["message"] = string.Format("{0} has been saved", product.ProductEntity.Name);
                         return RedirectToAction("Index");
                     }
                 }
