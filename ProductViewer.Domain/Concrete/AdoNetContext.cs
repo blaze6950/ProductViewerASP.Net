@@ -138,12 +138,42 @@ namespace ProductViewer.Domain.Concrete
                 InitialCommands();
             }
 
+            _connection.Open();
+            var transaction = _connection.BeginTransaction();
+            _productModelProductDescriptionCulturesAdapter.InsertCommand.Transaction = transaction;
+            _productModelProductDescriptionCulturesAdapter.UpdateCommand.Transaction = transaction;
+            _productModelProductDescriptionCulturesAdapter.DeleteCommand.Transaction = transaction;
+            //
+            _productDescriptionsAdapter.InsertCommand.Transaction = transaction;
+            _productDescriptionsAdapter.UpdateCommand.Transaction = transaction;
+            _productDescriptionsAdapter.DeleteCommand.Transaction = transaction;
+            //
+            _productInventoriesAdapter.InsertCommand.Transaction = transaction;
+            _productInventoriesAdapter.UpdateCommand.Transaction = transaction;
+            _productInventoriesAdapter.DeleteCommand.Transaction = transaction;
+            //
+            _productListPriceHistoriesAdapter.InsertCommand.Transaction = transaction;
+            _productListPriceHistoriesAdapter.UpdateCommand.Transaction = transaction;
+            _productListPriceHistoriesAdapter.DeleteCommand.Transaction = transaction;
+            //
+            _productsAdapter.InsertCommand.Transaction = transaction;
+            _productsAdapter.UpdateCommand.Transaction = transaction;
+            _productsAdapter.DeleteCommand.Transaction = transaction;
+            //
+            _productModelsAdapter.InsertCommand.Transaction = transaction;
+            _productModelsAdapter.UpdateCommand.Transaction = transaction;
+            _productModelsAdapter.DeleteCommand.Transaction = transaction;
+
+
             _productModelProductDescriptionCulturesAdapter.Update(_productModelProductDescriptionCultureDataSet, "ProductModelProductDescriptionCulture");
             _productDescriptionsAdapter.Update(_producrDescriptionsDataSet, "ProductDescription");
             _productInventoriesAdapter.Update(_productInventoriesDataSet, "ProductInventory");
             _productListPriceHistoriesAdapter.Update(_productListPriceHistoriesDataSet, "ProductListPriceHistory");
             _productsAdapter.Update(_productsDataSet, "Product");
             _productModelsAdapter.Update(_productModelsDataSet, "ProductModel");
+
+            transaction.Commit();
+            _connection.Close();
 
             GetProductModelProductDescriptionCulture().AcceptChanges();
             GetProductDescriptions().AcceptChanges();
