@@ -12,7 +12,7 @@
     @using (Html.BeginForm("Index", "Home", FormMethod.Get))
     { 
     <div class="card-panel teal lighten-5">
-        <div class="input-field col s12">
+        <div class="input-field col s12" data-tip="To find something, you need to know what to look for! Enter at least one character and press Enter...">
             <i class="material-icons prefix">search</i>
             <input value="@Model.SearchValue" name="searchValue" id="search" type="text" class="validate" />
             @Html.HiddenFor(x=>x.PagingInfo.CurrentPage)
