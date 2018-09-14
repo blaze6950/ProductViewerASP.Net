@@ -78,6 +78,7 @@ namespace ProductViewer.WebUI.Models
 
         #region FiledsForAddOrEditingView
         [Required(ErrorMessage = "Please enter name of product")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "The name must be between 3 and 50 characters in length!")]
         public string ProductEntityName
         {
             get => ProductEntity.Name;
@@ -90,6 +91,7 @@ namespace ProductViewer.WebUI.Models
 
         [Required(ErrorMessage = "Please enter unique number of product")]
         [RegularExpression("[A-Z]{2}-([A-Z]\\d{3})|[A-Z]{2}-(\\d{4})", ErrorMessage = "Please enter a valid unique number of product")]
+        [StringLength(25, MinimumLength = 7, ErrorMessage = "The name must be between 7 and 25 characters in length!")]
         public string ProductEntityNumber
         {
             get => ProductEntity.ProductNumber;
@@ -97,6 +99,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter safety stock level")]
+        [Range(1, 32767, ErrorMessage = "The safety stock level must be positive and between 1 and 32767!")]
         public Int16 ProductEntitySafetyStockLevel
         {
             get => ProductEntity.SafetyStockLevel;
@@ -104,6 +107,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter reorder point")]
+        [Range(1, 32767, ErrorMessage = "The reorder point must be positive and between 1 and 32767!")]
         public Int16 ProductEntityReorderPoint
         {
             get => ProductEntity.ReorderPoint;
@@ -111,6 +115,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter standard cost")]
+        [Range(1, 922337203685477, ErrorMessage = "The standart cost must be positive!")]
         [DataType(DataType.Currency)]
         public decimal ProductEntityStandardCost
         {
@@ -119,6 +124,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter list price")]
+        [Range(0, 922337203685477, ErrorMessage = "The list price must be positive!")]
         [DataType(DataType.Currency)]
         public decimal ProductEntityListPrice
         {
@@ -127,6 +133,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter days to manufacture")]
+        [Range(0, 2147483647, ErrorMessage = "The list price must be positive and between 0 and 2147483647!")]
         public int ProductEntityDaysToManufacture
         {
             get => ProductEntity.DaysToManufacture;
@@ -141,8 +148,9 @@ namespace ProductViewer.WebUI.Models
             set => ProductEntity.SellStartDate = value;
         }
 
-        [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Please enter description")]
+        [StringLength(400, MinimumLength = 1, ErrorMessage = "The description must be between 1 and 400 characters in length!")]
+        [DataType(DataType.MultilineText)]
         public string ProductDescriptionEntityDescription
         {
             get => ProductDescriptionEntity.Description;
@@ -150,6 +158,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter shelf")]
+        [StringLength(10, MinimumLength = 1, ErrorMessage = "The shelf must be between 1 and 400 characters in length!")]
         public string ProductInventoryEntityShelf
         {
             get => ProductInventoryEntity.Shelf;
@@ -157,14 +166,15 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter bin")]
-        [RegularExpression("(100|\\d{2})", ErrorMessage = "Please enter a valid bin of product (0-100)")]
-    public byte ProductInventoryEntityBin
+        [Range(0, 100, ErrorMessage = "The bin must be between 0 and 100!")]
+        public byte ProductInventoryEntityBin
         {
             get => ProductInventoryEntity.Bin;
             set => ProductInventoryEntity.Bin = value;
         }
 
         [Required(ErrorMessage = "Please enter quantity")]
+        [Range(0, 32767, ErrorMessage = "The quantity must be between 0 and 32767!")]
         public Int16 ProductInventoryEntityQuantity
         {
             get => ProductInventoryEntity.Quantity;
@@ -180,6 +190,7 @@ namespace ProductViewer.WebUI.Models
         }
 
         [Required(ErrorMessage = "Please enter list price history")]
+        [Range(0, 922337203685477, ErrorMessage = "The list price history must be positive!")]
         [DataType(DataType.Currency)]
         public decimal ProductListPriceHistoryEntityListPrice
         {
