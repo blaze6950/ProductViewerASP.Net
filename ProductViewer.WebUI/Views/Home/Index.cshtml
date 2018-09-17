@@ -27,8 +27,9 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>Price</th>
+                    <th>Unit price</th>
                     <th>Quantity</th>
+                    <th>Price for all</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -40,8 +41,9 @@
                     <tr>
                         <td>@p.ProductEntityName</td>
                         <td>@p.ProductDescriptionEntityDescription</td>
-                        <td>@p.ProductListPriceHistoryEntityListPrice</td>
+                        <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
                         <td>@p.ProductInventoryEntityQuantity</td>
+                        <td>@p.PriceForAll.ToString("C")</td>
                         <td>
                             <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId })" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                         </td>

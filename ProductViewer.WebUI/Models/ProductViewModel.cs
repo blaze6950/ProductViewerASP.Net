@@ -158,6 +158,14 @@ namespace ProductViewer.WebUI.Models
         }
         #endregion
 
+        /// <summary>
+        /// Computed property. Only getter without setter returned Quantity * Price 
+        /// </summary>
+        public decimal PriceForAll
+        {
+            get { return ProductInventoryEntityQuantity * ProductListPriceHistoryEntityListPrice; }
+        }
+
         public ProductViewModelBuilder GetBuilder()
         {
             if (_builder == null)
