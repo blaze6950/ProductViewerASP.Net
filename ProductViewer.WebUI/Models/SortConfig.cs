@@ -1,26 +1,34 @@
 ﻿namespace ProductViewer.WebUI.Models
 {
     /// <summary>
+    /// This enumeration of columns by which the list can be sorted
+    /// </summary>
+    public enum Column
+    {
+        Name,
+        UnitPrice,
+        Quantity,
+        PriceForAll
+    }
+
+    /// <summary>
     /// Class SortConfig for set configuration of sorting. That class help view curresnt sort config at Index view and help send config from client to server
     /// </summary>
     public class SortConfig
     {
-        /// <summary>
-        /// Name sort if true asc, else desc. Default value = true
-        /// </summary>
-        public bool? Name { get; set; } = true;
+        public SortConfig()
+        {
+            CurrentColumn = Column.Name;
+            IsAsc = true;
+        }
 
         /// <summary>
-        /// UnitPrice sort if true asc, else desc. Default value = null
+        /// CurrentColumn property is responsible on which column do sorting
         /// </summary>
-        public bool? UnitPrice { get; set; } = null;
+        public Column CurrentColumn { get; set; }
         /// <summary>
-        /// Quantity sort if true asc, else desc. Default value = null
+        /// IsAsc property is responsible for sorting direction
         /// </summary>
-        public bool? Quantity { get; set; } = null;
-        /// <summary>
-        /// PriceForAll sort if true asc, else desc. Default value = null
-        /// </summary>
-        public bool? PriceForAll { get; set; } = null;
+        public bool IsAsc { get; set; }
     }
 }

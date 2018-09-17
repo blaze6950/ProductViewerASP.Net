@@ -23,19 +23,99 @@ namespace ProductViewer.WebUI.Controllers
         }
 
         [HttpGet]
-        public ViewResult Index(string searchValue, int page = 1)
+        public ViewResult Index(string searchValue, int page = 1, Column sortCurrentCol = Column.Name, bool sortCurrentDir = false, Column sortColumn = Column.Name)
         {
             if (_list == null)
             {
                 InitialList();
             }
+            var sortConfig = new SortConfig(){CurrentColumn = sortCurrentCol, IsAsc = sortCurrentDir};
+            switch (sortColumn)
+            {
+                case Column.Name:
+                    if (sortConfig.CurrentColumn != sortColumn)
+                    {
+                        sortConfig.CurrentColumn = sortColumn;
+                        sortConfig.IsAsc = true;
+                        _list = _list.OrderBy(p => p.ProductEntityName);
+                    }
+                    else
+                    {
+                        sortConfig.IsAsc = !sortConfig.IsAsc;
+                        if (sortConfig.IsAsc)
+                        {
+                            _list = _list.OrderBy(p => p.ProductEntityName);
+                            break;
+                        }
+                        _list = _list.OrderByDescending(p => p.ProductEntityName);
+                    }
+                    break;
+                case Column.UnitPrice:
+                    if (sortConfig.CurrentColumn != sortColumn)
+                    {
+                        sortConfig.CurrentColumn = sortColumn;
+                        sortConfig.IsAsc = true;
+                        _list = _list.OrderBy(p => p.ProductListPriceHistoryEntityListPrice);
+                    }
+                    else
+                    {
+                        sortConfig.IsAsc = !sortConfig.IsAsc;
+                        if (sortConfig.IsAsc)
+                        {
+                            _list = _list.OrderBy(p => p.ProductListPriceHistoryEntityListPrice);
+
+                            break;
+                        }
+                        _list = _list.OrderByDescending(p => p.ProductListPriceHistoryEntityListPrice);
+                    }
+                    break;
+                case Column.Quantity:
+                    if (sortConfig.CurrentColumn != sortColumn)
+                    {
+                        sortConfig.CurrentColumn = sortColumn;
+                        sortConfig.IsAsc = true;
+                        _list = _list.OrderBy(p => p.ProductInventoryEntityQuantity);
+                    }
+                    else
+                    {
+                        sortConfig.IsAsc = !sortConfig.IsAsc;
+                        if (sortConfig.IsAsc)
+                        {
+                            _list = _list.OrderBy(p => p.ProductInventoryEntityQuantity);
+                            break;
+                        }
+                        _list = _list.OrderByDescending(p => p.ProductInventoryEntityQuantity);
+                    }
+                    break;
+                case Column.PriceForAll:
+                    if (sortConfig.CurrentColumn != sortColumn)
+                    {
+                        sortConfig.CurrentColumn = sortColumn;
+                        sortConfig.IsAsc = true;
+                        _list = _list.OrderBy(p => p.PriceForAll);
+                    }
+                    else
+                    {
+                        sortConfig.IsAsc = !sortConfig.IsAsc;
+                        if (sortConfig.IsAsc)
+                        {
+                            _list = _list.OrderBy(p => p.PriceForAll);
+                            break;
+                        }
+                        _list = _list.OrderByDescending(p => p.PriceForAll);
+                    }
+                    break;
+                default:
+                    _list = _list.OrderBy(p => p.ProductEntityName);
+                    break;
+            }
+            
             ProductListViewModel model = null;
             if (string.IsNullOrEmpty(searchValue) || string.IsNullOrWhiteSpace(searchValue))
             {
                 model = new ProductListViewModel()
                 {
                     Products = _list
-                        .OrderBy(p => p.ProductEntityName)
                         .Skip((page - 1) * _pageSize)
                         .Take(_pageSize),
                     PagingInfo = new PagingInfo()
@@ -43,14 +123,14 @@ namespace ProductViewer.WebUI.Controllers
                         CurrentPage = page,
                         ItemsPerPage = _pageSize,
                         TotalItems = _list.Count()
-                    }
+                    },
+                    SortConfig = sortConfig
                 };
             }
             else
             {
                 var buffer = _list
-                    .Where(p => p.ProductEntityName.ToLower().Contains(searchValue.ToLower()))
-                    .OrderBy(p => p.ProductEntityName);
+                    .Where(p => p.ProductEntityName.ToLower().Contains(searchValue.ToLower()));
                 model = new ProductListViewModel()
                 {
                     Products = buffer
@@ -62,7 +142,8 @@ namespace ProductViewer.WebUI.Controllers
                         ItemsPerPage = _pageSize,
                         TotalItems = buffer.Count()
                     },
-                    SearchValue = searchValue
+                    SearchValue = searchValue,
+                    SortConfig = sortConfig
                 };
             }
             return View(model);

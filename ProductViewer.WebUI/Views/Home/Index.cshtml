@@ -16,6 +16,7 @@
             <i class="material-icons prefix">search</i>
             <input value="@Model.SearchValue" name="searchValue" id="search" type="text" class="validate" />
             @Html.HiddenFor(x=>x.PagingInfo.CurrentPage)
+            @Html.HiddenFor(x=>x.SortConfig)
             <label for="search">Search:</label>
         </div>
     </div>
@@ -25,83 +26,7 @@
         <table class="highlight">
             <thead>
                 <tr>
-                    <th style="min-width: 6em">
-                        <a class="waves-effect waves-teal btn-flat no-padding">
-                            @{
-                                switch (@Model.SortConfig.Name)
-                                {
-                                    case true:
-                                        @:<i class="material-icons right">expand_less</i>
-                                        break;
-                                    case false:
-                                        @:<i class="material-icons right">expand_more</i>
-                                        break;
-                                    default:
-                                        @:<i class="material-icons right hide">expand_more</i>
-                                        break;
-                                }
-                            }
-                            Name
-                        </a>
-                    </th>
-                    <th>DESCRIPTION</th>
-                    <th style="min-width: 9em">
-                        <a class="waves-effect waves-teal btn-flat no-padding">
-                            @{
-                                switch (@Model.SortConfig.UnitPrice)
-                                {
-                                    case true:
-                                        @:<i class="material-icons right">expand_less</i>
-                                        break;
-                                    case false:
-                                        @:<i class="material-icons right">expand_more</i>
-                                        break;
-                                    default:
-                                        @:<i class="material-icons right hide">expand_more</i>
-                                        break;
-                                }
-                            }
-                            Unit price
-                        </a>
-                    </th>
-                    <th style="min-width: 8em">
-                        <a class="waves-effect waves-teal btn-flat no-padding">
-                            @{
-                                switch (@Model.SortConfig.Quantity)
-                                {
-                                    case true:
-                                        @:<i class="material-icons right">expand_less</i>
-                                        break;
-                                    case false:
-                                        @:<i class="material-icons right">expand_more</i>
-                                        break;
-                                    default:
-                                        @:<i class="material-icons right hide">expand_more</i>
-                                        break;
-                                }
-                            }
-                            Quantity
-                        </a>
-                    </th>
-                    <th style="min-width: 10em">
-                        <a class="waves-effect waves-teal btn-flat no-padding">
-                            @{
-                                switch (@Model.SortConfig.PriceForAll)
-                                {
-                                    case true:
-                                        @:<i class="material-icons right">expand_less</i>
-                                        break;
-                                    case false:
-                                        @:<i class="material-icons right">expand_more</i>
-                                        break;
-                                    default:
-                                        @:<i class="material-icons right hide">expand_more</i>
-                                        break;
-                                }
-                            }
-                            Price for all
-                        </a>
-                    </th>
+                    @Html.SortColumn(@Model.SortConfig, s => @Url.Action("Index", new {page = @Model.PagingInfo.CurrentPage, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = @Model.SortConfig.IsAsc, sortColumn = s}))
                     <th></th>
                     <th></th>
                 </tr>
@@ -128,7 +53,7 @@
 
         </table>
         <div>
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue}))
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = !(@Model.SortConfig.IsAsc), sortColumn = @Model.SortConfig.CurrentColumn}))
         </div>
     </div>
 </div>
