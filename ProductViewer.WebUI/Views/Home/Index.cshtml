@@ -25,11 +25,83 @@
         <table class="highlight">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Unit price</th>
-                    <th>Quantity</th>
-                    <th>Price for all</th>
+                    <th style="min-width: 6em">
+                        <a class="waves-effect waves-teal btn-flat no-padding">
+                            @{
+                                switch (@Model.SortConfig.Name)
+                                {
+                                    case true:
+                                        @:<i class="material-icons right">expand_less</i>
+                                        break;
+                                    case false:
+                                        @:<i class="material-icons right">expand_more</i>
+                                        break;
+                                    default:
+                                        @:<i class="material-icons right hide">expand_more</i>
+                                        break;
+                                }
+                            }
+                            Name
+                        </a>
+                    </th>
+                    <th>DESCRIPTION</th>
+                    <th style="min-width: 9em">
+                        <a class="waves-effect waves-teal btn-flat no-padding">
+                            @{
+                                switch (@Model.SortConfig.UnitPrice)
+                                {
+                                    case true:
+                                        @:<i class="material-icons right">expand_less</i>
+                                        break;
+                                    case false:
+                                        @:<i class="material-icons right">expand_more</i>
+                                        break;
+                                    default:
+                                        @:<i class="material-icons right hide">expand_more</i>
+                                        break;
+                                }
+                            }
+                            Unit price
+                        </a>
+                    </th>
+                    <th style="min-width: 8em">
+                        <a class="waves-effect waves-teal btn-flat no-padding">
+                            @{
+                                switch (@Model.SortConfig.Quantity)
+                                {
+                                    case true:
+                                        @:<i class="material-icons right">expand_less</i>
+                                        break;
+                                    case false:
+                                        @:<i class="material-icons right">expand_more</i>
+                                        break;
+                                    default:
+                                        @:<i class="material-icons right hide">expand_more</i>
+                                        break;
+                                }
+                            }
+                            Quantity
+                        </a>
+                    </th>
+                    <th style="min-width: 10em">
+                        <a class="waves-effect waves-teal btn-flat no-padding">
+                            @{
+                                switch (@Model.SortConfig.PriceForAll)
+                                {
+                                    case true:
+                                        @:<i class="material-icons right">expand_less</i>
+                                        break;
+                                    case false:
+                                        @:<i class="material-icons right">expand_more</i>
+                                        break;
+                                    default:
+                                        @:<i class="material-icons right hide">expand_more</i>
+                                        break;
+                                }
+                            }
+                            Price for all
+                        </a>
+                    </th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -37,7 +109,7 @@
 
             <tbody>
                 @foreach (var p in @Model.Products)
-                {
+                                    {
                     <tr>
                         <td>@p.ProductEntityName</td>
                         <td>@p.ProductDescriptionEntityDescription</td>
