@@ -30,7 +30,7 @@ namespace ProductViewer.UnitTests.DomainTests
         public void ProductIsNotNull()
         {
             //Act
-            var product = _productsRepository.GetProduct(1);
+            var product = _productsRepository.GetProduct(952);
             //Asset
             Assert.IsNotNull(product);
         }
