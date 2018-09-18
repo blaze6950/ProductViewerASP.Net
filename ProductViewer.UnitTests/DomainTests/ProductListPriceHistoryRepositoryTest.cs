@@ -30,7 +30,7 @@ namespace ProductViewer.UnitTests.DomainTests
         public void ProductListPriceHistoryIsNotNull()
         {
             //Act
-            var product = _productListPriceHistoriesRepository.GetProductListPriceHistory(952, DateTime.Today);
+            var product = _productListPriceHistoriesRepository.GetProductListPriceHistory(707, new DateTime(2011, 5, 31));
             //Asset
             Assert.IsNotNull(product);
         }
