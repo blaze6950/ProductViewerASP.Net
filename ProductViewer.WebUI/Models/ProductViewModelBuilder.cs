@@ -16,7 +16,7 @@ namespace ProductViewer.WebUI.Models
             ProductModelProductDescriptionCultureEntity = new ProductModelProductDescriptionCulture();
             ProductModelEntity = new ProductModel();
 
-            AddReferencesBetweenFiledsOfEntities();
+            AddReferencesBetweenFieldsOfEntities();
         }
 
         public ProductViewModelBuilder(ProductViewModel productViewModel)
@@ -30,7 +30,7 @@ namespace ProductViewer.WebUI.Models
 
             ProductViewModel = productViewModel;
 
-            AddReferencesBetweenFiledsOfEntities();
+            AddReferencesBetweenFieldsOfEntities();
         }
 
         public ProductViewModelBuilder(Product productEntity, ProductDescription productDescriptionEntity, ProductInventory productInventoryEntity, ProductListPriceHistory productListPriceHistoryEntity, ProductModelProductDescriptionCulture productModelProductDescriptionCultureEntity, ProductModel productModelEntity)
@@ -42,10 +42,10 @@ namespace ProductViewer.WebUI.Models
             ProductModelProductDescriptionCultureEntity = productModelProductDescriptionCultureEntity;
             ProductModelEntity = productModelEntity;
 
-            AddReferencesBetweenFiledsOfEntities();
+            AddReferencesBetweenFieldsOfEntities();
         }
 
-        private void AddReferencesBetweenFiledsOfEntities()
+        private void AddReferencesBetweenFieldsOfEntities()
         {
             ProductModelEntity.ProductModelIDUpdated += newId =>
             {
@@ -113,7 +113,7 @@ namespace ProductViewer.WebUI.Models
             ProductListPriceHistoryEntity.StartDate = value.ProductListPriceHistoryEntityStartDate;
             ProductModelEntity.ProductModelID = value.ProductModelEntityProductModelID;
             ProductDescriptionEntity.ProductDescriptionID = value.ProductDescriptionEntityProductDescriptionID;
-            AddReferencesBetweenFiledsOfEntities();
+            AddReferencesBetweenFieldsOfEntities();
         }
 
         private ProductViewModel BuildProductViewModel()

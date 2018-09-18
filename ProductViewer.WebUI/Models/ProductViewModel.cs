@@ -26,12 +26,14 @@ namespace ProductViewer.WebUI.Models
             get;
             set;
         }
+
         [HiddenInput(DisplayValue = false)]
         public int ProductModelEntityProductModelID
         {
             get;
             set;
         }
+
         [HiddenInput(DisplayValue = false)]
         public int ProductDescriptionEntityProductDescriptionID
         {
