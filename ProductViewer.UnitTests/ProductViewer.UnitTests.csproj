@@ -53,6 +53,7 @@
     <Compile Include="DomainTests\AdoNetContextTest.cs" />
     <Compile Include="DomainTests\ProductRepositoryTest.cs" />
     <Compile Include="DomainTests\ProductModelRepositoryTest.cs" />
+    <Compile Include="DomainTests\ProductDescriptionRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
