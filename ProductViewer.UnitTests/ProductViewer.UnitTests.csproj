@@ -57,6 +57,7 @@
     <Compile Include="DomainTests\ProductInventoryRepositoryTest.cs" />
     <Compile Include="DomainTests\ProductModelProductDescriptionCultureRepositoryTest.cs" />
     <Compile Include="DomainTests\ProductListPriceHistoryRepositoryTest.cs" />
+    <Compile Include="DomainTests\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
