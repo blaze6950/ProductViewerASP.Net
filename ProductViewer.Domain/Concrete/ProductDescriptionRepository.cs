@@ -8,9 +8,9 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductDescriptionRepository : IProductDescriptionsRepository
     {
-        private AdoNetContext _context;
+        private IAdoNetContext _context;
 
-        public ProductDescriptionRepository(AdoNetContext context)
+        public ProductDescriptionRepository(IAdoNetContext context)
         {
             _context = context;
         }

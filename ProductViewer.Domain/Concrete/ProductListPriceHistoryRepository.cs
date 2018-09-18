@@ -9,9 +9,9 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductListPriceHistoryRepository : IProductListPriceHistoriesRepository
     {
-        private AdoNetContext _context;
+        private IAdoNetContext _context;
 
-        public ProductListPriceHistoryRepository(AdoNetContext context)
+        public ProductListPriceHistoryRepository(IAdoNetContext context)
         {
             _context = context;
         }

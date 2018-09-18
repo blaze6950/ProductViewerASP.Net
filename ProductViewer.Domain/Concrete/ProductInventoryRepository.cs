@@ -9,9 +9,9 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductInventoryRepository : IProductInventoriesRepository
     {
-        private AdoNetContext _context;
+        private IAdoNetContext _context;
 
-        public ProductInventoryRepository(AdoNetContext context)
+        public ProductInventoryRepository(IAdoNetContext context)
         {
             _context = context;
         }

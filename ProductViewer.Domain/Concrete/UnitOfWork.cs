@@ -4,9 +4,9 @@ namespace ProductViewer.Domain.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AdoNetContext _context;
+        private readonly IAdoNetContext _context;
 
-        public UnitOfWork(AdoNetContext context)
+        public UnitOfWork(IAdoNetContext context)
         {
             _context = context;
             ProductsRepository = new ProductRepository(_context);

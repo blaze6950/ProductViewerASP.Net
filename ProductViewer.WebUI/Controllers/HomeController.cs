@@ -16,10 +16,9 @@ namespace ProductViewer.WebUI.Controllers
         private int _pageSize = 5;
         private IEnumerable<ProductViewModel> _list;
 
-        public HomeController()
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            var productInfoContext = new AdoNetContext(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-            _unitOfWork = new UnitOfWork(productInfoContext);
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]

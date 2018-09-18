@@ -2,11 +2,12 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Concrete
 {
-    public class AdoNetContext : IDisposable
+    public class AdoNetContext : IAdoNetContext
     {
         private DataSet _productsDataSet;
         private DataSet _producrDescriptionsDataSet;
