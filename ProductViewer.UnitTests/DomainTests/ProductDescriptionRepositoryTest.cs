@@ -18,7 +18,7 @@ namespace ProductViewer.UnitTests.DomainTests
         }
 
         [TestMethod]
-        public void ProductListIsNotNull()
+        public void ProductDescriptionListIsNotNull()
         {
             //Act
             var list = _productsRepository.GetProductDescriptionList();
@@ -27,7 +27,7 @@ namespace ProductViewer.UnitTests.DomainTests
         }
 
         [TestMethod]
-        public void ProductIsNotNull()
+        public void ProductDescriptionIsNotNull()
         {
             //Act
             var product = _productsRepository.GetProductDescription(744);
