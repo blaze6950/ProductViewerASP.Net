@@ -18,7 +18,7 @@ namespace ProductViewer.UnitTests.DomainTests
         }
 
         [TestMethod]
-        public void ProductListIsNotNull()
+        public void ProductInventoryListIsNotNull()
         {
             //Act
             var list = _productInventoriesRepository.GetProductInventoryList();
@@ -27,10 +27,10 @@ namespace ProductViewer.UnitTests.DomainTests
         }
 
         [TestMethod]
-        public void ProductIsNotNull()
+        public void ProductInventoryIsNotNull()
         {
             //Act
-            var productInventory = _productInventoriesRepository.GetProductInventory(0, 952);
+            var productInventory = _productInventoriesRepository.GetProductInventory(1, 1);
             //Asset
             Assert.IsNotNull(productInventory);
         }

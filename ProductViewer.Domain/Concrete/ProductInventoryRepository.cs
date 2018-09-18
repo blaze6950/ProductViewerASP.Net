@@ -31,10 +31,10 @@ namespace ProductViewer.Domain.Concrete
             return productInventoryList;
         }
 
-        public ProductInventory GetProductInventory(int locationId, int productId)
+        public ProductInventory GetProductInventory(Int16 locationId, int productId)
         {
             var productInventories = _context.GetProductInventories().Select();
-            var productInventory = (productInventories.Where(p => (((int)p["ProductID"]) == productId) && ((int)p["LocationID"]) == locationId)).Select(p => new ProductInventory()
+            var productInventory = (productInventories.Where(p => (((int)p["ProductID"]) == productId) && ((Int16)p["LocationID"]) == locationId)).Select(p => new ProductInventory()
             {
                 Bin = (byte)p["Bin"],
                 LocationID = (Int16)p["LocationID"],
@@ -79,7 +79,7 @@ namespace ProductViewer.Domain.Concrete
             }
         }
 
-        public void Delete(int locationId, int productId)
+        public void Delete(Int16 locationId, int productId)
         {
             foreach (DataRow dr in _context.GetProductInventories().Rows)
             {

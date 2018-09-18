@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Abstract
@@ -7,12 +8,12 @@ namespace ProductViewer.Domain.Abstract
     {
         IEnumerable<ProductInventory> GetProductInventoryList(); // получение всех объектов
 
-        ProductInventory GetProductInventory(int locationId, int productId); // получение одного объекта по id
+        ProductInventory GetProductInventory(Int16 locationId, int productId); // получение одного объекта по id
 
         void Create(ProductInventory item); // создание объекта
 
         void Update(ProductInventory item); // обновление объекта
 
-        void Delete(int locationId, int productId); // удаление объекта по id
+        void Delete(Int16 locationId, int productId); // удаление объекта по id
     }
 }
