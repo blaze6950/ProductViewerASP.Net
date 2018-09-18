@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Concrete;
 
 namespace ProductViewer.UnitTests.DomainTests
@@ -7,13 +10,23 @@ namespace ProductViewer.UnitTests.DomainTests
     [TestClass]
     public class AdoNetContextTest
     {
-        private AdoNetContext _context;
+        private Mock<IAdoNetContext> _mock;
+        private IAdoNetContext _context;
 
         [TestInitialize]
         public void SetupTests()
         {
             //Arrange
-            _context = new AdoNetContext("Data Source=WIN-GQOKRARBRRP;Initial Catalog=AdventureWorks2014;Integrated Security=True");
+            _mock = new Mock<IAdoNetContext>();
+            _mock.Setup(c => c.GetProducts()).Returns(new DataTable());
+            _mock.Setup(c => c.RefreshData());
+            _mock.Setup(c => c.GetProductModels()).Returns(new DataTable());
+            _mock.Setup(c => c.GetProductDescriptions()).Returns(new DataTable());
+            _mock.Setup(c => c.CommitChanges());
+            _mock.Setup(c => c.GetProductInventories()).Returns(new DataTable());
+            _mock.Setup(c => c.GetProductListPriceHistories()).Returns(new DataTable());
+            _mock.Setup(c => c.GetProductModelProductDescriptionCulture()).Returns(new DataTable());
+            _context = _mock.Object;
         }
 
         [TestMethod]
