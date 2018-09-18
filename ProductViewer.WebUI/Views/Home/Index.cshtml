@@ -60,10 +60,10 @@
 <script>
     function callModal(idRemovableItem) {
         if (idRemovableItem != undefined) {
-            var text = $('#' + idRemovableItem).text();
-            let confirmation = confirm('Are you sure? Deleting ' + text + '...');
+            let text = $(`#${idRemovableItem}`).text();
+            const confirmation = confirm(`Are you sure? Deleting ${text}...`);
             if (confirmation) {
-                text = '/Home/RemoveItem/' + idRemovableItem;
+                text = `/Home/RemoveItem/${idRemovableItem}`;
                 location.href = text;
                 Materialize.toast('<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>');
             }
