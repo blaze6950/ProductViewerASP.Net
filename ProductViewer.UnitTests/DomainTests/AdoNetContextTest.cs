@@ -80,7 +80,7 @@ namespace ProductViewer.UnitTests.DomainTests
             //Act
             _context.CommitChanges();
             //Assert
-            Assert.IsTrue(true);
+            _mock.Verify(c=>c.CommitChanges());
         }
 
         [TestMethod]
@@ -89,7 +89,7 @@ namespace ProductViewer.UnitTests.DomainTests
             //Act
             _context.RefreshData();
             //Assert
-            Assert.IsTrue(true);
+            _mock.Verify(c => c.RefreshData());
         }
     }
 }
