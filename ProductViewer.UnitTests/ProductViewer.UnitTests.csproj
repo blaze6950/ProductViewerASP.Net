@@ -100,6 +100,7 @@
     <Compile Include="WebUITests\PagingInfoTest.cs" />
     <Compile Include="WebUITests\ProductViewModelTest.cs" />
     <Compile Include="WebUITests\HomeControllerTest.cs" />
+    <Compile Include="WebUITests\ProductViewModelBuilderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
