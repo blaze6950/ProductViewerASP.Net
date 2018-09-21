@@ -5,10 +5,17 @@
     ViewBag.Title = "List of products";
 }
 
+<style>
+    .modal {
+        width: 95% !important;
+        height: 100% !important;
+    }
+</style>
+
 <div class="card-header">
     <h1 class="h1">Products:</h1>
 </div>
-<div class="card-body">
+<div class="card-content">
     @using (Html.BeginForm("Index", "Home", FormMethod.Get))
     { 
         <div class="card-panel teal lighten-5">
@@ -21,7 +28,14 @@
             </div>
         </div>
     }
-    <a class="waves-effect waves-light btn-large" href="@Url.Action("AddOrEditProduct", new { isEditing = false })" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    <a class="waves-effect waves-light btn-large modal-trigger" href="#modal1" @*href="@Url.Action("AddOrEditProduct", new { isEditing = false })"*@ style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            @Html.Partial("AddOrEditProduct", new ProductViewModel())
+            @*@Url.Action("AddOrEditProduct", new { isEditing = false })*@
+        </div>
+    </div>
     <div class="card-panel grey lighten-5">
         <table class="highlight">
             <thead>
@@ -58,6 +72,9 @@
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        $(".modal").modal();
+    });
     function callModal(idRemovableItem) {
         if (idRemovableItem != undefined) {
             let text = $(`#${idRemovableItem}`).text();
@@ -65,7 +82,7 @@
             if (confirmation) {
                 text = `/Home/RemoveItem/${idRemovableItem}`;
                 location.href = text;
-                Materialize.toast('<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>');
+                M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>'});
             }
         }
     }

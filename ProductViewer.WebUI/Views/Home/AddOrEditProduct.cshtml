@@ -113,8 +113,8 @@
             </div>
         </div>
         <div style="margin: 2em">
-            <a onclick="Materialize.toast('<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>')" href="@Url.Action("Index")" class="waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
-            <button onclick="Materialize.toast('<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>')" class="btn-large waves-effect waves-light" type="submit" name="action">
+            <a onclick="M.toast({html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>'})" href="@Url.Action("Index")" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+            <button onclick="M.toast({html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>'})" class="modal-close btn-large waves-effect waves-light" type="submit" name="action">
                 Submit
                 <i class="material-icons right">send</i>
             </button>
