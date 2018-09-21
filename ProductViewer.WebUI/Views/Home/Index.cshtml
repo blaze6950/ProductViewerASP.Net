@@ -28,12 +28,11 @@
             </div>
         </div>
     }
-    <a class="waves-effect waves-light btn-large modal-trigger" href="#modal1" @*href="@Url.Action("AddOrEditProduct", new { isEditing = false })"*@ style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    <a class="waves-effect waves-light btn-large" onclick="openModal(false, 0)" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            @Html.Partial("AddOrEditProduct", new ProductViewModel())
-            @*@Url.Action("AddOrEditProduct", new { isEditing = false })*@
+            @*@Html.Action("AddOrEditProduct", new { isEditing = false })*@
         </div>
     </div>
     <div class="card-panel grey lighten-5">
@@ -56,10 +55,10 @@
                     <td>@p.ProductInventoryEntityQuantity</td>
                     <td>@p.PriceForAll.ToString("C")</td>
                     <td>
-                        <a href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId })" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                        <a @*href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId })"*@ onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                     </td>
                     <td>
-                        <a class="btn-floating btn waves-effect waves-light red" onclick="callModal(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
+                        <a class="btn-floating btn waves-effect waves-light red" onclick="callConfirmationAlert(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
                     </td>
                 </tr>
             }
@@ -75,8 +74,8 @@
     $(document).ready(function() {
         $(".modal").modal();
     });
-    function callModal(idRemovableItem) {
-        if (idRemovableItem != undefined) {
+    function callConfirmationAlert(idRemovableItem) {
+        if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
             let text = $(`#${idRemovableItem}`).text();
             const confirmation = confirm(`Are you sure? Deleting ${text}...`);
             if (confirmation) {
@@ -84,6 +83,45 @@
                 location.href = text;
                 M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>'});
             }
+        }
+    }
+    function openModal(isEditing, idItem) {
+        if (isEditing != undefined && typeof isEditing === "boolean" && idItem != undefined && typeof idItem === "number") {
+            var url = "@Url.Action("AddOrEditProduct", new { isEditing = false })"; 
+            if (isEditing === false) {
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    type: "GET",
+                    success: function (result) {
+
+                        $('.modal-content').html(result);
+                        /* little fade in effect */
+                        $('.modal-content').fadeIn('fast');
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    type: "GET",
+                    contentType: 'application/json; charset=utf-8',
+                    data: { isEditing: JSON.stringify(true), id: JSON.stringify(idItem) },
+                    success: function (result) {
+
+                        $('.modal-content').html(result);
+                        /* little fade in effect */
+                        $('.modal-content').fadeIn('fast');
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                    }
+                });
+            }
+            $("#modal1").modal('open');
         }
     }
 </script>

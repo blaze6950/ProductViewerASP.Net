@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
+using System.Web.Http;
 using ProductViewer.WebUI.Models;
 
 namespace ProductViewer.WebUI.Controllers
@@ -21,7 +21,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public ViewResult Index(string searchValue, int page = 1, Column sortCurrentCol = Column.Name, bool sortCurrentDir = false, Column sortColumn = Column.Name)
         {
             if (_list == null)
@@ -171,8 +171,8 @@ namespace ProductViewer.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public ViewResult AddOrEditProduct(bool isEditing = false, int id = -1)
+        [System.Web.Mvc.HttpGet]
+        public ActionResult AddOrEditProduct([FromBody]bool isEditing = false, int id = -1)
         {
             if (_list == null)
             {
@@ -182,16 +182,16 @@ namespace ProductViewer.WebUI.Controllers
             {
                 ViewBag.Title = "Editing an existing product";
                 var product = _list.First(p => p.ProductEntityId == id);
-                return View(product);
+                return PartialView(product);
             }
             else
             {
                 ViewBag.Title = "Adding new product";
-                return View();
+                return PartialView();
             }
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult AddOrEditProduct(ProductViewModel product)
         {
             if (ModelState.IsValid)
@@ -214,13 +214,13 @@ namespace ProductViewer.WebUI.Controllers
                 catch (Exception e)
                 {
                     TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
-                    return View(product);
+                    return PartialView(product);
                 }
             }
             else
             {
                 // there is something wrong with the data values
-                return View(product);
+                return PartialView(product);
             }
         }
 
