@@ -85,10 +85,11 @@
             }
         }
     }
-    function openModal(isEditing, idItem) {
-        if (isEditing != undefined && typeof isEditing === "boolean" && idItem != undefined && typeof idItem === "number") {
-            var url = "@Url.Action("AddOrEditProduct", new { isEditing = false })"; 
+    function openModal(isEditing, id) {
+        if (isEditing != undefined && typeof isEditing === "boolean" && id != undefined && typeof id === "number") {
+            var url;
             if (isEditing === false) {
+                url = "@Url.Action("AddOrEditProduct")";
                 $.ajax({
                     url: url,
                     cache: false,
@@ -104,17 +105,18 @@
                     }
                 });
             } else {
+                url = "@Url.Action("AddOrEditProduct", new{isEditing = true, id = 0})";
+                url = url.replace("0", id);
                 $.ajax({
                     url: url,
                     cache: false,
                     type: "GET",
-                    contentType: 'application/json; charset=utf-8',
-                    data: { isEditing: JSON.stringify(true), id: JSON.stringify(idItem) },
                     success: function (result) {
 
                         $('.modal-content').html(result);
                         /* little fade in effect */
                         $('.modal-content').fadeIn('fast');
+                        window.M.updateTextFields();
                     },
                     error: function (reponse) {
                         alert("error : " + reponse);

@@ -172,7 +172,7 @@ namespace ProductViewer.WebUI.Controllers
         }
 
         [System.Web.Mvc.HttpGet]
-        public ActionResult AddOrEditProduct([FromBody]bool isEditing = false, int id = -1)
+        public ActionResult AddOrEditProduct(bool isEditing = false, int id = -1)
         {
             if (_list == null)
             {
