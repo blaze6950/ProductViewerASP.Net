@@ -625,7 +625,7 @@ namespace ProductViewer.Domain.Concrete
             command.Connection = _connection;
             command.CommandText = "UPDATE Production.ProductModelProductDescriptionCulture " +
                                   "SET ProductModelID = @ProductModelID, ProductDescriptionID = @ProductDescriptionID, CultureID = 'en' " +
-                                  "WHERE ProductModelID = @ProductModelID";
+                                  "WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = 'en'";
             newParameter = _factory.CreateParameter();
             newParameter.ParameterName = "@ProductModelID";
             newParameter.DbType = DbType.Int32;

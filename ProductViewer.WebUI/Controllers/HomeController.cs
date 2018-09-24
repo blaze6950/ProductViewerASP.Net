@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using ProductViewer.Domain.Abstract;
 using System.Web.Http;
+using System.Web.UI;
 using ProductViewer.WebUI.Models;
 
 namespace ProductViewer.WebUI.Controllers
@@ -192,7 +193,7 @@ namespace ProductViewer.WebUI.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult AddOrEditProduct(ProductViewModel product)
+        public object AddOrEditProduct(ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
@@ -203,12 +204,12 @@ namespace ProductViewer.WebUI.Controllers
                     if (product.ProductEntityId != 0)
                     {
                         UpdateExistingProduct(builder);
-                        return RedirectToAction("Index");
+                        return true;
                     }
                     else
                     {
                         CreateNewProduct(builder);
-                        return RedirectToAction("Index");
+                        return true;
                     }
                 }
                 catch (Exception e)

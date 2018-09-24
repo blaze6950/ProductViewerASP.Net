@@ -126,4 +126,26 @@
             $("#modal1").modal('open');
         }
     }
+    function sendInfo() {
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddOrEditProduct",
+            data: $('#addOrEditForm').serialize(),
+            success: function (isSuccess) {
+                if (isSuccess != undefined && isSuccess === 'True') {
+                    $("#modal1").modal('close');
+                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' })
+                } else if(isSuccess != undefined) {
+                    $('.modal-content').html(isSuccess);
+                    window.M.updateTextFields();
+                    $("#modal1").modal('open');
+                }
+            },
+            error: function () {
+                M.toast({
+                    html: '<p><i class=\'material-icons right\'>warning</i>Something went wrong!Try again</p>'
+                });
+            }
+        });
+    }
 </script>

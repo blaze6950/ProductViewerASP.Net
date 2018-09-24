@@ -8,7 +8,7 @@
             @TempData["error"]
         </div>
     }
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("AddOrEditProduct", "Home", FormMethod.Post, new{id = "addOrEditForm" }))
     {
     <div class="card-panel blue-grey lighten-5 hoverable">
         <h3 class="h3">Product info:</h3>
@@ -21,80 +21,80 @@
             }
         }
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityName, new { @class = "validate" })
-            <label style="font-size: large">Name</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Name of the product.</span>
+            @Html.TextBoxFor(x => x.ProductEntityName, new { @class = "validate", @id="productEntityName" })
+            <label for="productEntityName" style="font-size: large">Name</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Name of the product.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityName, "", new{@class="red-text"})
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityNumber, new { @class = "validate", @type = "text" })
-            <label style="font-size: large">Number</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Unique product identification number.</span>
+            @Html.TextBoxFor(x => x.ProductEntityNumber, new { @class = "validate", @type = "text", @id = "productEntityNumber" })
+            <label for="productEntityNumber" style="font-size: large">Number</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Unique product identification number.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityNumber, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntitySafetyStockLevel, new { @class = "validate", @type = "number" })
-            <label style="font-size: large">Safety stock level</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Minimum inventory quantity.</span>
+            @Html.TextBoxFor(x => x.ProductEntitySafetyStockLevel, new { @class = "validate", @type = "number", @id = "productEntitySafetyStockLevel" })
+            <label for="productEntitySafetyStockLevel" style="font-size: large">Safety stock level</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Minimum inventory quantity.</span>
             @Html.ValidationMessageFor(x => x.ProductEntitySafetyStockLevel, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityReorderPoint, new { @class = "validate", @type = "number" })
-            <label style="font-size: large">Reorder point</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Inventory level that trigers a purchase order or work order.</span>
+            @Html.TextBoxFor(x => x.ProductEntityReorderPoint, new { @class = "validate", @type = "number", @id = "productEntityReorderPoint" })
+            <label for="productEntityReorderPoint" style="font-size: large">Reorder point</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Inventory level that trigers a purchase order or work order.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityReorderPoint, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityStandardCost, new { @class = "validate", @type = "number", @step = "0.01" })
-            <label style="font-size: large">Standard cost</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Standard cost of the product.</span>
+            @Html.TextBoxFor(x => x.ProductEntityStandardCost, new { @class = "validate", @type = "number", @step = "0.01", @id = "productEntityStandardCost" })
+            <label for="productEntityStandardCost" style="font-size: large">Standard cost</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Standard cost of the product.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityStandardCost, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityListPrice, new { @class = "validate", @type = "number", @step = "0.01" })
-            <label style="font-size: large">List price</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Selling price.</span>
+            @Html.TextBoxFor(x => x.ProductEntityListPrice, new { @class = "validate", @type = "number", @step = "0.01", @id = "productEntityListPrice" })
+            <label for="productEntityListPrice" style="font-size: large">List price</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Selling price.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityListPrice, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
-            @Html.TextBoxFor(x => x.ProductEntityDaysToManufacture, new { @class = "validate", @type = "number" })
-            <label style="font-size: large">Days to manufacture</label>
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Number of days required to manufacture the product.</span>
+            @Html.TextBoxFor(x => x.ProductEntityDaysToManufacture, new { @class = "validate", @type = "number", @id = "productEntityDaysToManufacture" })
+            <label for="productEntityDaysToManufacture" style="font-size: large">Days to manufacture</label>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Number of days required to manufacture the product.</span>
             @Html.ValidationMessageFor(x => x.ProductEntityDaysToManufacture, "", new { @class = "red-text" })
         </div>
         <div class="input-field col s12" style="margin-top: 2em">
             @Html.EditorFor(x => x.ProductEntitySellStartDate)
-            <span class="text-monospace grey-text" data-error="wrong" data-success="right">Date the product was available for sale.</span>
+            <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Date the product was available for sale.</span>
             @Html.ValidationMessageFor(x => x.ProductEntitySellStartDate, "", new { @class = "red-text" })
         </div>
     </div>
         <div class="card-panel blue-grey lighten-5 hoverable">
             <h3 class="h3">Product description info:</h3>
             <div class="input-field col s12" style="margin-top: 2em">
-                @Html.TextAreaFor(x => x.ProductDescriptionEntityDescription, new { @class = "materialize-textarea validate", @type = "text" })
-                <label style="font-size: large">Description</label>
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">Description of the product.</span>
+                @Html.TextAreaFor(x => x.ProductDescriptionEntityDescription, new { @class = "materialize-textarea validate", @type = "text", @id = "productDescriptionEntityDescription" })
+                <label for="productDescriptionEntityDescription" style="font-size: large">Description</label>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Description of the product.</span>
                 @Html.ValidationMessageFor(x => x.ProductDescriptionEntityDescription, "", new { @class = "red-text" })
             </div>
         </div>
         <div class="card-panel blue-grey lighten-5 hoverable">
             <h3 class="h3">Product inventory info:</h3>
             <div class="input-field col s12" style="margin-top: 2em">
-                @Html.TextBoxFor(x => x.ProductInventoryEntityShelf, new { @class = "validate", @type = "text" })
-                <label style="font-size: large">Shelf</label>
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">Storage compartment within an inventory location.</span>
+                @Html.TextBoxFor(x => x.ProductInventoryEntityShelf, new { @class = "validate", @type = "text", @id = "productInventoryEntityShelf" })
+                <label for="productInventoryEntityShelf" style="font-size: large">Shelf</label>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Storage compartment within an inventory location.</span>
                 @Html.ValidationMessageFor(x => x.ProductInventoryEntityShelf, "", new { @class = "red-text" })
             </div>
             <div class="input-field col s12" style="margin-top: 2em">
-                @Html.TextBoxFor(x => x.ProductInventoryEntityBin, new { @class = "validate", @type = "number" })
-                <label style="font-size: large">Bin</label>
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">Storage container on a shelf in an inventory location.</span>
+                @Html.TextBoxFor(x => x.ProductInventoryEntityBin, new { @class = "validate", @type = "number", @id = "productInventoryEntityBin" })
+                <label for="productInventoryEntityBin" style="font-size: large">Bin</label>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Storage container on a shelf in an inventory location.</span>
                 @Html.ValidationMessageFor(x => x.ProductInventoryEntityBin, "", new { @class = "red-text" })
             </div>
             <div class="input-field col s12" style="margin-top: 2em">
-                @Html.TextBoxFor(x => x.ProductInventoryEntityQuantity, new { @class = "validate", @type = "number" })
-                <label style="font-size: large">Quantity</label>
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">Quantity of products in the inventory location.</span>
+                @Html.TextBoxFor(x => x.ProductInventoryEntityQuantity, new { @class = "validate", @type = "number", @id = "productInventoryEntityQuantity" })
+                <label for="productInventoryEntityQuantity" style="font-size: large">Quantity</label>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Quantity of products in the inventory location.</span>
                 @Html.ValidationMessageFor(x => x.ProductInventoryEntityQuantity, "", new { @class = "red-text" })
             </div>
         </div>
@@ -102,22 +102,19 @@
             <h3 class="h3">Product price info:</h3>
             <div class="input-field col s12" style="margin-top: 2em">
                 @Html.EditorFor(x => x.ProductListPriceHistoryEntityStartDate)
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">List price start date.</span>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">List price start date.</span>
                 @Html.ValidationMessageFor(x => x.ProductListPriceHistoryEntityStartDate, "", new { @class = "red-text" })
             </div>
             <div class="input-field col s12" style="margin-top: 2em">
-                @Html.TextBoxFor(x => x.ProductListPriceHistoryEntityListPrice, new { @class = "validate", @type = "number", @step = "0.01" })
-                <label style="font-size: large">List price history</label>
-                <span class="text-monospace grey-text" data-error="wrong" data-success="right">Product list price.</span>
+                @Html.TextBoxFor(x => x.ProductListPriceHistoryEntityListPrice, new { @class = "validate", @type = "number", @step = "0.01", @id = "productListPriceHistoryEntityListPrice" })
+                <label for="productListPriceHistoryEntityListPrice" style="font-size: large">List price history</label>
+                <span class="text-monospace helper-text grey-text" data-error="wrong" data-success="">Product list price.</span>
                 @Html.ValidationMessageFor(x => x.ProductListPriceHistoryEntityListPrice, "", new { @class = "red-text" })
             </div>
         </div>
         <div style="margin: 2em">
-            <a onclick="M.toast({html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>'})" href="@Url.Action("Index")" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
-            <button onclick="M.toast({html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>'})" class="modal-close btn-large waves-effect waves-light" type="submit" name="action">
-                Submit
-                <i class="material-icons right">send</i>
-            </button>
+            <a onclick="M.toast({html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>'})" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+            <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
         </div>
     }
 </div>
