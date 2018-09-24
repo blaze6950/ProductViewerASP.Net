@@ -12,27 +12,51 @@
     }
 </style>
 
-<div class="card-header">
+<header>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Products</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a onclick="openModal(false, 0)"><i class="material-icons right">add</i>ADD NEW PRODUCT</a></li>
+            </ul>
+        </div>
+    </nav>
+    <br/>
+    <nav style="margin-bottom: 2em">
+        <div class="nav-wrapper">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+            {
+                <div class="input-field">
+                    <input id="search" type="search" name="searchValue" value="@Model.SearchValue">
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                </div>
+                @Html.HiddenFor(x => x.PagingInfo.CurrentPage)
+                @Html.HiddenFor(x => x.SortConfig)
+            }
+        </div>
+    </nav>
+</header>
+@*<div class="card-header">
     <h1 class="h1">Products:</h1>
-</div>
+</div>*@
 <div class="card-content">
-    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-    { 
+    @*@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
         <div class="card-panel teal lighten-5">
             <div class="input-field col s12" data-tip="To find something, you need to know what to look for! Enter at least one character and press Enter...">
                 <i class="material-icons prefix">search</i>
-                <input value="@Model.SearchValue" name="searchValue" id="search" type="text" class="validate" />
-                @Html.HiddenFor(x=>x.PagingInfo.CurrentPage)
-                @Html.HiddenFor(x=>x.SortConfig)
+                <input value="@Model.SearchValue" name="searchValue" id="search" type="text" class="validate"/>
+                @Html.HiddenFor(x => x.PagingInfo.CurrentPage)
+                @Html.HiddenFor(x => x.SortConfig)
                 <label for="search">Search:</label>
             </div>
         </div>
-    }
-    <a class="waves-effect waves-light btn-large" onclick="openModal(false, 0)" style="margin-bottom: 0.6em"><i class="material-icons right">add</i>Add new product</a>
+    }*@
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            @*@Html.Action("AddOrEditProduct", new { isEditing = false })*@
+
         </div>
     </div>
     <div class="card-panel grey lighten-5">
@@ -66,7 +90,7 @@
 
         </table>
         <div>
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = !(@Model.SortConfig.IsAsc), sortColumn = @Model.SortConfig.CurrentColumn}))
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new {page = x, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = !(@Model.SortConfig.IsAsc), sortColumn = @Model.SortConfig.CurrentColumn}))
         </div>
     </div>
 </div>
