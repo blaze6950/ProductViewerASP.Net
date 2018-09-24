@@ -278,7 +278,7 @@ namespace ProductViewer.UnitTests.WebUITests
         public void AddOrEditProductGetIsCorrect_Adding()
         {
             //Act
-            var result = _homeController.AddOrEditProduct();
+            var result = _homeController.AddOrEditProduct() as PartialViewResult;
             //Assert
             _mockProductRepository.Verify(c => c.GetProductList());
             _mockProductModelRepository.Verify(c => c.GetProductModelList());
@@ -295,7 +295,7 @@ namespace ProductViewer.UnitTests.WebUITests
         public void AddOrEditProductGetIsCorrect_Editing()
         {
             //Act
-            var result = _homeController.AddOrEditProduct(true, 1);
+            var result = _homeController.AddOrEditProduct(true, 1) as PartialViewResult;
             //Assert
             _mockProductRepository.Verify(c => c.GetProductList());
             _mockProductModelRepository.Verify(c => c.GetProductModelList());
