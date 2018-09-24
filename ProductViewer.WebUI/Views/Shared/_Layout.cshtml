@@ -6,9 +6,11 @@
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
-    <link href="~/node_modules/materialize-css/dist/css/materialize.min.css" rel="stylesheet" />
+    @*<link href="~/Content/scss/materialize.min.css" rel="stylesheet" />*@
+    @Styles.Render("~/bundles/materializecss")
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>    <!-- Compiled and minified JavaScript -->
-    <script src="~/node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    @*<script src="~/Scripts/materializejs/bin/materialize.min.js"></script>*@
+    @Scripts.Render("~/bundles/materializejs")
 </head>
 <body>
 <div class="container body-content">
