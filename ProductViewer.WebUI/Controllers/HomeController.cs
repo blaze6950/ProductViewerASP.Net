@@ -149,17 +149,6 @@ namespace ProductViewer.WebUI.Controllers
             return View(model);
         }
 
-        private void InitialList()
-        {
-            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
-                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
-                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
-                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
-                select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
-        }
-
         public RedirectToRouteResult RemoveItem(int id)
         {
             if (_list == null)
@@ -223,6 +212,27 @@ namespace ProductViewer.WebUI.Controllers
                 // there is something wrong with the data values
                 return PartialView(product);
             }
+        }
+
+        public ViewResult ProductDetails(int id)
+        {
+            if (_list == null)
+            {
+                InitialList();
+            }
+            var product = _list.First(p => p.ProductEntityId == id);
+            return View(product);
+        }
+
+        private void InitialList()
+        {
+            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
+                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
+                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
+                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
+                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
+                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
+                select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
         }
 
         private void CreateNewProduct(ProductViewModelBuilder builder)
