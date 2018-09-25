@@ -40,9 +40,16 @@
 
 <div class="card-content">
     <!-- Modal Structure -->
-    <div id="modal1" class="modal">
+    <div id="modal1" class="modal modal-fixed-footer">
+        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>*@
         <div class="modal-content">
 
+        </div>
+        <div class="modal-footer" style="margin: 1em 1em 1em 0">
+            <a onclick="" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+            <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
         </div>
     </div>
     <div class="card-panel grey lighten-5">
@@ -65,7 +72,7 @@
                     <td>@p.ProductInventoryEntityQuantity</td>
                     <td>@p.PriceForAll.ToString("C")</td>
                     <td>
-                        <a @*href="@Url.Action("AddOrEditProduct", new { isEditing = true, id = p.ProductEntityId })"*@ onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                        <a onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
                     </td>
                     <td>
                         <a class="btn-floating btn waves-effect waves-light red" onclick="callConfirmationAlert(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
@@ -82,7 +89,9 @@
 </div>
 <script>
     $(document).ready(function() {
-        $(".modal").modal();
+        $(".modal").modal({ onCloseEnd: function() {
+            M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' });
+        }});
     });
     function callConfirmationAlert(idRemovableItem) {
         if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
