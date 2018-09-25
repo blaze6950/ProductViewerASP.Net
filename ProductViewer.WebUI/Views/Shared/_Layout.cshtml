@@ -9,19 +9,26 @@
     @Styles.Render("~/bundles/materializecss")
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>    <!-- Compiled and minified JavaScript -->
     @Scripts.Render("~/bundles/materializejs")
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+    </style>
 </head>
 <body>
-<div class="container body-content">
+<main class="container body-content">
     @RenderBody()
-</div>
+</main>
 <footer class="page-footer" style="background-color: #26a69a">
-    <div class="footer-copyright">
+    <div class="footer-copyright" style="margin-top: -1em">
         <p>&copy; @DateTime.Now.Year - Product Viewer Application</p>
     </div>
 </footer>
-@*@Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")*@
 @RenderSection("scripts", required: false)
-
 </body>
 </html>
