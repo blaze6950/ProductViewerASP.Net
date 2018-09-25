@@ -10,6 +10,9 @@
         width: 95% !important;
         height: 100% !important;
     }
+    .highlight tr {
+        cursor: pointer;
+    }
 </style>
 
 <header>
@@ -63,7 +66,7 @@
             <tbody>
             @foreach (var p in @Model.Products)
             {
-                <tr>
+                <tr onclick="openProductDetails(@p.ProductEntityId)">
                     <td id="@p.ProductEntityId">@p.ProductEntityName</td>
                     <td>@p.ProductDescriptionEntityDescription</td>
                     <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
@@ -164,5 +167,10 @@
                 });
             }
         });
+    }
+    function openProductDetails(productId) {
+        if (productId != undefined && typeof productId === "number") {
+            document.location = "/Home/ProductDetails/" + productId;
+        }
     }
 </script>
