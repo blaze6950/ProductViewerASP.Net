@@ -26,24 +26,24 @@
                     </div>
 
                     <div class="card-content">
-                        <ul class="collapsible popout">
+                        <ul class="collapsible expandable">
                             <li class="active">
                                 <div class="collapsible-header"><i class="material-icons">description</i>Description</div>
                                 <div class="collapsible-body"><span>@Model.ProductDescriptionEntityDescription</span></div>
                             </li>
-                            <li>
+                            <li class="active">
                                 <div class="collapsible-header"><i class="material-icons">attach_money</i>Price</div>
                                 <div class="collapsible-body"><span>@Model.ProductListPriceHistoryEntityListPrice.ToString("C")</span></div>
                             </li>
-                            <li>
+                            <li class="active">
                                 <div class="collapsible-header"><i class="material-icons">filter_9_plus</i>Quantity</div>
                                 <div class="collapsible-body"><span>@Model.ProductInventoryEntityQuantity pieces</span></div>
                             </li>
-                            <li>
+                            <li class="active">
                                 <div class="collapsible-header"><i class="material-icons">info_outline</i>Product number</div>
                                 <div class="collapsible-body"><span>@Model.ProductEntityNumber</span></div>
                             </li>
-                            <li>
+                            <li class="active">
                                 <div class="collapsible-header"><i class="material-icons">lock_outline</i>Safety stock level</div>
                                 <div class="collapsible-body"><span>@Model.ProductEntitySafetyStockLevel</span></div>
                             </li>
@@ -64,7 +64,7 @@
             }
         });
         $(document).ready(function(){
-            $('.collapsible').collapsible();
+            $('.collapsible').collapsible({accordion:false});
         });
     });
     function editProduct() {
