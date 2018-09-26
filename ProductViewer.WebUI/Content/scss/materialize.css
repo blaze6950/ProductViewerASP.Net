@@ -6538,3 +6538,23 @@ input[type=range]::-ms-thumb {
   #layout footer div.footer-copyright {
     margin-top: -1.4em; }
 
+#indexView .modal {
+  width: 95% !important;
+  height: 100% !important; }
+
+#indexView .highlight tr {
+  cursor: pointer; }
+
+#indexView header nav {
+  margin-bottom: 5em; }
+  #indexView header nav nav {
+    width: 25em;
+    box-shadow: none;
+    background-color: #d32f2f; }
+
+#indexView .brand-logo {
+  float: left;
+  font-size: 50px;
+  margin-left: 10px;
+  margin-right: 15px; }
+
