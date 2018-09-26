@@ -57,7 +57,7 @@
                 <tbody>
                     @foreach (var p in @Model.Products)
                     {
-                        <tr id="tr">
+                        <tr class="tr">
                             <td class="withId" id="@p.ProductEntityId">@p.ProductEntityName</td>
                             <td>@p.ProductDescriptionEntityDescription</td>
                             <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
@@ -86,7 +86,7 @@
             M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' });
         }
         });
-        $('#tr').click(function openProductDetails(el) {
+        $('.tr').click(function openProductDetails(el) {
             var e = el || window.event;
             var target = $(el.target || el.srcElement);
             if (!target.is('i.material-icons')) {
