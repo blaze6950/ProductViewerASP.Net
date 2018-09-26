@@ -16,8 +16,8 @@ namespace ProductViewer.WebUI
             bundles.Add(new ScriptBundle("~/bundles/materializejs").Include(
                 "~/Scripts/materializejs/source/materialize.min.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/materializecss").Include(
-                "~/Content/scss/materialize.min.css"));
+            bundles.Add(new StyleBundle("~/bundles/sitecss").Include(
+                "~/Content/scss/Site.min.css"));
         }
     }
 }
