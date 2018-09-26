@@ -6571,6 +6571,9 @@ input[type=range]::-ms-thumb {
   #productDetailsView .modal .modal-footer {
     margin: 1em 1em 1em 0; }
 
+#productDetailsView .container .waves-effect.waves-red.btn-flat {
+  margin: 1em; }
+
 #productDetailsView .container .row {
   margin-top: 0em; }
   #productDetailsView .container .row .btn-floating.orange {
