@@ -172,12 +172,12 @@ namespace ProductViewer.WebUI.Controllers
             {
                 ViewBag.Title = "Editing an existing product";
                 var product = _list.First(p => p.ProductEntityId == id);
-                return PartialView(product);
+                return PartialView("Partials/AddOrEditProduct", product);
             }
             else
             {
                 ViewBag.Title = "Adding new product";
-                return PartialView();
+                return PartialView("Partials/AddOrEditProduct");
             }
         }
 
@@ -204,13 +204,13 @@ namespace ProductViewer.WebUI.Controllers
                 catch (Exception e)
                 {
                     TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
-                    return PartialView(product);
+                    return PartialView("Partials/AddOrEditProduct", product);
                 }
             }
             else
             {
                 // there is something wrong with the data values
-                return PartialView(product);
+                return PartialView("Partials/AddOrEditProduct", product);
             }
         }
 

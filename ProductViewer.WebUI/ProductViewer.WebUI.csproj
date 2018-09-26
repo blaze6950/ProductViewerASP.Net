@@ -319,7 +319,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\AddOrEditProduct.cshtml" />
+    <Content Include="Views\Home\Partials\AddOrEditProduct.cshtml" />
     <Content Include="Views\Home\ProductDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
