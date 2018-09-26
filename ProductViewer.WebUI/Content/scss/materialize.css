@@ -6541,6 +6541,8 @@ input[type=range]::-ms-thumb {
 #indexView .modal {
   width: 95% !important;
   height: 100% !important; }
+  #indexView .modal .modal-footer {
+    margin: 1em 1em 1em 0; }
 
 #indexView .highlight tr {
   cursor: pointer; }
@@ -6558,8 +6560,21 @@ input[type=range]::-ms-thumb {
   margin-left: 10px;
   margin-right: 15px; }
 
-#addOrEditProduct .input-field {
+#addOrEditProductView .input-field {
   margin-top: 2em; }
-  #addOrEditProduct .input-field label {
+  #addOrEditProductView .input-field label {
     font-size: large; }
+
+#productDetailsView .modal {
+  width: 95% !important;
+  height: 100% !important; }
+  #productDetailsView .modal .modal-footer {
+    margin: 1em 1em 1em 0; }
+
+#productDetailsView .container .row {
+  margin-top: 0em; }
+  #productDetailsView .container .row .btn-floating.orange {
+    margin-right: 5em; }
+  #productDetailsView .container .row .btn-floating.red {
+    margin-right: 9em; }
 

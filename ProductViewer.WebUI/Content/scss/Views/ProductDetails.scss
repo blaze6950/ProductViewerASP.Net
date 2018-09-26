@@ -1,0 +1,24 @@
+﻿#productDetailsView {
+    .modal {
+        width: 95% !important;
+        height: 100% !important;
+
+        .modal-footer {
+            margin: 1em 1em 1em 0;
+        }
+    }
+
+    .container {
+        .row {
+            margin-top: 0em;
+
+            .btn-floating.orange {
+                margin-right: 5em;
+            }
+
+            .btn-floating.red {
+                margin-right: 9em;
+            }
+        }
+    }
+}

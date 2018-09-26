@@ -1,61 +1,56 @@
 ﻿@model ProductViewer.WebUI.Models.ProductViewModel
 
-<style>
-    .modal {
-        width: 95% !important;
-        height: 100% !important;
-    }
-</style>
+<div id="productDetailsView">
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
 
-<!-- Modal Structure -->
-<div id="modal1" class="modal modal-fixed-footer">
-    <div class="modal-content">
-
+        </div>
+        <div class="modal-footer">
+            <a onclick="" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+            <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
+        </div>
     </div>
-    <div class="modal-footer" style="margin: 1em 1em 1em 0">
-        <a onclick="" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
-        <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
-    </div>
-</div>
 
-<div class="container">
-    <div class="row card" style="background-color: #fafafa">
-        <a style="margin: 1em" onclick="history.back()" class="modal-close card-title waves-effect waves-light btn-flat"><i class="material-icons left">arrow_back</i>Back</a>
-    </div>
-    <div class="row" style="margin-top: 0em">
-        <div class="col s12">
-            <div class="card">
-                <div class="card-image">
-                    <img class="materialboxed" data-caption="@Model.ProductDescriptionEntityDescription" src="/images/placeholder.gif">
-                    <span class="card-title">@Model.ProductEntityName</span>
-                    <a onclick="addToCart()" data-position="right" data-tooltip="Add to cart..." class="btn-floating btn-large halfway-fab waves-effect waves-light green tooltipped"><i class="material-icons">add</i></a>
-                    <a onclick="editProduct()" data-position="top" data-tooltip="Edit product..." style="margin-right: 5em" class="btn-floating halfway-fab waves-effect waves-light orange tooltipped"><i class="material-icons">edit</i></a>
-                    <a onclick="deleteProduct()" data-position="left" data-tooltip="Delete product..." style="margin-right: 9em" class="btn-floating halfway-fab waves-effect waves-light red tooltipped"><i class="material-icons">delete</i></a>
-                </div>
+    <div class="container">
+        <div class="row card" style="background-color: #fafafa">
+            <a style="margin: 1em" onclick="history.back()" class="modal-close card-title waves-effect waves-light btn-flat"><i class="material-icons left">arrow_back</i>Back</a>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-image">
+                        <img class="materialboxed" data-caption="@Model.ProductDescriptionEntityDescription" src="/images/placeholder.gif">
+                        <span class="card-title">@Model.ProductEntityName</span>
+                        <a onclick="addToCart()" data-position="right" data-tooltip="Add to cart..." class="btn-floating btn-large halfway-fab waves-effect waves-light green tooltipped"><i class="material-icons">add</i></a>
+                        <a onclick="editProduct()" data-position="top" data-tooltip="Edit product..." class="btn-floating halfway-fab waves-effect waves-light orange tooltipped"><i class="material-icons">edit</i></a>
+                        <a onclick="deleteProduct()" data-position="left" data-tooltip="Delete product..." class="btn-floating halfway-fab waves-effect waves-light red tooltipped"><i class="material-icons">delete</i></a>
+                    </div>
 
-                <div class="card-content">
-                    <ul class="collapsible popout">
-                        <li class="active">
-                            <div class="collapsible-header"><i class="material-icons">description</i>Description</div>
-                            <div class="collapsible-body"><span>@Model.ProductDescriptionEntityDescription</span></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">attach_money</i>Price</div>
-                            <div class="collapsible-body"><span>@Model.ProductListPriceHistoryEntityListPrice.ToString("C")</span></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">filter_9_plus</i>Quantity</div>
-                            <div class="collapsible-body"><span>@Model.ProductInventoryEntityQuantity pieces</span></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">info_outline</i>Product number</div>
-                            <div class="collapsible-body"><span>@Model.ProductEntityNumber</span></div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">lock_outline</i>Safety stock level</div>
-                            <div class="collapsible-body"><span>@Model.ProductEntitySafetyStockLevel</span></div>
-                        </li>
-                    </ul>
+                    <div class="card-content">
+                        <ul class="collapsible popout">
+                            <li class="active">
+                                <div class="collapsible-header"><i class="material-icons">description</i>Description</div>
+                                <div class="collapsible-body"><span>@Model.ProductDescriptionEntityDescription</span></div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">attach_money</i>Price</div>
+                                <div class="collapsible-body"><span>@Model.ProductListPriceHistoryEntityListPrice.ToString("C")</span></div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">filter_9_plus</i>Quantity</div>
+                                <div class="collapsible-body"><span>@Model.ProductInventoryEntityQuantity pieces</span></div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">info_outline</i>Product number</div>
+                                <div class="collapsible-body"><span>@Model.ProductEntityNumber</span></div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">lock_outline</i>Safety stock level</div>
+                                <div class="collapsible-body"><span>@Model.ProductEntitySafetyStockLevel</span></div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

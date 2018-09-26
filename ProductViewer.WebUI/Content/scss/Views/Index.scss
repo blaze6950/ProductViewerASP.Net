@@ -2,6 +2,10 @@
     .modal {
         width: 95% !important;
         height: 100% !important;
+
+        .modal-footer {
+            margin: 1em 1em 1em 0;
+        }
     }
 
     .highlight tr {
