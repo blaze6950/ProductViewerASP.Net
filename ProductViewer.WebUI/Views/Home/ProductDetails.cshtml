@@ -26,29 +26,40 @@
                     </div>
 
                     <div class="card-content">
-                        <ul class="collapsible expandable">
-                            <li class="active">
-                                <div class="collapsible-header"><i class="material-icons">description</i>Description</div>
-                                <div class="collapsible-body"><span>@Model.ProductDescriptionEntityDescription</span></div>
-                            </li>
-                            <li class="active">
-                                <div class="collapsible-header"><i class="material-icons">attach_money</i>Price</div>
-                                <div class="collapsible-body"><span>@Model.ProductListPriceHistoryEntityListPrice.ToString("C")</span></div>
-                            </li>
-                            <li class="active">
-                                <div class="collapsible-header"><i class="material-icons">filter_9_plus</i>Quantity</div>
-                                <div class="collapsible-body"><span>@Model.ProductInventoryEntityQuantity pieces</span></div>
-                            </li>
-                            <li class="active">
-                                <div class="collapsible-header"><i class="material-icons">info_outline</i>Product number</div>
-                                <div class="collapsible-body"><span>@Model.ProductEntityNumber</span></div>
-                            </li>
-                            <li class="active">
-                                <div class="collapsible-header"><i class="material-icons">lock_outline</i>Safety stock level</div>
-                                <div class="collapsible-body"><span>@Model.ProductEntitySafetyStockLevel</span></div>
-                            </li>
-                        </ul>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td><i class="material-icons left">description</i>Description:</td>
+                                <td>@Model.ProductDescriptionEntityDescription</td>
+                            </tr>
+                            <tr>
+                                <td><i class="material-icons left">attach_money</i>Price:</td>
+                                <td>@Model.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
+                            </tr>
+                            <tr>
+                                <td><i class="material-icons left">filter_9_plus</i>Quantity:</td>
+                                <td>@Model.ProductInventoryEntityQuantity</td>
+                            </tr>
+                            <tr>
+                                <td><i class="material-icons left">info_outline</i>Product number:</td>
+                                <td>@Model.ProductEntityNumber</td>
+                            </tr>
+                            <tr>
+                                <td><i class="material-icons left">lock_outline</i>Safety stock level:</td>
+                                <td>@Model.ProductEntitySafetyStockLevel</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
                     </div>
+
                 </div>
             </div>
         </div>
