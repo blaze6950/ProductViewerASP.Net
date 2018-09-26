@@ -6558,3 +6558,8 @@ input[type=range]::-ms-thumb {
   margin-left: 10px;
   margin-right: 15px; }
 
+#addOrEditProduct .input-field {
+  margin-top: 2em; }
+  #addOrEditProduct .input-field label {
+    font-size: large; }
+
