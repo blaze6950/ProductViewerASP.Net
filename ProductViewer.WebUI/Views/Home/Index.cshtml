@@ -66,8 +66,8 @@
             <tbody>
             @foreach (var p in @Model.Products)
             {
-                <tr onclick="openProductDetails(@p.ProductEntityId)">
-                    <td id="@p.ProductEntityId">@p.ProductEntityName</td>
+                <tr id="tr">
+                    <td class="withId" id="@p.ProductEntityId">@p.ProductEntityName</td>
                     <td>@p.ProductDescriptionEntityDescription</td>
                     <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
                     <td>@p.ProductInventoryEntityQuantity</td>
@@ -92,7 +92,18 @@
     $(document).ready(function() {
         $(".modal").modal({ onCloseEnd: function() {
             M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' });
-        }});
+        }
+        });
+        $('#tr').click(function openProductDetails(el) {
+            var e = el || window.event;
+            var target = $(el.target || el.srcElement);
+            if (!target.is('i.material-icons')) {
+                var id = parseInt($(this).children('td.withId').attr('id'), 10);
+                if (id != undefined && typeof id === "number") {
+                    document.location = "/Home/ProductDetails/" + id;
+                }
+            }
+        });
     });
     function callConfirmationAlert(idRemovableItem) {
         if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
@@ -168,10 +179,5 @@
             }
         });
         location.reload();
-    }
-    function openProductDetails(productId) {
-        if (productId != undefined && typeof productId === "number") {
-            document.location = "/Home/ProductDetails/" + productId;
-        }
     }
 </script>
