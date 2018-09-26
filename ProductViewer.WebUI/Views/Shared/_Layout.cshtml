@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html id="layout">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +9,13 @@
     @Styles.Render("~/bundles/materializecss")
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>    <!-- Compiled and minified JavaScript -->
     @Scripts.Render("~/bundles/materializejs")
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-        main {
-            flex: 1 0 auto;
-        }
-    </style>
 </head>
 <body>
 <main class="body-content">
     @RenderBody()
 </main>
-<footer class="page-footer" style="background-color: #26a69a">
-    <div class="footer-copyright" style="margin-top: -1em">
+<footer class="page-footer">
+    <div class="footer-copyright">
         <p>&copy; @DateTime.Now.Year - Product Viewer Application</p>
     </div>
 </footer>

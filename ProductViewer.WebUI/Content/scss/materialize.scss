@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 // Color
 @import "components/color-variables";
@@ -39,3 +39,6 @@
 @import "components/pulse";
 @import "components/datepicker";
 @import "components/timepicker";
+
+//Views
+@import "Views/_Layout.scss";

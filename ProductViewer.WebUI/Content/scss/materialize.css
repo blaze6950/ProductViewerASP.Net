@@ -6525,3 +6525,16 @@ input[type=range]::-ms-thumb {
     text-align: center;
     margin-top: 1.2rem; } }
 
+#layout body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+#layout main {
+  flex: 1 0 auto; }
+
+#layout footer {
+  background-color: #26a69a; }
+  #layout footer div.footer-copyright {
+    margin-top: -1.4em; }
+
