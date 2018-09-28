@@ -149,6 +149,7 @@ namespace ProductViewer.WebUI.Controllers
             return View(model);
         }
 
+        [System.Web.Mvc.HttpPost]
         public RedirectToRouteResult RemoveItem(int id)
         {
             if (_list == null)

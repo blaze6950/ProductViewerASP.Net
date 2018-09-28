@@ -102,9 +102,17 @@
             let text = $(`#${idRemovableItem}`).text();
             const confirmation = confirm(`Are you sure? Deleting ${text}...`);
             if (confirmation) {
-                text = `/Home/RemoveItem/${idRemovableItem}`;
-                location.href = text;
-                M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>'});
+                $.ajax({
+                    url: '@Url.Action("RemoveItem", "Home")/' + idRemovableItem,
+                    cache: false,
+                    type: "POST",
+                    success: function() {
+                        M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>'});
+                    },
+                    error: function() {
+                        M.toast({ html: '<p><i class=\'material-icons right\'>error</i>Something went wrong! Try again!</p>'});
+                    }
+                });
             }
         }
     }
