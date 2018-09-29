@@ -1,5 +1,4 @@
 ﻿using System;
-using ProductViewer.Domain.Concrete;
 
 namespace ProductViewer.Domain.Abstract
 {

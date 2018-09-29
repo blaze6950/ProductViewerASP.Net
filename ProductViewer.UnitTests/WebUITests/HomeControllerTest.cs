@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
 using ProductViewer.Domain.Entities;
 using ProductViewer.WebUI.Controllers;
 using ProductViewer.WebUI.Models;

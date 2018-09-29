@@ -170,15 +170,15 @@
     <Compile Include="HtmlHelpers\SortColumnHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\PagingInfo.cs" />
-    <Compile Include="Models\ProductListViewModel.cs" />
-    <Compile Include="Models\ProductViewModel.cs" />
-    <Compile Include="Models\ProductViewModelBuilder.cs" />
+    <Compile Include="ViewModels\ProductListViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModelBuilder.cs" />
     <Compile Include="Models\SortConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\scss\Site.css">
-      <DependentUpon>Site.scss</DependentUpon>
+      <DependentUpon>site.scss</DependentUpon>
     </Content>
     <Content Include="Content\scss\Site.min.css">
       <DependentUpon>Site.css</DependentUpon>
@@ -201,7 +201,7 @@
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="libman.json" />
-    <Content Include="Content\scss\Site.scss" />
+    <Content Include="Content\scss\site.scss" />
     <Content Include="Content\scss\components\_badges.scss" />
     <Content Include="Content\scss\components\_buttons.scss" />
     <Content Include="Content\scss\components\_cards.scss" />
@@ -245,10 +245,10 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="Content\scss\Views\_Layout.scss" />
-    <Content Include="Content\scss\Views\Index.scss" />
-    <Content Include="Content\scss\Views\AddOrEditProduct.scss" />
-    <Content Include="Content\scss\Views\ProductDetails.scss" />
+    <Content Include="Content\scss\views\shared\layout.scss" />
+    <Content Include="Content\scss\views\home\index.scss" />
+    <Content Include="Content\scss\views\home\add-edit-products.scss" />
+    <Content Include="Content\scss\views\home\product-details.scss" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

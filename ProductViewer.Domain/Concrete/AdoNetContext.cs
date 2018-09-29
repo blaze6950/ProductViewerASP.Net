@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Concrete
 {
