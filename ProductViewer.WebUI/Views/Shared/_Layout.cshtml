@@ -6,8 +6,15 @@
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
+    @Styles.Render("~/bundles/kendo.common.material")
+    @Styles.Render("~/bundles/kendo.mobile")
+    @Styles.Render("~/bundles/kendo.material")
     @Styles.Render("~/bundles/sitecss")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jszip")
+    @Scripts.Render("~/bundles/kendojs.all")
+    @Scripts.Render("~/bundles/kendojs.aspnetmvc")
+    @Scripts.Render("~/bundles/kendojs.modernizr.custom")
     @Scripts.Render("~/bundles/sitejs")
 </head>
 <body>
