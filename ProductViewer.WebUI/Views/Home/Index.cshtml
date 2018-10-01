@@ -44,40 +44,44 @@
                 <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
             </div>
         </div>
-        <div class="card-panel grey lighten-5">
+        @*<div class="card-panel grey lighten-5">
             <table class="highlight">
                 <thead>
-                    <tr>
-                        @Html.SortColumn(@Model.SortConfig, s => @Url.Action("Index", new { page = @Model.PagingInfo.CurrentPage, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = @Model.SortConfig.IsAsc, sortColumn = s }))
-                        <th></th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    @Html.SortColumn(@Model.SortConfig, s => @Url.Action("Index", new { page = @Model.PagingInfo.CurrentPage, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = @Model.SortConfig.IsAsc, sortColumn = s }))
+                    <th></th>
+                    <th></th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var p in @Model.Products)
-                    {
-                        <tr class="tr">
-                            <td class="withId" id="@p.ProductEntityId">@p.ProductEntityName</td>
-                            <td>@p.ProductDescriptionEntityDescription</td>
-                            <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
-                            <td>@p.ProductInventoryEntityQuantity</td>
-                            <td>@p.PriceForAll.ToString("C")</td>
-                            <td>
-                                <a onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
-                            </td>
-                            <td>
-                                <a class="btn-floating btn waves-effect waves-light red" onclick="callConfirmationAlert(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var p in @Model.Products)
+                {
+                    <tr class="tr">
+                        <td class="withId" id="@p.ProductEntityId">@p.ProductEntityName</td>
+                        <td>@p.ProductDescriptionEntityDescription</td>
+                        <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
+                        <td>@p.ProductInventoryEntityQuantity</td>
+                        <td>@p.PriceForAll.ToString("C")</td>
+                        <td>
+                            <a onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                        </td>
+                        <td>
+                            <a class="btn-floating btn waves-effect waves-light red" onclick="callConfirmationAlert(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
 
             </table>
             <div>
                 @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = !(@Model.SortConfig.IsAsc), sortColumn = @Model.SortConfig.CurrentColumn }))
             </div>
-        </div>
+        </div>*@
+        
+        @*define the HTML div that will contain the Grid*@
+        <div id="grid"></div>
+
     </div>
 </div>
 <script>
@@ -95,6 +99,47 @@
                     document.location = "/Home/ProductDetails/" + id;
                 }
             }
+        });
+        $("#grid").kendoGrid({
+            dataSource: {   
+                transport: { 
+                    type: "odata",
+                    read: {
+                        url: "@Url.Action("GetProducts", "Home")"
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    model: {
+                        fields: {
+                            ProductEntityId: { type: "number" },
+                            ProductEntityName: { type: "string" },
+                            ProductDescriptionEntityDescription: { type: "string" },
+                            ProductListPriceHistoryEntityListPrice: { type: "number" },
+                            ProductInventoryEntityQuantity: { type: "number" },
+                            PriceForAll: { type: "number" }
+                        }
+                    }
+                },
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                serverGrouping: true,
+                serverAggregates: true
+            },
+            columns: [
+                { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
+                { field: "ProductEntityName", title: "Name", type: "string" },
+                { field: "ProductDescriptionEntityDescription", title: "Description", type: "string" },
+                { field: "ProductListPriceHistoryEntityListPrice", title: "Price", type: "number" },
+                { field: "ProductInventoryEntityQuantity", title: "Quantity", type: "number" },
+                { field: "PriceForAll", title: "Price for all", type: "number" }
+            ],
+            height: 600,
+            pageable: {
+                pageSize: 5
+            },
+            selectable: true
         });
     });
     function callConfirmationAlert(idRemovableItem) {

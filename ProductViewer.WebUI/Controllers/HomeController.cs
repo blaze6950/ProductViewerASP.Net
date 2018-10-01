@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.WebUI.Models;
 
@@ -16,6 +18,15 @@ namespace ProductViewer.WebUI.Controllers
         public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public ActionResult GetProducts([System.Web.Http.ModelBinding.ModelBinder(typeof(WebApiDataSourceRequestModelBinder))]DataSourceRequest request)
+        {
+            if (_list == null)
+            {
+                InitialList();
+            }
+            return Json(_list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
