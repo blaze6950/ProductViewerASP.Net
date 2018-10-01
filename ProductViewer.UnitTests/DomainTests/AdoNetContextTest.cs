@@ -1,9 +1,7 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
 
 namespace ProductViewer.UnitTests.DomainTests
 {

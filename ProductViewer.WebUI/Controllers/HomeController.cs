@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ProductViewer.Domain.Abstract;
-using System.Web.Http;
-using System.Web.UI;
 using ProductViewer.WebUI.Models;
 
 namespace ProductViewer.WebUI.Controllers
@@ -22,7 +18,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ViewResult Index(string searchValue, int page = 1, Column sortCurrentCol = Column.Name, bool sortCurrentDir = false, Column sortColumn = Column.Name)
         {
             if (_list == null)
@@ -149,7 +145,7 @@ namespace ProductViewer.WebUI.Controllers
             return View(model);
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public RedirectToRouteResult RemoveItem(int id)
         {
             if (_list == null)
@@ -162,7 +158,7 @@ namespace ProductViewer.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult AddOrEditProduct(bool isEditing = false, int id = -1)
         {
             if (_list == null)
@@ -182,7 +178,7 @@ namespace ProductViewer.WebUI.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public object AddOrEditProduct(ProductViewModel product)
         {
             if (ModelState.IsValid)

@@ -1,5 +1,4 @@
-﻿using System.Web.Mvc;
-using ProductViewer.Domain.Entities;
+﻿using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.WebUI.Models
 {

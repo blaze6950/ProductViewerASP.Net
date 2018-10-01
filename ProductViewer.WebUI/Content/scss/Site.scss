@@ -1,31 +1,5 @@
 ﻿@charset "UTF-8";
 
-//Old Stie.css styles
-//body {
-//    padding-top: 50px;
-//    padding-bottom: 20px;
-//}
-//
-///* Set padding to keep content from hitting the edges */
-//.body-content {
-//    padding-left: 15px;
-//    padding-right: 15px;
-//}
-//
-///* Override the default bootstrap behavior where horizontal description lists 
-//   will truncate terms that are too long to fit in the left column 
-//*/
-//.dl-horizontal dt {
-//    white-space: normal;
-//}
-//
-///* Set width on the form input elements since they're 100% wide by default */
-//input,
-//select,
-//textarea {
-//    max-width: 280px;
-//}
-
 
 // Color
 @import "components/color-variables";
@@ -68,7 +42,7 @@
 @import "components/timepicker";
 
 //Views
-@import "Views/_Layout.scss";
-@import "Views/Index.scss";
-@import "Views/AddOrEditProduct.scss";
-@import "Views/ProductDetails.scss";
+@import "views/shared/layout.scss";
+@import "views/home/index.scss";
+@import "views/home/add-edit-products.scss";
+@import "views/home/product-details.scss";
