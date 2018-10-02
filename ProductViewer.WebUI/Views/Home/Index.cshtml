@@ -1,7 +1,4 @@
-﻿@using ProductViewer.WebUI.Models
-@model ProductListViewModel
-
-@{
+﻿@{
     ViewBag.Title = "List of products";
 }
 
@@ -90,27 +87,47 @@
                 serverFiltering: true,
                 sort: ({ field: "ProductEntityName", dir: "asc" })
         });
-        var grid = $("#grid").kendoGrid({
-            dataSource: datasource,
-            columns: [
-                { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
-                { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
-                { field: "ProductDescriptionEntityDescription", title: "Description", type: "string", sortable: false, filterable:false },
-                { field: "ProductListPriceHistoryEntityListPrice", title: "Price", type: "number", sortable: true, filterable: false },
-                { field: "ProductInventoryEntityQuantity", title: "Quantity", type: "number", sortable: true, filterable: false },
-                { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
-                {
-                    width: 80,
-                    title: "",
-                    template:
-                        "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>"
-                },
-                {
-                    width: 80,
-                    title: "",
-                    template:
-                        "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>"
-                }
+            var grid = $("#grid").kendoGrid({
+                dataSource: datasource,
+                columns: [
+                    { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
+                    { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                    {
+                        field: "ProductDescriptionEntityDescription",
+                        title: "Description",
+                        type: "string",
+                        sortable: false,
+                        filterable: false
+                    },
+                    {
+                        field: "ProductListPriceHistoryEntityListPrice",
+                        title: "Price",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    {
+                        field: "ProductInventoryEntityQuantity",
+                        title: "Quantity",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                        selectable: false
+                    },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
+                        selectable: false
+                    }
             ],
             height: 600,
             pageable: true,
@@ -119,12 +136,16 @@
                 mode: "single",
                 allowUnsort: false
             },
-            selectable: true,
+            selectable: "cell",
             change: function (arg) {
-                var selectedId = $.map(this.select(), function (item) {
-                    return $(item).find('td').first().text();
-                });
-                document.location = "/Home/ProductDetails/" + selectedId;
+                var $grid = arg.sender; //grid ref
+                var $cell = $grid.select(); // selected td
+                var $row = $cell.closest('tr'); //selected tr
+                var cell_index = $cell.index(); //cell index 0 based
+                if (cell_index != undefined && typeof cell_index === "number" && cell_index < 6) {
+                    var selectedId = $row.find('td').first().text();
+                    document.location = "/Home/ProductDetails/" + selectedId;
+                }
             }
         });
         $('#search').keypress(function (event) {
@@ -206,7 +227,7 @@
             success: function (isSuccess) {
                 if (isSuccess != undefined && isSuccess === 'True') {
                     $("#modal1").modal('close');
-                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' })
+                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' });
                 } else if(isSuccess != undefined) {
                     $('.modal-content').html(isSuccess);
                     window.M.updateTextFields();
