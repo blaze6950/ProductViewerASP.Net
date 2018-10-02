@@ -20,96 +20,106 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpPost]
         public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
         {
-            if (_list == null)
+            if (Request.HttpMethod.ToUpper().Equals("POST"))
             {
-                InitialList();
-            }
+                if (_list == null)
+                {
+                    InitialList();
+                }
 
-            return Json(_list.ToDataSourceResult(request, p=>new
-            {
-                ProductEntityId = p.ProductEntityId,
-                ProductEntityName = p.ProductEntityName,
-                ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
-                ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
-                ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
-                PriceForAll = p.PriceForAll
-            }), JsonRequestBehavior.AllowGet);
+                return Json(_list.ToDataSourceResult(request, p => new
+                {
+                    ProductEntityId = p.ProductEntityId,
+                    ProductEntityName = p.ProductEntityName,
+                    ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
+                    ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
+                    ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
+                    PriceForAll = p.PriceForAll
+                }));
+            }
+            return HttpNotFound("Http method is GET, but required POST");
         }
 
-        [HttpGet]
-        public ViewResult Index()
+        public ActionResult Index()
         {
-            return View();
+            if (Request.HttpMethod.ToUpper().Equals("GET"))
+            {
+                return View();
+            }
+            return HttpNotFound("Http method is POST, but required GET");
         }
 
-        [HttpPost]
-        public RedirectToRouteResult RemoveItem(int id)
+        public ActionResult RemoveItem(int id)
         {
-            if (_list == null)
+            if (Request.HttpMethod.ToUpper().Equals("POST"))
             {
-                InitialList();
-            }
-            var product = _list.First(p => p.ProductEntityId == id);
-            var builder = product.GetBuilder();
-            RemoveExistingProduct(builder);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public ActionResult AddOrEditProduct(bool isEditing = false, int id = -1)
-        {
-            if (_list == null)
-            {
-                InitialList();
-            }
-            if (isEditing)
-            {
-                ViewBag.Title = "Editing an existing product";
+                if (_list == null)
+                {
+                    InitialList();
+                }
                 var product = _list.First(p => p.ProductEntityId == id);
-                return PartialView("Partials/AddOrEditProduct", product);
+                var builder = product.GetBuilder();
+                RemoveExistingProduct(builder);
+                return RedirectToAction("Index", "Home");
+            }
+            return HttpNotFound("Http method is GET, but required POST");
+        }
+
+        public object AddOrEditProduct(ProductViewModel product = null, bool isEditing = false, int id = -1)
+        {
+            if (Request.HttpMethod.ToUpper().Equals("GET"))
+            {
+                if (_list == null)
+                {
+                    InitialList();
+                }
+                if (isEditing)
+                {
+                    ViewBag.Title = "Editing an existing product";
+                    var product1 = _list.First(p => p.ProductEntityId == id);
+                    return PartialView("Partials/AddOrEditProduct", product1);
+                }
+                else
+                {
+                    ViewBag.Title = "Adding new product";
+                    return PartialView("Partials/AddOrEditProduct");
+                }
             }
             else
             {
-                ViewBag.Title = "Adding new product";
-                return PartialView("Partials/AddOrEditProduct");
-            }
-        }
-
-        [HttpPost]
-        public object AddOrEditProduct(ProductViewModel product)
-        {
-            if (ModelState.IsValid)
-            {
-                ProductViewModelBuilder builder = null;
-                try
+                if (ModelState.IsValid)
                 {
-                    builder = product.GetBuilder();
-                    if (product.ProductEntityId != 0)
+                    ProductViewModelBuilder builder = null;
+                    try
                     {
-                        UpdateExistingProduct(builder);
-                        return true;
+                        builder = product.GetBuilder();
+                        if (product.ProductEntityId != 0)
+                        {
+                            UpdateExistingProduct(builder);
+                            return true;
+                        }
+                        else
+                        {
+                            CreateNewProduct(builder);
+                            return true;
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        CreateNewProduct(builder);
-                        return true;
+                        TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
+                        return PartialView("Partials/AddOrEditProduct", product);
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
+                    // there is something wrong with the data values
                     return PartialView("Partials/AddOrEditProduct", product);
                 }
             }
-            else
-            {
-                // there is something wrong with the data values
-                return PartialView("Partials/AddOrEditProduct", product);
-            }
         }
+
 
         public ViewResult ProductDetails(int id)
         {
@@ -124,12 +134,12 @@ namespace ProductViewer.WebUI.Controllers
         private void InitialList()
         {
             _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
-                join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
-                join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
-                join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
-                select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
+                     join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
+                     join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
+                     join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
+                     join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
+                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
+                     select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
         }
 
         private void CreateNewProduct(ProductViewModelBuilder builder)
