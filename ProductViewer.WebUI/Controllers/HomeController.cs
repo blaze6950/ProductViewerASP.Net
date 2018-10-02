@@ -20,6 +20,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpPost]
         public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
         {
             if (_list == null)

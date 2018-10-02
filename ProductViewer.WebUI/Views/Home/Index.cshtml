@@ -14,16 +14,11 @@
                     <li>
                         <nav>
                             <div class="nav-wrapper">
-                                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-                                {
-                                    <div class="input-field">
-                                        <input id="search" type="search" name="searchValue" value="@Model.SearchValue">
-                                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                                        <i class="material-icons">close</i>
-                                    </div>
-                                    @Html.HiddenFor(x => x.PagingInfo.CurrentPage)
-                                    @Html.HiddenFor(x => x.SortConfig)
-                                }
+                                <div class="input-field">
+                                    <input id="search" type="search" name="searchValue">
+                                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                    <i class="material-icons">close</i>
+                                </div>
                             </div>
                         </nav>
                     </li>
@@ -66,8 +61,7 @@
                 }
             }
         });
-        $("#grid").kendoGrid({
-            dataSource: {
+        var datasource = new kendo.data.DataSource({
                 type: "aspnetmvc-ajax",
                 transport: {
                     type: "json",
@@ -93,15 +87,18 @@
                 },
                 serverPaging: true,
                 serverSorting: true,
+                serverFiltering: true,
                 sort: ({ field: "ProductEntityName", dir: "asc" })
-            },
+        });
+        var grid = $("#grid").kendoGrid({
+            dataSource: datasource,
             columns: [
                 { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
-                { field: "ProductEntityName", title: "Name", type: "string", sortable: true },
-                { field: "ProductDescriptionEntityDescription", title: "Description", type: "string", sortable: false },
-                { field: "ProductListPriceHistoryEntityListPrice", title: "Price", type: "number", sortable: true },
-                { field: "ProductInventoryEntityQuantity", title: "Quantity", type: "number", sortable: true },
-                { field: "PriceForAll", title: "Price for all", type: "number", sortable: true },
+                { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                { field: "ProductDescriptionEntityDescription", title: "Description", type: "string", sortable: false, filterable:false },
+                { field: "ProductListPriceHistoryEntityListPrice", title: "Price", type: "number", sortable: true, filterable: false },
+                { field: "ProductInventoryEntityQuantity", title: "Quantity", type: "number", sortable: true, filterable: false },
+                { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
                 {
                     width: 80,
                     title: "",
@@ -117,6 +114,7 @@
             ],
             height: 600,
             pageable: true,
+            filterable: true,
             sortable: {
                 mode: "single",
                 allowUnsort: false
@@ -127,6 +125,16 @@
                     return $(item).find('td').first().text();
                 });
                 document.location = "/Home/ProductDetails/" + selectedId;
+            }
+        });
+        $('#search').keypress(function (event) {
+            if ( event.which === 13 ) {
+                datasource.filter({
+                    field: "ProductEntityName",
+                    operator: "contains",
+                    value: $("#search").val()
+                });
+                grid.dataSource(datasource);
             }
         });
     });
