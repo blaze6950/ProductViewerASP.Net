@@ -121,8 +121,14 @@
                 mode: "single",
                 allowUnsort: false
             },
-            selectable: true
-    });
+            selectable: true,
+            change: function (arg) {
+                var selectedId = $.map(this.select(), function (item) {
+                    return $(item).find('td').first().text();
+                });
+                document.location = "/Home/ProductDetails/" + selectedId;
+            }
+        });
     });
     function callConfirmationAlert(idRemovableItem) {
         if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
