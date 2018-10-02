@@ -20,13 +20,22 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ActionResult GetProducts([System.Web.Http.ModelBinding.ModelBinder(typeof(WebApiDataSourceRequestModelBinder))]DataSourceRequest request)
+        public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
         {
             if (_list == null)
             {
                 InitialList();
             }
-            return Json(_list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+            return Json(_list.ToDataSourceResult(request, p=>new
+            {
+                ProductEntityId = p.ProductEntityId,
+                ProductEntityName = p.ProductEntityName,
+                ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
+                ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
+                ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
+                PriceForAll = p.PriceForAll
+            }), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
