@@ -1,7 +1,4 @@
-﻿@using ProductViewer.WebUI.Models
-@model ProductListViewModel
-
-@{
+﻿@{
     ViewBag.Title = "List of products";
 }
 
@@ -14,16 +11,11 @@
                     <li>
                         <nav>
                             <div class="nav-wrapper">
-                                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-                                {
-                                    <div class="input-field">
-                                        <input id="search" type="search" name="searchValue" value="@Model.SearchValue">
-                                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                                        <i class="material-icons">close</i>
-                                    </div>
-                                    @Html.HiddenFor(x => x.PagingInfo.CurrentPage)
-                                    @Html.HiddenFor(x => x.SortConfig)
-                                }
+                                <div class="input-field">
+                                    <input id="search" type="search" name="searchValue">
+                                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                    <i class="material-icons">close</i>
+                                </div>
                             </div>
                         </nav>
                     </li>
@@ -44,40 +36,10 @@
                 <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
             </div>
         </div>
-        <div class="card-panel grey lighten-5">
-            <table class="highlight">
-                <thead>
-                    <tr>
-                        @Html.SortColumn(@Model.SortConfig, s => @Url.Action("Index", new { page = @Model.PagingInfo.CurrentPage, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = @Model.SortConfig.IsAsc, sortColumn = s }))
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
+        
+        @*define the HTML div that will contain the Grid*@
+        <div id="grid"></div>
 
-                <tbody>
-                    @foreach (var p in @Model.Products)
-                    {
-                        <tr class="tr">
-                            <td class="withId" id="@p.ProductEntityId">@p.ProductEntityName</td>
-                            <td>@p.ProductDescriptionEntityDescription</td>
-                            <td>@p.ProductListPriceHistoryEntityListPrice.ToString("C")</td>
-                            <td>@p.ProductInventoryEntityQuantity</td>
-                            <td>@p.PriceForAll.ToString("C")</td>
-                            <td>
-                                <a onclick="openModal(true, @p.ProductEntityId)" id="@p.ProductEntityId" class="btn-floating btn waves-effect waves-light orange"><i class="material-icons">edit</i></a>
-                            </td>
-                            <td>
-                                <a class="btn-floating btn waves-effect waves-light red" onclick="callConfirmationAlert(@p.ProductEntityId)"><i class="material-icons">delete</i></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
-            <div>
-                @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, searchValue = @Model.SearchValue, sortCurrentCol = @Model.SortConfig.CurrentColumn, sortCurrentDir = !(@Model.SortConfig.IsAsc), sortColumn = @Model.SortConfig.CurrentColumn }))
-            </div>
-        </div>
     </div>
 </div>
 <script>
@@ -94,6 +56,106 @@
                 if (id != undefined && typeof id === "number") {
                     document.location = "/Home/ProductDetails/" + id;
                 }
+            }
+        });
+        var datasource = new kendo.data.DataSource({
+                type: "aspnetmvc-ajax",
+                transport: {
+                    type: "json",
+                    read: {
+                        url: "@Url.Action("GetProducts", "Home")"
+                    }
+                },
+                pageSize: 5,
+                schema: {
+                    data: "Data",
+                    model: {
+                        fields: {
+                            ProductEntityId: { type: "number" },
+                            ProductEntityName: { type: "string" },
+                            ProductDescriptionEntityDescription: { type: "string" },
+                            ProductListPriceHistoryEntityListPrice: { type: "number" },
+                            ProductInventoryEntityQuantity: { type: "number" },
+                            PriceForAll: { type: "number" }
+                        }
+                    },
+                    total: "Total",
+                    errors: "Errors"
+                },
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                sort: ({ field: "ProductEntityName", dir: "asc" })
+        });
+            var grid = $("#grid").kendoGrid({
+                dataSource: datasource,
+                columns: [
+                    { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
+                    { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                    {
+                        field: "ProductDescriptionEntityDescription",
+                        title: "Description",
+                        type: "string",
+                        sortable: false,
+                        filterable: false
+                    },
+                    {
+                        field: "ProductListPriceHistoryEntityListPrice",
+                        title: "Price",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    {
+                        field: "ProductInventoryEntityQuantity",
+                        title: "Quantity",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                        selectable: false
+                    },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
+                        selectable: false
+                    }
+            ],
+            height: 600,
+            pageable: true,
+            filterable: true,
+            sortable: {
+                mode: "single",
+                allowUnsort: false
+            },
+            selectable: "cell",
+            change: function (arg) {
+                var $grid = arg.sender; //grid ref
+                var $cell = $grid.select(); // selected td
+                var $row = $cell.closest('tr'); //selected tr
+                var cell_index = $cell.index(); //cell index 0 based
+                if (cell_index != undefined && typeof cell_index === "number" && cell_index < 6) {
+                    var selectedId = $row.find('td').first().text();
+                    document.location = "/Home/ProductDetails/" + selectedId;
+                }
+            }
+        });
+        $('#search').keypress(function (event) {
+            if ( event.which === 13 ) {
+                datasource.filter({
+                    field: "ProductEntityName",
+                    operator: "contains",
+                    value: $("#search").val()
+                });
+                grid.dataSource(datasource);
             }
         });
     });
@@ -165,7 +227,7 @@
             success: function (isSuccess) {
                 if (isSuccess != undefined && isSuccess === 'True') {
                     $("#modal1").modal('close');
-                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' })
+                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' });
                 } else if(isSuccess != undefined) {
                     $('.modal-content').html(isSuccess);
                     window.M.updateTextFields();
