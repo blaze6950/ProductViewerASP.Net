@@ -10,12 +10,6 @@
     @Styles.Render("~/bundles/kendo.mobile")
     @Styles.Render("~/bundles/kendo.material")
     @Styles.Render("~/bundles/sitecss")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jszip")
-    @Scripts.Render("~/bundles/kendojs.all")
-    @Scripts.Render("~/bundles/kendojs.aspnetmvc")
-    @Scripts.Render("~/bundles/kendojs.modernizr.custom")
-    @Scripts.Render("~/bundles/sitejs")
 </head>
 <body>
 <main class="body-content">
@@ -26,6 +20,12 @@
         <p>&copy; @DateTime.Now.Year - Product Viewer Application</p>
     </div>
 </footer>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jszip")
+@Scripts.Render("~/bundles/kendojs.all")
+@Scripts.Render("~/bundles/kendojs.aspnetmvc")
+@Scripts.Render("~/bundles/kendojs.modernizr.custom")
+@Scripts.Render("~/bundles/sitejs")
 @RenderSection("scripts", required: false)
 </body>
 </html>
