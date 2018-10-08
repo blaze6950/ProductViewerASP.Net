@@ -30,10 +30,9 @@ namespace ProductViewer.WebUI.Infrastructure
 
         private void AddBindings()
         {
-            //kernel.Bind<IValueCalculator>().To<LinqValueCalculator>();
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             kernel.Bind<IAdoNetContext>().
-                To<AdoNetContext>()
+                To<ProductViewer.Domain.Concrete.AdoNetContext> ()
                 .WithConstructorArgument(typeof(string), 
                 ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
         }

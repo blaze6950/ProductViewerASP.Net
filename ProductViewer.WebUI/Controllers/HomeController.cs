@@ -12,7 +12,6 @@ namespace ProductViewer.WebUI.Controllers
     public class HomeController : Controller
     {
         private IUnitOfWork _unitOfWork;
-        private int _pageSize = 5;
         private IEnumerable<ProductViewModel> _list;
 
         public HomeController(IUnitOfWork unitOfWork)
