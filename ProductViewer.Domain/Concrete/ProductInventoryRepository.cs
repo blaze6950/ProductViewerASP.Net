@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -9,87 +10,49 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductInventoryRepository : IProductInventoriesRepository
     {
-        private IAdoNetContext _context;
+        private const string SqlGetProductInventoryList = "SELECT * FROM Production.ProductInventory WHERE LocationID = 1";
+        private const string SqlGetProductInventory = "SELECT * FROM Production.ProductInventory WHERE LocationID = 1 AND ProductID = @ProductID";
+        private const string SqlCreate = "dbo.InsertProductInventory";
+        private const string SqlUpdate = "UPDATE Production.ProductInventory SET ProductID = @ProductID, LocationID = 1, Shelf = @Shelf, Bin = @Bin, Quantity = @Quantity WHERE ProductID = @ProductID AND LocationID = 1";
+        private const string SqlDelete = "DELETE FROM Production.ProductInventory WHERE ProductID = @ProductID AND LocationID = 1";
+        private IDbConnection _connection;
 
-        public ProductInventoryRepository(IAdoNetContext context)
+        public ProductInventoryRepository(IDbConnection connection)
         {
-            _context = context;
+            _connection = connection;
         }
 
         public IEnumerable<ProductInventory> GetProductInventoryList()
         {
-            var productInventories = _context.GetProductInventories().Select();
-            var productInventoryList = (from p in productInventories
-                                          select new ProductInventory()
-                                          {
-                                              Bin = (byte)p["Bin"],
-                                              LocationID = (Int16)p["LocationID"],
-                                              ProductID = (int)p["ProductID"],
-                                              Quantity = (Int16)p["Quantity"],
-                                              Shelf = (string)p["Shelf"]
-                                          });
+            var productInventoryList = _connection.Query<ProductInventory>(SqlGetProductInventoryList).ToList();
             return productInventoryList;
         }
 
         public ProductInventory GetProductInventory(Int16 locationId, int productId)
         {
-            var productInventories = _context.GetProductInventories().Select();
-            var productInventory = (productInventories.Where(p => (((int)p["ProductID"]) == productId) && ((Int16)p["LocationID"]) == locationId)).Select(p => new ProductInventory()
-            {
-                Bin = (byte)p["Bin"],
-                LocationID = (Int16)p["LocationID"],
-                ProductID = (int)p["ProductID"],
-                Quantity = (Int16)p["Quantity"],
-                Shelf = (string)p["Shelf"]
-            })?.FirstOrDefault();
+            var productInventory = _connection.QueryFirstOrDefault<ProductInventory>(SqlGetProductInventory, new{ProductID = productId});
             return productInventory;
         }
 
-        public void Create(ProductInventory item)
+        public ProductInventory Create(ProductInventory item)
         {
-            var newRow = _context.GetProductInventories().NewRow();
-            newRow["Bin"] = item.Bin;
-            newRow["LocationID"] = item.LocationID;
-            newRow["ProductID"] = item.ProductID;
-            newRow["Quantity"] = item.Quantity;
-            newRow["Shelf"] = item.Shelf;
-            _context.GetProductInventories().Rows.Add(newRow);
-            _context.CommitChanges();
+            var p = new DynamicParameters();
+            p.Add("@ProductID", item.ProductID);
+            p.Add("@Shelf", item.Shelf);
+            p.Add("@Bin", item.Bin);
+            p.Add("@Quantity", item.Quantity);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            return item;
         }
 
         public void Update(ProductInventory item)
         {
-            DataRow dataRow = null;
-            foreach (DataRow dr in _context.GetProductInventories().Rows) // search whole table
-            {
-                if ((int)dr["ProductID"] == item.ProductID && (Int16)dr["LocationID"] == item.LocationID)
-                {
-                    dataRow = dr;
-                    break;
-                }
-            }
-            if (dataRow != null)
-            {
-                dataRow["Bin"] = item.Bin;
-                dataRow["LocationID"] = item.LocationID;
-                dataRow["ProductID"] = item.ProductID;
-                dataRow["Quantity"] = item.Quantity;
-                dataRow["Shelf"] = item.Shelf;
-                _context.CommitChanges();
-            }
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(Int16 locationId, int productId)
         {
-            foreach (DataRow dr in _context.GetProductInventories().Rows)
-            {
-                if ((int)dr["ProductID"] == productId && (Int16)dr["LocationID"] == locationId)
-                {
-                    dr.Delete();
-                    break;
-                }
-            }
-            _context.CommitChanges();
+            _connection.Execute(SqlDelete, new { ProductID = productId });
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ProductViewer.Domain.Abstract
 
         ProductInventory GetProductInventory(Int16 locationId, int productId); // получение одного объекта по id
 
-        void Create(ProductInventory item); // создание объекта
+        ProductInventory Create(ProductInventory item); // создание объекта
 
         void Update(ProductInventory item); // обновление объекта
 

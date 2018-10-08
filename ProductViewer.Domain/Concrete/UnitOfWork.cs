@@ -1,20 +1,21 @@
-﻿using ProductViewer.Domain.Abstract;
+﻿using System.Data;
+using ProductViewer.Domain.Abstract;
 
 namespace ProductViewer.Domain.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IAdoNetContext _context;
+        private readonly IDbConnection _connection;
 
-        public UnitOfWork(IAdoNetContext context)
+        public UnitOfWork(IDbConnection context)
         {
-            _context = context;
-            ProductsRepository = new ProductRepository(_context);
-            ProductDescriptionsRepository = new ProductDescriptionRepository(_context);
-            ProductInventoriesRepository = new ProductInventoryRepository(_context);
-            ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_context);
-            ProductModelsRepository = new ProductModelRepository(_context);
-            ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_context);
+            _connection = context;
+            ProductsRepository = new ProductRepository(_connection);
+            ProductDescriptionsRepository = new ProductDescriptionRepository(_connection);
+            ProductInventoriesRepository = new ProductInventoryRepository(_connection);
+            ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_connection);
+            ProductModelsRepository = new ProductModelRepository(_connection);
+            ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_connection);
         }
 
         public IProductsRepository ProductsRepository { get; }
@@ -24,14 +25,9 @@ namespace ProductViewer.Domain.Concrete
         public IProductModelsRepository ProductModelsRepository { get; set; }
         public IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository { get; set; }
 
-        public void Commit()
-        {
-            _context?.CommitChanges();
-        }
-
         public void Dispose()
         {
-            _context?.Dispose();
+            _connection?.Dispose();
         }
     }
 }

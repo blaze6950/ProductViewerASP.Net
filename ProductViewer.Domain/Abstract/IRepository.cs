@@ -6,7 +6,7 @@ namespace ProductViewer.Domain.Abstract
     {
         IEnumerable<T> GetItemList(); // получение всех объектов
 
-        void Create(T item); // создание объекта
+        T Create(T item); // создание объекта
 
         void Update(T item); // обновление объекта
 

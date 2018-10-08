@@ -9,7 +9,7 @@ namespace ProductViewer.Domain.Abstract
 
         ProductModel GetProductModel(int id); // получение одного объекта по id
 
-        void Create(ProductModel item); // создание объекта
+        ProductModel Create(ProductModel item); // создание объекта
 
         void Update(ProductModel item); // обновление объекта
 

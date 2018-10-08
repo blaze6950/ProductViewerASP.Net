@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -8,77 +9,48 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductModelProductDescriptionCultureRepository : IProductModelProductDescriptionCulturesRepository
     {
-        private IAdoNetContext _context;
+        private const string SqlGetProductModelProductDescriptionCultureList = "SELECT * FROM Production.ProductModelProductDescriptionCulture WHERE CultureID = 'en'";
+        private const string SqlGetProductModelProductDescriptionCulture = "SELECT * FROM Production.ProductModelProductDescriptionCulture WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = 'en'";
+        private const string SqlCreate = "INSERT INTO Production.ProductModelProductDescriptionCulture (ProductModelID, ProductDescriptionID, CultureID) VALUES (@ProductModelID, @ProductDescriptionID, 'en')";
+        private const string SqlUpdate = "UPDATE Production.ProductModelProductDescriptionCulture SET ProductModelID = @ProductModelID, ProductDescriptionID = @ProductDescriptionID, CultureID = 'en' WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = 'en'";
+        private const string SqlDelete = "DELETE FROM Production.ProductModelProductDescriptionCulture WHERE ProductModelID = @ProductModelID AND ProductDescriptionID = @ProductDescriptionID AND CultureID = 'en'";
+        private IDbConnection _connection;
 
-        public ProductModelProductDescriptionCultureRepository(IAdoNetContext context)
+        public ProductModelProductDescriptionCultureRepository(IDbConnection connection)
         {
-            _context = context;
+            _connection = connection;
         }
 
         public IEnumerable<ProductModelProductDescriptionCulture> GetProductModelProductDescriptionCultureList()
         {
-            var productModelsProductDescriptionCultures = _context.GetProductModelProductDescriptionCulture().Select();
-            var productModelProductDescriptionCultureList = (from pmpdc in productModelsProductDescriptionCultures
-                select new ProductModelProductDescriptionCulture()
-                {
-                    ProductDescriptionID = (int)pmpdc["ProductDescriptionID"],
-                    ProductModelID = (int)pmpdc["ProductModelID"]
-                });
+            var productModelProductDescriptionCultureList = _connection.Query<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCultureList).ToList();
             return productModelProductDescriptionCultureList;
         }
 
         public ProductModelProductDescriptionCulture GetProductModelProductDescriptionCulture(int productModelId,
             int productDescriptionId)
         {
-            var productModelsProductDescriptionCultures = _context.GetProductModelProductDescriptionCulture().Select();
-            var productModelProductDescriptionCulture = (productModelsProductDescriptionCultures.Where(pmpdc => ((int)pmpdc["ProductModelID"]) == productModelId)).Select(pmpdc => new ProductModelProductDescriptionCulture()
-            {
-                ProductDescriptionID = (int)pmpdc["ProductDescriptionID"],
-                ProductModelID = (int)pmpdc["ProductModelID"]
-            })?.FirstOrDefault();
+            var productModelProductDescriptionCulture = _connection.QueryFirstOrDefault<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCulture, new{ ProductModelID = productModelId, ProductDescriptionID = productDescriptionId});
             return productModelProductDescriptionCulture;
         }
 
-        public void Create(ProductModelProductDescriptionCulture item)
+        public ProductModelProductDescriptionCulture Create(ProductModelProductDescriptionCulture item)
         {
-            var newRow = _context.GetProductModelProductDescriptionCulture().NewRow();
-            newRow["ProductModelID"] = item.ProductModelID;
-            newRow["ProductDescriptionID"] = item.ProductDescriptionID;
-            newRow["CultureID"] = item.CultureID;
-            _context.GetProductModelProductDescriptionCulture().Rows.Add(newRow);
-            _context.CommitChanges();
+            var p = new DynamicParameters();
+            p.Add("@ProductModelID", item.ProductModelID);
+            p.Add("@ProductDescriptionID", item.ProductDescriptionID);
+            _connection.Execute(SqlCreate, p);
+            return item;
         }
 
-        public void Update(Entities.ProductModelProductDescriptionCulture item)
+        public void Update(ProductModelProductDescriptionCulture item)
         {
-            DataRow dataRow = null;
-            foreach (DataRow dr in _context.GetProductModelProductDescriptionCulture().Rows) // search whole table
-            {
-                if ((int)dr["ProductModelID"] == item.ProductModelID && (int)dr["ProductDescriptionID"] == item.ProductDescriptionID)
-                {
-                    dataRow = dr;
-                    break;
-                }
-            }
-            if (dataRow != null)
-            {
-                dataRow["ProductModelID"] = item.ProductModelID;
-                dataRow["ProductDescriptionID"] = item.ProductDescriptionID;
-                _context.CommitChanges();
-            }
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int productModelId, int productDescriptionId)
         {
-            foreach (DataRow dr in _context.GetProductModelProductDescriptionCulture().Rows)
-            {
-                if ((int)dr["ProductModelID"] == productModelId && (int)dr["ProductDescriptionID"] == productDescriptionId)
-                {
-                    dr.Delete();
-                    break;
-                }
-            }
-            _context.CommitChanges();
+            _connection.Execute(SqlDelete, new { ProductModelID = productModelId, ProductDescriptionID = productDescriptionId });
         }
     }
 }

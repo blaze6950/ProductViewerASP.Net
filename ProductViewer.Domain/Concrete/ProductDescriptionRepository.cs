@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -8,75 +9,48 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductDescriptionRepository : IProductDescriptionsRepository
     {
-        private IAdoNetContext _context;
+        private const string SqlGetProductDescriptionList = "SELECT * FROM Production.ProductDescription";
+        private const string SqlGetProductDescription = "SELECT * FROM Production.ProductDescription WHERE ProductDescriptionID = @ProductDescriptionID";
+        private const string SqlCreate = "dbo.InsertProductDescription";
+        private const string SqlUpdate = "UPDATE Production.ProductDescription SET Description = @Description WHERE ProductDescriptionID = @ProductDescriptionID";
+        private const string SqlDelete = "DELETE FROM Production.ProductDescription WHERE ProductDescriptionID = @ProductDescriptionID";
+        private IDbConnection _connection;
 
-        public ProductDescriptionRepository(IAdoNetContext context)
+        public ProductDescriptionRepository(IDbConnection connection)
         {
-            _context = context;
+            _connection = connection;
         }
 
         public IEnumerable<ProductDescription> GetProductDescriptionList()
         {
-            var productDescriptions = _context.GetProductDescriptions().Select();
-            var productDescriptionList = (from p in productDescriptions
-                               select new ProductDescription()
-                               {
-                                   Description = (string)p["Description"],
-                                   ProductDescriptionID = (int)p["ProductDescriptionID"]
-                               });
+            var productDescriptionList = _connection.Query<ProductDescription>(SqlGetProductDescriptionList).ToList();
             return productDescriptionList;
         }
 
         public ProductDescription GetProductDescription(int id)
         {
-            var productDescriptions = _context.GetProductDescriptions().Select();
-            var productDescription = (productDescriptions.Where(p => ((int)p["ProductDescriptionID"]) == id)).Select(p => new ProductDescription()
-            {
-                Description = (string)p["Description"],
-                ProductDescriptionID = (int)p["ProductDescriptionID"]
-            })?.FirstOrDefault();
+            var productDescription = _connection.QueryFirstOrDefault<ProductDescription>(SqlGetProductDescription, new{ ProductDescriptionID  = id});
             return productDescription;
         }
 
-        public void Create(ProductDescription item)
+        public ProductDescription Create(ProductDescription item)
         {
-            var newRow = _context.GetProductDescriptions().NewRow();
-            newRow["Description"] = item.Description;
-            _context.GetProductDescriptions().Rows.Add(newRow);
-            _context.CommitChanges();
-            item.ProductDescriptionID = (int)newRow["ProductDescriptionID"];
+            var p = new DynamicParameters();
+            p.Add("@Description", item.Description);
+            p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            item.ProductDescriptionID = p.Get<int>("@Id");
+            return item;
         }
 
         public void Update(ProductDescription item)
         {
-            DataRow dataRow = null;
-            foreach (DataRow dr in _context.GetProductDescriptions().Rows) // search whole table
-            {
-                if ((int)dr["ProductDescriptionID"] == item.ProductDescriptionID)
-                {
-                    dataRow = dr;
-                    break;
-                }
-            }
-            if (dataRow != null)
-            {
-                dataRow["ProductDescriptionID"] = item.ProductDescriptionID;
-                dataRow["Description"] = item.Description;
-                _context.CommitChanges();
-            }
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int id)
         {
-            foreach (DataRow dr in _context.GetProductDescriptions().Rows)
-            {
-                if ((int)dr["ProductDescriptionID"] == id)
-                {
-                    dr.Delete();
-                    break;
-                }
-            }
-            _context.CommitChanges();
+            _connection.Execute(SqlDelete, new { ProductDescriptionID = id });
         }
     }
 }

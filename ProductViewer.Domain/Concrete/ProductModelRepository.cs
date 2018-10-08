@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -8,75 +9,48 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductModelRepository : IProductModelsRepository
     {
-        private IAdoNetContext _context;
+        private const string SqlGetProductModelList = "SELECT * FROM Production.ProductModel WHERE ViewStatus = 1";
+        private const string SqlGetProductModel = "SELECT * FROM Production.ProductModel WHERE ViewStatus = 1 AND ProductModelID = @ProductModelID";
+        private const string SqlCreate = "dbo.InsertProductModel";
+        private const string SqlUpdate = "UPDATE Production.ProductModel SET Name = @Name WHERE ProductModelID = @ProductModelID";
+        private const string SqlDelete = "UPDATE Production.ProductModel SET ViewStatus = 0 WHERE ProductModelID = @ProductModelID";
+        private IDbConnection _connection;
 
-        public ProductModelRepository(IAdoNetContext context)
+        public ProductModelRepository(IDbConnection connection)
         {
-            _context = context;
+            _connection = connection;
         }
 
         public IEnumerable<ProductModel> GetProductModelList()
         {
-            var productModels = _context.GetProductModels().Select();
-            var productModelList = (from pm in productModels
-                select new ProductModel()
-                {
-                    Name = (string)pm["Name"],
-                    ProductModelID = (int)pm["ProductModelID"]
-                });
+            var productModelList = _connection.Query<ProductModel>(SqlGetProductModelList).ToList();
             return productModelList;
         }
 
         public ProductModel GetProductModel(int id)
         {
-            var productModels = _context.GetProductModels().Select();
-            var productModel = (productModels.Where(pm => ((int)pm["ProductModelID"]) == id)).Select(pm => new ProductModel()
-            {
-                Name = (string)pm["Name"],
-                ProductModelID = (int)pm["ProductModelID"]
-            })?.FirstOrDefault();
+            var productModel = _connection.QueryFirstOrDefault<ProductModel>(SqlGetProductModel, new{ ProductModelID  = id});
             return productModel;
         }
 
-        public void Create(ProductModel item)
+        public ProductModel Create(ProductModel item)
         {
-            var newRow = _context.GetProductModels().NewRow();
-            newRow["Name"] = item.Name;
-            _context.GetProductModels().Rows.Add(newRow);
-            _context.CommitChanges();
-            item.ProductModelID = (int)newRow["ProductModelID"];
+            var p = new DynamicParameters();
+            p.Add("@Name", item.Name);
+            p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            item.ProductModelID = p.Get<int>("@Id");
+            return item;
         }
 
         public void Update(ProductModel item)
         {
-            DataRow dataRow = null;
-            foreach (DataRow dr in _context.GetProductModels().Rows) // search whole table
-            {
-                if ((int)dr["ProductModelID"] == item.ProductModelID)
-                {
-                    dataRow = dr;
-                    break;
-                }
-            }
-            if (dataRow != null)
-            {
-                dataRow["ProductModelID"] = item.ProductModelID;
-                dataRow["Name"] = item.Name;
-                _context.CommitChanges();
-            }
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int id)
         {
-            foreach (DataRow dr in _context.GetProductModels().Rows)
-            {
-                if ((int)dr["ProductModelID"] == id)
-                {
-                    dr.Delete();
-                    break;
-                }
-            }
-            _context.CommitChanges();
+            _connection.Execute(SqlDelete, new { ProductModelID = id });
         }
     }
 }

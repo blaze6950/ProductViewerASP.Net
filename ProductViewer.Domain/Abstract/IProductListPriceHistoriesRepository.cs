@@ -10,7 +10,7 @@ namespace ProductViewer.Domain.Abstract
 
         ProductListPriceHistory GetProductListPriceHistory(int productId, DateTime startDate); // получение одного объекта по id
 
-        void Create(ProductListPriceHistory item); // создание объекта
+        ProductListPriceHistory Create(ProductListPriceHistory item); // создание объекта
 
         void Update(ProductListPriceHistory item); // обновление объекта
 

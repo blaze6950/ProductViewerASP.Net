@@ -9,7 +9,7 @@ namespace ProductViewer.Domain.Abstract
 
         ProductModelProductDescriptionCulture GetProductModelProductDescriptionCulture(int productModelId, int productDescriptionId); // получение одного объекта по id
 
-        void Create(ProductModelProductDescriptionCulture item); // создание объекта
+        ProductModelProductDescriptionCulture Create(ProductModelProductDescriptionCulture item); // создание объекта
 
         void Update(ProductModelProductDescriptionCulture item); // обновление объекта
 

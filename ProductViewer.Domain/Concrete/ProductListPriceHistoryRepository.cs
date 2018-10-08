@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
@@ -9,79 +10,48 @@ namespace ProductViewer.Domain.Concrete
 {
     public class ProductListPriceHistoryRepository : IProductListPriceHistoriesRepository
     {
-        private IAdoNetContext _context;
+        private const string SqlGetProductListProceHistoryList = "SELECT * FROM Production.ProductListPriceHistory";
+        private const string SqlGetProductListProceHistory = "SELECT * FROM Production.ProductListPriceHistory WHERE ProductID = @ProductID AND StartDate = @StartDate";
+        private const string SqlCreate = "INSERT INTO Production.ProductListPriceHistory (ProductID, EndDate, StartDate, ListPrice) VALUES (@ProductID, NULL, @StartDate, @ListPrice)";
+        private const string SqlUpdate = "UPDATE Production.ProductListPriceHistory SET ProductID = @ProductID, StartDate = @StartDate, ListPrice = @ListPrice WHERE ProductID = @ProductID AND StartDate = @StartDate";
+        private const string SqlDelete = "DELETE FROM Production.ProductListPriceHistory WHERE ProductID = @ProductID AND StartDate = @StartDate";
+        private IDbConnection _connection;
 
-        public ProductListPriceHistoryRepository(IAdoNetContext context)
+        public ProductListPriceHistoryRepository(IDbConnection connection)
         {
-            _context = context;
+            _connection = connection;
         }
 
         public IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList()
         {
-            var productListPriceHistories = _context.GetProductListPriceHistories().Select();
-            var productListPriceHistoryList = (from p in productListPriceHistories
-                                        select new ProductListPriceHistory()
-                                        {
-                                            ProductID = (int)p["ProductID"],
-                                            ListPrice = (decimal)p["ListPrice"],
-                                            StartDate = (DateTime)p["StartDate"]
-                                        });
+            var productListPriceHistoryList = _connection.Query<ProductListPriceHistory>(SqlGetProductListProceHistoryList).ToList();
             return productListPriceHistoryList;
         }
 
         public ProductListPriceHistory GetProductListPriceHistory(int productId, DateTime startDate)
         {
-            var productListPriceHistories = _context.GetProductListPriceHistories().Select();
-            var productListPriceHistory = (productListPriceHistories.Where(p => (((int)p["ProductID"]) == productId) && ((DateTime)p["StartDate"]) == startDate)).Select(p => new ProductListPriceHistory()
-            {
-                ProductID = (int)p["ProductID"],
-                ListPrice = (decimal)p["ListPrice"],
-                StartDate = (DateTime)p["StartDate"]
-            })?.FirstOrDefault();
+            var productListPriceHistory = _connection.QueryFirstOrDefault<ProductListPriceHistory>(SqlGetProductListProceHistory, new{ ProductID = productId, StartDate = startDate});
             return productListPriceHistory;
         }
 
-        public void Create(ProductListPriceHistory item)
+        public ProductListPriceHistory Create(ProductListPriceHistory item)
         {
-            var newRow = _context.GetProductListPriceHistories().NewRow();
-            newRow["ProductID"] = item.ProductID;
-            newRow["ListPrice"] = item.ListPrice;
-            newRow["StartDate"] = item.StartDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            _context.GetProductListPriceHistories().Rows.Add(newRow);
-            _context.CommitChanges();
+            var p = new DynamicParameters();
+            p.Add("@ProductID", item.ProductID);
+            p.Add("@StartDate", item.StartDate);
+            p.Add("@ListPrice", item.ListPrice);
+            _connection.Execute(SqlCreate, p);
+            return item;
         }
 
         public void Update(ProductListPriceHistory item)
         {
-            DataRow dataRow = null;
-            foreach (DataRow dr in _context.GetProductListPriceHistories().Rows) // search whole table
-            {
-                if (((int)dr["ProductID"] == item.ProductID) && ((DateTime)dr["StartDate"] == item.StartDate))
-                {
-                    dataRow = dr;
-                    break;
-                }
-            }
-            if (dataRow != null)
-            {
-                dataRow["ProductID"] = item.ProductID;
-                dataRow["ListPrice"] = item.ListPrice;
-                dataRow["StartDate"] = item.StartDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                _context.CommitChanges();
-            }
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int productId, DateTime startDate)
         {
-            foreach (DataRow dr in _context.GetProductListPriceHistories().Rows)
-            {
-                if ((int)dr["ProductID"] == productId && (DateTime)dr["StartDate"] == startDate)
-                {
-                    dr.Delete();
-                    break;
-                }
-            }
-            _context.CommitChanges();
+            _connection.Execute(SqlDelete, new { ProductID = productId, StartDate = startDate });
         }
     }
 }
