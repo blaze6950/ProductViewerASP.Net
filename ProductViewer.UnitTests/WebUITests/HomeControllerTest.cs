@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -241,16 +242,10 @@ namespace ProductViewer.UnitTests.WebUITests
         public void IndexHttpGetIsCorrect()
         {
             //Act
-            var result = _homeController.Index("");
+            var result = _homeController.Index();
             //Assert
-            _mockProductRepository.Verify(c=>c.GetProductList());
-            _mockProductModelRepository.Verify(c => c.GetProductModelList());
-            _mockProductDescriptionRepository.Verify(c => c.GetProductDescriptionList());
-            _mockProductInventoryRepository.Verify(c => c.GetProductInventoryList());
-            _mockProductListPriceHistoryRepository.Verify(c => c.GetProductListPriceHistoryList());
-            _mockProductModelProductDescriptionCultureRepository.Verify(c => c.GetProductModelProductDescriptionCultureList());
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Model);
+            Assert.IsNotNull(result as HttpNotFoundResult);
         }
 
         [TestMethod]
@@ -261,49 +256,28 @@ namespace ProductViewer.UnitTests.WebUITests
             var result = _homeController.RemoveItem(1);
             int actualCount = _mockProductRepository.Object.GetProductList().Count();
             //Assert
-            Assert.AreEqual(expectedCount, actualCount);
-            _mockProductRepository.Verify(c => c.GetProductList());
-            _mockProductModelRepository.Verify(c => c.GetProductModelList());
-            _mockProductDescriptionRepository.Verify(c => c.GetProductDescriptionList());
-            _mockProductInventoryRepository.Verify(c => c.GetProductInventoryList());
-            _mockProductListPriceHistoryRepository.Verify(c => c.GetProductListPriceHistoryList());
-            _mockProductModelProductDescriptionCultureRepository.Verify(c => c.GetProductModelProductDescriptionCultureList());
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         [TestMethod]
         public void AddOrEditProductGetIsCorrect_Adding()
         {
             //Act
-            var result = _homeController.AddOrEditProduct() as PartialViewResult;
+            var result = _homeController.AddOrEditProduct();
             //Assert
-            _mockProductRepository.Verify(c => c.GetProductList());
-            _mockProductModelRepository.Verify(c => c.GetProductModelList());
-            _mockProductDescriptionRepository.Verify(c => c.GetProductDescriptionList());
-            _mockProductInventoryRepository.Verify(c => c.GetProductInventoryList());
-            _mockProductListPriceHistoryRepository.Verify(c => c.GetProductListPriceHistoryList());
-            _mockProductModelProductDescriptionCultureRepository.Verify(c => c.GetProductModelProductDescriptionCultureList());
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.ViewBag.Title as string, "Adding new product");
-            Assert.IsNull(result.Model);
+            Assert.IsNotNull(result as PartialViewResult);
         }
 
         [TestMethod]
         public void AddOrEditProductGetIsCorrect_Editing()
         {
             //Act
-            var result = _homeController.AddOrEditProduct(true, 1) as PartialViewResult;
+            var result = _homeController.AddOrEditProduct(new ProductViewModel(), true, id:0);
             //Assert
-            _mockProductRepository.Verify(c => c.GetProductList());
-            _mockProductModelRepository.Verify(c => c.GetProductModelList());
-            _mockProductDescriptionRepository.Verify(c => c.GetProductDescriptionList());
-            _mockProductInventoryRepository.Verify(c => c.GetProductInventoryList());
-            _mockProductListPriceHistoryRepository.Verify(c => c.GetProductListPriceHistoryList());
-            _mockProductModelProductDescriptionCultureRepository.Verify(c => c.GetProductModelProductDescriptionCultureList());
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.ViewBag.Title as string, "Editing an existing product");
-            Assert.IsNotNull(result.Model);
+            Assert.IsNotNull(result as bool?);
         }
 
         [TestMethod]

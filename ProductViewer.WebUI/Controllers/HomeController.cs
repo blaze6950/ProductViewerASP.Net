@@ -21,7 +21,7 @@ namespace ProductViewer.WebUI.Controllers
 
         public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
         {
-            if (Request.HttpMethod.ToUpper().Equals("POST"))
+            if (Request != null && Request.HttpMethod.ToUpper().Equals("POST"))
             {
                 if (_list == null)
                 {
@@ -43,7 +43,7 @@ namespace ProductViewer.WebUI.Controllers
 
         public ActionResult Index()
         {
-            if (Request.HttpMethod.ToUpper().Equals("GET"))
+            if (Request != null && Request.HttpMethod.ToUpper().Equals("GET"))
             {
                 return View();
             }
@@ -52,7 +52,7 @@ namespace ProductViewer.WebUI.Controllers
 
         public ActionResult RemoveItem(int id)
         {
-            if (Request.HttpMethod.ToUpper().Equals("POST"))
+            if (Request != null && Request.HttpMethod.ToUpper().Equals("POST"))
             {
                 if (_list == null)
                 {
@@ -68,7 +68,7 @@ namespace ProductViewer.WebUI.Controllers
 
         public object AddOrEditProduct(ProductViewModel product = null, bool isEditing = false, int id = -1)
         {
-            if (Request.HttpMethod.ToUpper().Equals("GET"))
+            if (Request != null && Request.HttpMethod.ToUpper().Equals("GET"))
             {
                 if (_list == null)
                 {
