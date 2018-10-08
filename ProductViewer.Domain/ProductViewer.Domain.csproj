@@ -53,8 +53,6 @@
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
-    <Compile Include="Concrete\AdoNetContext.cs" />
-    <Compile Include="Abstract\IAdoNetContext.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
     <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />
