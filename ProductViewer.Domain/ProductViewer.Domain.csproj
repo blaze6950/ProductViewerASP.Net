@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IConnectionFactory.cs" />
     <Compile Include="Abstract\IProductDescriptionsRepository.cs" />
     <Compile Include="Abstract\IProductInventoriesRepository.cs" />
     <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
+    <Compile Include="Concrete\ConnectionFactory.cs" />
     <Compile Include="Concrete\ProductDescriptionRepository.cs" />
     <Compile Include="Concrete\ProductInventoryRepository.cs" />
     <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />

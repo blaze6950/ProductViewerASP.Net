@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Web.Mvc;
 using Ninject;
 using ProductViewer.Domain.Abstract;
@@ -34,8 +31,8 @@ namespace ProductViewer.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            kernel.Bind<IDbConnection>().
-                To<SqlConnection> ()
+            kernel.Bind<IConnectionFactory>().
+                To<ConnectionFactory>()
                 .WithConstructorArgument(typeof(string),
                     ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
         }
