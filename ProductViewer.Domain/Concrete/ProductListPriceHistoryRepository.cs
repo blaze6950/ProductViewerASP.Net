@@ -15,22 +15,22 @@ namespace ProductViewer.Domain.Concrete
         private const string SqlCreate = "INSERT INTO Production.ProductListPriceHistory (ProductID, EndDate, StartDate, ListPrice) VALUES (@ProductID, NULL, @StartDate, @ListPrice)";
         private const string SqlUpdate = "UPDATE Production.ProductListPriceHistory SET ProductID = @ProductID, StartDate = @StartDate, ListPrice = @ListPrice WHERE ProductID = @ProductID AND StartDate = @StartDate";
         private const string SqlDelete = "DELETE FROM Production.ProductListPriceHistory WHERE ProductID = @ProductID AND StartDate = @StartDate";
-        private IDbConnection _connection;
+        private IConnectionFactory _connectionFactory;
 
-        public ProductListPriceHistoryRepository(IDbConnection connection)
+        public ProductListPriceHistoryRepository(IConnectionFactory connectionFactory)
         {
-            _connection = connection;
+            _connectionFactory = connectionFactory;
         }
 
         public IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList()
         {
-            var productListPriceHistoryList = _connection.Query<ProductListPriceHistory>(SqlGetProductListProceHistoryList).ToList();
+            var productListPriceHistoryList = _connectionFactory.GetConnection.Query<ProductListPriceHistory>(SqlGetProductListProceHistoryList).ToList();
             return productListPriceHistoryList;
         }
 
         public ProductListPriceHistory GetProductListPriceHistory(int productId, DateTime startDate)
         {
-            var productListPriceHistory = _connection.QueryFirstOrDefault<ProductListPriceHistory>(SqlGetProductListProceHistory, new{ ProductID = productId, StartDate = startDate});
+            var productListPriceHistory = _connectionFactory.GetConnection.QueryFirstOrDefault<ProductListPriceHistory>(SqlGetProductListProceHistory, new{ ProductID = productId, StartDate = startDate});
             return productListPriceHistory;
         }
 
@@ -40,18 +40,18 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@ProductID", item.ProductID);
             p.Add("@StartDate", item.StartDate);
             p.Add("@ListPrice", item.ListPrice);
-            _connection.Execute(SqlCreate, p);
+            _connectionFactory.GetConnection.Execute(SqlCreate, p);
             return item;
         }
 
         public void Update(ProductListPriceHistory item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connectionFactory.GetConnection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int productId, DateTime startDate)
         {
-            _connection.Execute(SqlDelete, new { ProductID = productId, StartDate = startDate });
+            _connectionFactory.GetConnection.Execute(SqlDelete, new { ProductID = productId, StartDate = startDate });
         }
     }
 }

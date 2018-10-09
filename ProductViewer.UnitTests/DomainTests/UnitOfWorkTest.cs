@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿using System.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ProductViewer.Domain.Abstract;
@@ -10,21 +10,14 @@ namespace ProductViewer.UnitTests.DomainTests
     public class UnitOfWorkTest
     {
         private IUnitOfWork _unitOfWork;
-        private Mock<IAdoNetContext> _mock;
+        private Mock<IConnectionFactory> _mock;
 
         [TestInitialize]
         public void SetupTests()
         {
             //Arrange
-            _mock = new Mock<IAdoNetContext>();
-            _mock.Setup(c => c.GetProducts()).Returns(new DataTable());
-            _mock.Setup(c => c.RefreshData());
-            _mock.Setup(c => c.GetProductModels()).Returns(new DataTable());
-            _mock.Setup(c => c.GetProductDescriptions()).Returns(new DataTable());
-            _mock.Setup(c => c.CommitChanges());
-            _mock.Setup(c => c.GetProductInventories()).Returns(new DataTable());
-            _mock.Setup(c => c.GetProductListPriceHistories()).Returns(new DataTable());
-            _mock.Setup(c => c.GetProductModelProductDescriptionCulture()).Returns(new DataTable());
+            _mock = new Mock<IConnectionFactory>();
+            _mock.SetupGet(c => c.GetConnection).Returns(new SqlConnection());
             _mock.Setup(c => c.Dispose());
             _unitOfWork = new UnitOfWork(_mock.Object);
         }
@@ -81,15 +74,6 @@ namespace ProductViewer.UnitTests.DomainTests
             var actual = _unitOfWork.ProductModelsRepository;
             //Asset
             Assert.IsNotNull(actual);
-        }
-
-        [TestMethod]
-        public void CommitMethodIsCorrect()
-        {
-            //Act
-            _unitOfWork.Commit();
-            //Asset
-            _mock.Verify(c=>c.CommitChanges());
         }
 
         [TestMethod]

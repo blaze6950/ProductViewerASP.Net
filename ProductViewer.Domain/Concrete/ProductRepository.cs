@@ -14,22 +14,22 @@ namespace ProductViewer.Domain.Concrete
         private const string SqlCreate = "dbo.InsertProduct";
         private const string SqlUpdate = "UPDATE Production.Product SET Name = @Name, ProductNumber = @ProductNumber, SafetyStockLevel = @SafetyStockLevel, ReorderPoint = @ReorderPoint, StandardCost = @StandardCost, ListPrice = @ListPrice, DaysToManufacture = @DaysToManufacture, SellStartDate = @SellStartDate, ProductModelID = @ProductModelID WHERE ProductID = @ProductID";
         private const string SqlDelete = "UPDATE Production.Product SET ViewStatus = 0 WHERE ProductID = @ProductID";
-        private IDbConnection _connection;
+        private IConnectionFactory _connectionFactory;
 
-        public ProductRepository(IDbConnection connection)
+        public ProductRepository(IConnectionFactory connectionFactory)
         {
-            _connection = connection;
+            _connectionFactory = connectionFactory;
         }
 
         public IEnumerable<Product> GetProductList()
         {
-            var productList = _connection.Query<Product>(SqlGetProductList).ToList();
+            var productList = _connectionFactory.GetConnection.Query<Product>(SqlGetProductList).ToList();
             return productList;
         }
 
         public Product GetProduct(int id)
         {
-            var product = _connection.QueryFirstOrDefault<Product>(SqlGetProduct, new{ ProductID  = id});
+            var product = _connectionFactory.GetConnection.QueryFirstOrDefault<Product>(SqlGetProduct, new{ ProductID  = id});
             return product;
         }
 
@@ -46,19 +46,19 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@SellStartDate", item.SellStartDate);
             p.Add("@ProductModelID", item.ProductModelID);
             p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            _connectionFactory.GetConnection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
             item.ProductId = p.Get<int>("@Id");
             return item;
         }
 
         public void Update(Product item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connectionFactory.GetConnection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int id)
         {
-            _connection.Execute(SqlDelete, new {ProductID = id});
+            _connectionFactory.GetConnection.Execute(SqlDelete, new {ProductID = id});
         }
     }
 }

@@ -10,12 +10,12 @@ namespace ProductViewer.Domain.Concrete
         public UnitOfWork(IConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
-            ProductsRepository = new ProductRepository(_connectionFactory.GetConnection);
-            ProductDescriptionsRepository = new ProductDescriptionRepository(_connectionFactory.GetConnection);
-            ProductInventoriesRepository = new ProductInventoryRepository(_connectionFactory.GetConnection);
-            ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_connectionFactory.GetConnection);
-            ProductModelsRepository = new ProductModelRepository(_connectionFactory.GetConnection);
-            ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_connectionFactory.GetConnection);
+            ProductsRepository = new ProductRepository(_connectionFactory);
+            ProductDescriptionsRepository = new ProductDescriptionRepository(_connectionFactory);
+            ProductInventoriesRepository = new ProductInventoryRepository(_connectionFactory);
+            ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_connectionFactory);
+            ProductModelsRepository = new ProductModelRepository(_connectionFactory);
+            ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_connectionFactory);
         }
 
         public IProductsRepository ProductsRepository { get; }
@@ -27,7 +27,7 @@ namespace ProductViewer.Domain.Concrete
 
         public void Dispose()
         {
-            _connectionFactory?.GetConnection.Dispose();
+            _connectionFactory?.Dispose();
         }
     }
 }
