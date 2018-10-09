@@ -149,6 +149,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork.ProductListPriceHistoriesRepository.Create(builder.ProductListPriceHistoryEntity);
             _unitOfWork.ProductDescriptionsRepository.Create(builder.ProductDescriptionEntity);
             _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(builder.ProductModelProductDescriptionCultureEntity);
+            _unitOfWork.Commit();
         }
 
         private void UpdateExistingProduct(ProductViewModelBuilder builder)
@@ -159,6 +160,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork.ProductListPriceHistoriesRepository.Update(builder.ProductListPriceHistoryEntity);
             _unitOfWork.ProductDescriptionsRepository.Update(builder.ProductDescriptionEntity);
             _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(builder.ProductModelProductDescriptionCultureEntity);
+            _unitOfWork.Commit();
         }
 
         private void RemoveExistingProduct(ProductViewModelBuilder builder)
@@ -169,6 +171,7 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
             _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
             _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
+            _unitOfWork.Commit();
         }
     }
 }
