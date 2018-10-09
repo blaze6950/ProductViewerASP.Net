@@ -10,5 +10,6 @@ namespace ProductViewer.Domain.Abstract
         IProductListPriceHistoriesRepository ProductListPriceHistoriesRepository { get; }
         IProductModelsRepository ProductModelsRepository { get; }
         IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository { get; }
+        void Commit();
     }
 }

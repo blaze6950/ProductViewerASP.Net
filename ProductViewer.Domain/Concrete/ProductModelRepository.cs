@@ -14,22 +14,27 @@ namespace ProductViewer.Domain.Concrete
         private const string SqlCreate = "dbo.InsertProductModel";
         private const string SqlUpdate = "UPDATE Production.ProductModel SET Name = @Name WHERE ProductModelID = @ProductModelID";
         private const string SqlDelete = "UPDATE Production.ProductModel SET ViewStatus = 0 WHERE ProductModelID = @ProductModelID";
-        private IConnectionFactory _connectionFactory;
 
-        public ProductModelRepository(IConnectionFactory connectionFactory)
+        private IDbTransaction _transaction;
+        private IDbConnection _connection
         {
-            _connectionFactory = connectionFactory;
+            get => _transaction.Connection;
+        }
+
+        public ProductModelRepository(IDbTransaction transaction)
+        {
+            _transaction = transaction;
         }
 
         public IEnumerable<ProductModel> GetProductModelList()
         {
-            var productModelList = _connectionFactory.GetConnection.Query<ProductModel>(SqlGetProductModelList).ToList();
+            var productModelList = _connection.Query<ProductModel>(SqlGetProductModelList).ToList();
             return productModelList;
         }
 
         public ProductModel GetProductModel(int id)
         {
-            var productModel = _connectionFactory.GetConnection.QueryFirstOrDefault<ProductModel>(SqlGetProductModel, new{ ProductModelID  = id});
+            var productModel = _connection.QueryFirstOrDefault<ProductModel>(SqlGetProductModel, new{ ProductModelID  = id});
             return productModel;
         }
 
@@ -38,19 +43,19 @@ namespace ProductViewer.Domain.Concrete
             var p = new DynamicParameters();
             p.Add("@Name", item.Name);
             p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            _connectionFactory.GetConnection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
             item.ProductModelID = p.Get<int>("@Id");
             return item;
         }
 
         public void Update(ProductModel item)
         {
-            _connectionFactory.GetConnection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item);
         }
 
         public void Delete(int id)
         {
-            _connectionFactory.GetConnection.Execute(SqlDelete, new { ProductModelID = id });
+            _connection.Execute(SqlDelete, new { ProductModelID = id });
         }
     }
 }

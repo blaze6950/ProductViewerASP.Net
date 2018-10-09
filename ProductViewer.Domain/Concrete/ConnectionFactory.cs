@@ -8,10 +8,28 @@ namespace ProductViewer.Domain.Concrete
     {
         private readonly string _connectionString;
         private IDbConnection _connection;
+        private IDbTransaction _transaction;
 
         public ConnectionFactory(string connectionString)
         {
             _connectionString = connectionString;
+        }
+
+        public IDbTransaction GetTransaction
+        {
+            get
+            {
+                if (_transaction == null)
+                {
+                    _transaction = GetConnection.BeginTransaction();
+                }
+                return _transaction;
+            }
+        }
+
+        public void ResetTransaction()
+        {
+            _transaction = null;
         }
 
         public IDbConnection GetConnection
@@ -39,6 +57,7 @@ namespace ProductViewer.Domain.Concrete
         public void Dispose()
         {
             _connection?.Dispose();
+            _transaction?.Dispose();
         }
     }
 }
