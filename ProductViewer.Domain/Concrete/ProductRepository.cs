@@ -13,7 +13,7 @@ namespace ProductViewer.Domain.Concrete
         private const string SqlGetProduct = "SELECT * FROM Production.Product WHERE ViewStatus = 1 AND ProductID = @ProductID";
         private const string SqlCreate = "dbo.InsertProduct";
         private const string SqlUpdate = "UPDATE Production.Product SET Name = @Name, ProductNumber = @ProductNumber, SafetyStockLevel = @SafetyStockLevel, ReorderPoint = @ReorderPoint, StandardCost = @StandardCost, ListPrice = @ListPrice, DaysToManufacture = @DaysToManufacture, SellStartDate = @SellStartDate, ProductModelID = @ProductModelID WHERE ProductID = @ProductID";
-        private const string SqlDelete = "UPDATE Product SET ViewStatus = 0 WHERE ProductID = @ProductID";
+        private const string SqlDelete = "UPDATE Production.Product SET ViewStatus = 0 WHERE ProductID = @ProductID";
 
         private IDbTransaction _transaction;
         private IDbConnection _connection
