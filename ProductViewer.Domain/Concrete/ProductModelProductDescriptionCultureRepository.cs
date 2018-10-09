@@ -28,14 +28,14 @@ namespace ProductViewer.Domain.Concrete
 
         public IEnumerable<ProductModelProductDescriptionCulture> GetProductModelProductDescriptionCultureList()
         {
-            var productModelProductDescriptionCultureList = _connection.Query<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCultureList).ToList();
+            var productModelProductDescriptionCultureList = _connection.Query<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCultureList, transaction: _transaction).ToList();
             return productModelProductDescriptionCultureList;
         }
 
         public ProductModelProductDescriptionCulture GetProductModelProductDescriptionCulture(int productModelId,
             int productDescriptionId)
         {
-            var productModelProductDescriptionCulture = _connection.QueryFirstOrDefault<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCulture, new{ ProductModelID = productModelId, ProductDescriptionID = productDescriptionId});
+            var productModelProductDescriptionCulture = _connection.QueryFirstOrDefault<ProductModelProductDescriptionCulture>(SqlGetProductModelProductDescriptionCulture, new{ ProductModelID = productModelId, ProductDescriptionID = productDescriptionId}, transaction: _transaction);
             return productModelProductDescriptionCulture;
         }
 
@@ -44,18 +44,18 @@ namespace ProductViewer.Domain.Concrete
             var p = new DynamicParameters();
             p.Add("@ProductModelID", item.ProductModelID);
             p.Add("@ProductDescriptionID", item.ProductDescriptionID);
-            _connection.Execute(SqlCreate, p);
+            _connection.Execute(SqlCreate, p, transaction: _transaction);
             return item;
         }
 
         public void Update(ProductModelProductDescriptionCulture item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item, transaction: _transaction);
         }
 
         public void Delete(int productModelId, int productDescriptionId)
         {
-            _connection.Execute(SqlDelete, new { ProductModelID = productModelId, ProductDescriptionID = productDescriptionId });
+            _connection.Execute(SqlDelete, new { ProductModelID = productModelId, ProductDescriptionID = productDescriptionId }, transaction: _transaction);
         }
     }
 }

@@ -29,13 +29,13 @@ namespace ProductViewer.Domain.Concrete
 
         public IEnumerable<ProductListPriceHistory> GetProductListPriceHistoryList()
         {
-            var productListPriceHistoryList = _connection.Query<ProductListPriceHistory>(SqlGetProductListProceHistoryList).ToList();
+            var productListPriceHistoryList = _connection.Query<ProductListPriceHistory>(SqlGetProductListProceHistoryList, transaction: _transaction).ToList();
             return productListPriceHistoryList;
         }
 
         public ProductListPriceHistory GetProductListPriceHistory(int productId, DateTime startDate)
         {
-            var productListPriceHistory = _connection.QueryFirstOrDefault<ProductListPriceHistory>(SqlGetProductListProceHistory, new{ ProductID = productId, StartDate = startDate});
+            var productListPriceHistory = _connection.QueryFirstOrDefault<ProductListPriceHistory>(SqlGetProductListProceHistory, new{ ProductID = productId, StartDate = startDate}, transaction: _transaction);
             return productListPriceHistory;
         }
 
@@ -45,18 +45,18 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@ProductID", item.ProductID);
             p.Add("@StartDate", item.StartDate);
             p.Add("@ListPrice", item.ListPrice);
-            _connection.Execute(SqlCreate, p);
+            _connection.Execute(SqlCreate, p, transaction: _transaction);
             return item;
         }
 
         public void Update(ProductListPriceHistory item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item, transaction: _transaction);
         }
 
         public void Delete(int productId, DateTime startDate)
         {
-            _connection.Execute(SqlDelete, new { ProductID = productId, StartDate = startDate });
+            _connection.Execute(SqlDelete, new { ProductID = productId, StartDate = startDate }, transaction: _transaction);
         }
     }
 }

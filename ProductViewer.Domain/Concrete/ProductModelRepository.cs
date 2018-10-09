@@ -28,13 +28,13 @@ namespace ProductViewer.Domain.Concrete
 
         public IEnumerable<ProductModel> GetProductModelList()
         {
-            var productModelList = _connection.Query<ProductModel>(SqlGetProductModelList).ToList();
+            var productModelList = _connection.Query<ProductModel>(SqlGetProductModelList, transaction: _transaction).ToList();
             return productModelList;
         }
 
         public ProductModel GetProductModel(int id)
         {
-            var productModel = _connection.QueryFirstOrDefault<ProductModel>(SqlGetProductModel, new{ ProductModelID  = id});
+            var productModel = _connection.QueryFirstOrDefault<ProductModel>(SqlGetProductModel, new{ ProductModelID  = id}, transaction: _transaction);
             return productModel;
         }
 
@@ -43,19 +43,19 @@ namespace ProductViewer.Domain.Concrete
             var p = new DynamicParameters();
             p.Add("@Name", item.Name);
             p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure, transaction: _transaction);
             item.ProductModelID = p.Get<int>("@Id");
             return item;
         }
 
         public void Update(ProductModel item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item, transaction: _transaction);
         }
 
         public void Delete(int id)
         {
-            _connection.Execute(SqlDelete, new { ProductModelID = id });
+            _connection.Execute(SqlDelete, new { ProductModelID = id }, transaction: _transaction);
         }
     }
 }

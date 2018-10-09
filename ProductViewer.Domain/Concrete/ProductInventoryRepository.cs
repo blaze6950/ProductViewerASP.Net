@@ -29,13 +29,13 @@ namespace ProductViewer.Domain.Concrete
 
         public IEnumerable<ProductInventory> GetProductInventoryList()
         {
-            var productInventoryList = _connection.Query<ProductInventory>(SqlGetProductInventoryList).ToList();
+            var productInventoryList = _connection.Query<ProductInventory>(SqlGetProductInventoryList, transaction: _transaction).ToList();
             return productInventoryList;
         }
 
         public ProductInventory GetProductInventory(Int16 locationId, int productId)
         {
-            var productInventory = _connection.QueryFirstOrDefault<ProductInventory>(SqlGetProductInventory, new{ProductID = productId});
+            var productInventory = _connection.QueryFirstOrDefault<ProductInventory>(SqlGetProductInventory, new{ProductID = productId}, transaction: _transaction);
             return productInventory;
         }
 
@@ -46,18 +46,18 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@Shelf", item.Shelf);
             p.Add("@Bin", item.Bin);
             p.Add("@Quantity", item.Quantity);
-            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            _connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure, transaction: _transaction);
             return item;
         }
 
         public void Update(ProductInventory item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item, transaction: _transaction);
         }
 
         public void Delete(Int16 locationId, int productId)
         {
-            _connection.Execute(SqlDelete, new { ProductID = productId });
+            _connection.Execute(SqlDelete, new { ProductID = productId }, transaction: _transaction);
         }
     }
 }

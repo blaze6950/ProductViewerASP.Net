@@ -28,13 +28,13 @@ namespace ProductViewer.Domain.Concrete
 
         public IEnumerable<Product> GetProductList()
         {
-            var productList = _connection.Query<Product>(SqlGetProductList).ToList();
+            var productList = _connection.Query<Product>(SqlGetProductList, transaction: _transaction).ToList();
             return productList;
         }
 
         public Product GetProduct(int id)
         {
-            var product = _connection.QueryFirstOrDefault<Product>(SqlGetProduct, new{ ProductID  = id});
+            var product = _connection.QueryFirstOrDefault<Product>(SqlGetProduct, new{ ProductID  = id}, transaction: _transaction);
             return product;
         }
 
@@ -52,19 +52,19 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@ProductModelID", item.ProductModelID);
             p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
             var connection = _connection;
-            connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure);
+            connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure, transaction: _transaction);
             item.ProductId = p.Get<int>("@Id");
             return item;
         }
 
         public void Update(Product item)
         {
-            _connection.Execute(SqlUpdate, item);
+            _connection.Execute(SqlUpdate, item, transaction: _transaction);
         }
 
         public void Delete(int id)
         {
-            _connection.Execute(SqlDelete, new {ProductID = id});
+            _connection.Execute(SqlDelete, new {ProductID = id}, transaction: _transaction);
         }
     }
 }
