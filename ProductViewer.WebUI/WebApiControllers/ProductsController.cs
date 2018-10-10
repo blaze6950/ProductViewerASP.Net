@@ -36,6 +36,10 @@ namespace ProductViewer.WebUI.WebApiControllers
         [HttpGet]
         public ProductViewModel GetProduct(int id)
         {
+            if (_list == null)
+            {
+                InitialList();
+            }
             return _list.FirstOrDefault(p=>p.ProductEntityId == id);
         }
 
