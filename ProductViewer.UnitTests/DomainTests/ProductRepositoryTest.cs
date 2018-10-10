@@ -1,34 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
 using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.UnitTests.DomainTests
 {
-    public class InMemoryDatabase
-    {
-        private readonly OrmLiteConnectionFactory dbFactory =
-            new OrmLiteConnectionFactory(":memory:", SqliteOrmLiteDialectProvider.Instance);
-
-        public IDbConnection OpenConnection() => this.dbFactory.OpenDbConnection();
-
-        public void Insert<T>(IEnumerable<T> items)
-        {
-            using (var db = this.OpenConnection())
-            {
-                db.CreateTableIfNotExists<T>();
-                foreach (var item in items)
-                {
-                    db.Insert(item);
-                }
-            }
-        }
-    }
-
     [TestClass]
     public class ProductRepositoryTest
     {
@@ -46,11 +24,7 @@ namespace ProductViewer.UnitTests.DomainTests
                 new Product() {DaysToManufacture = 2, ListPrice = new decimal(22.22), Name = "Test2", ProductId = 2, ProductModelID = 2, ProductNumber = "TT-T002", ReorderPoint = 2, SafetyStockLevel = 2, SellStartDate = DateTime.Today, StandardCost = new decimal(22.22)},
                 new Product() {DaysToManufacture = 3, ListPrice = new decimal(33.33), Name = "Test3", ProductId = 3, ProductModelID = 3, ProductNumber = "TT-T003", ReorderPoint = 3, SafetyStockLevel = 3, SellStartDate = DateTime.Today, StandardCost = new decimal(33.33)},
             };
-            var db = new InMemoryDatabase();
-            db.Insert(_products);
-            _mock = new Mock<IConnectionFactory>();
-            _mock.SetupGet(c => c.GetConnection).Returns(db.OpenConnection());
-            _productsRepository = new ProductRepository(_mock.Object);
+            //_productsRepository = new ProductRepository(_mock.Object);
         }
 
         [TestMethod]
