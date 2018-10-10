@@ -61,16 +61,15 @@
             }
         });
         var datasource = new kendo.data.DataSource({
-                type: "aspnetmvc-ajax",
                 transport: {
                     type: "json",
                     read: {
-                        url: "@Url.Action("GetProducts", "Home")"
+                        url: "http://localhost:60750/api/Products"
                     }
                 },
                 pageSize: 5,
                 schema: {
-                    data: "Data",
+                    data: "",
                     model: {
                         fields: {
                             ProductEntityId: { type: "number" },
@@ -84,9 +83,6 @@
                     total: "Total",
                     errors: "Errors"
                 },
-                serverPaging: true,
-                serverSorting: true,
-                serverFiltering: true,
                 sort: ({ field: "ProductEntityName", dir: "asc" })
         });
             var grid = $("#grid").kendoGrid({
