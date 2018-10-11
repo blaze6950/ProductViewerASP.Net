@@ -16,6 +16,7 @@ namespace WebAPI
 {
     public static class NinjectWebCommon
     {
+        // ReSharper disable once InconsistentNaming
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         public static void Start()
