@@ -13,9 +13,9 @@ namespace WebAPI.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private IEnumerable<ProductViewModel> _list;
 
-        public ProductsController()
+        public ProductsController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ConnectionFactory(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString));
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Products
