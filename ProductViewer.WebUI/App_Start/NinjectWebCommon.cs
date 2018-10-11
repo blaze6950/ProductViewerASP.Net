@@ -1,16 +1,17 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProductViewer.WebUI.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProductViewer.WebUI.App_Start.NinjectWebCommon), "Stop")]
+using System;
+using System.Web;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Ninject;
+using Ninject.Web.Common;
+using Ninject.Web.Common.WebHost;
+using ProductViewer.WebUI;
+using ProductViewer.WebUI.Infrastructure;
 
-namespace ProductViewer.WebUI.App_Start
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(NinjectWebCommon), "Stop")]
+
+namespace ProductViewer.WebUI
 {
-    using System;
-    using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-    using Ninject;
-    using Ninject.Web.Common;
-
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -48,10 +49,10 @@ namespace ProductViewer.WebUI.App_Start
                 RegisterServices(kernel);
                 return kernel;
             }
-            catch
+            catch(Exception e)
             {
                 kernel.Dispose();
-                throw;
+                throw new Exception("An exception throwed in CreateKernel method", e);
             }
         }
 
@@ -61,8 +62,7 @@ namespace ProductViewer.WebUI.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            System.Web.Mvc.DependencyResolver.SetResolver(new
-                ProductViewer.WebUI.Infrastructure.NinjectDependencyResolver(kernel));
+            System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }        
     }
 }
