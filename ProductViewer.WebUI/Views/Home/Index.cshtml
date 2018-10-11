@@ -67,7 +67,10 @@
                         url: "http://localhost:60750/api/Products"
                     }
                 },
-                pageSize: 5,
+                pageSize: 4,
+                serverPaging: false,
+                serverFiltering: false,
+                serverSorting: false,
                 schema: {
                     data: "",
                     model: {
@@ -80,55 +83,58 @@
                             PriceForAll: { type: "number" }
                         }
                     },
-                    total: "Total",
+                    
                     errors: "Errors"
                 },
                 sort: ({ field: "ProductEntityName", dir: "asc" })
         });
-            var grid = $("#grid").kendoGrid({
-                dataSource: datasource,
-                columns: [
-                    { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
-                    { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
-                    {
-                        field: "ProductDescriptionEntityDescription",
-                        title: "Description",
-                        type: "string",
-                        sortable: false,
-                        filterable: false
-                    },
-                    {
-                        field: "ProductListPriceHistoryEntityListPrice",
-                        title: "Price",
-                        type: "number",
-                        sortable: true,
-                        filterable: false
-                    },
-                    {
-                        field: "ProductInventoryEntityQuantity",
-                        title: "Quantity",
-                        type: "number",
-                        sortable: true,
-                        filterable: false
-                    },
-                    { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
-                    {
-                        width: 80,
-                        title: "",
-                        template:
-                            "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
-                        selectable: false
-                    },
-                    {
-                        width: 80,
-                        title: "",
-                        template:
-                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
-                        selectable: false
-                    }
+        var grid = $("#grid").kendoGrid({
+            dataSource: datasource,
+            columns: [
+                { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
+                { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                {
+                    field: "ProductDescriptionEntityDescription",
+                    title: "Description",
+                    type: "string",
+                    sortable: false,
+                    filterable: false
+                },
+                {
+                    field: "ProductListPriceHistoryEntityListPrice",
+                    title: "Price",
+                    type: "number",
+                    sortable: true,
+                    filterable: false
+                },
+                {
+                    field: "ProductInventoryEntityQuantity",
+                    title: "Quantity",
+                    type: "number",
+                    sortable: true,
+                    filterable: false
+                },
+                { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
+                {
+                    width: 80,
+                    title: "",
+                    template:
+                        "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                    selectable: false
+                },
+                {
+                    width: 80,
+                    title: "",
+                    template:
+                        "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
+                    selectable: false
+                }
             ],
             height: 600,
-            pageable: true,
+            pageable: {
+                refresh: true,
+                alwaysVisible: false
+            },
             filterable: true,
             sortable: {
                 mode: "single",
@@ -156,6 +162,7 @@
                 grid.dataSource(datasource);
             }
         });
+        
     });
     function callConfirmationAlert(idRemovableItem) {
         if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
