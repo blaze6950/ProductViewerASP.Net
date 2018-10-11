@@ -23,13 +23,21 @@ namespace ProductViewer.WebUI.WebApiControllers
 
         // GET: api/Products
         [HttpGet]
-        public IEnumerable<ProductViewModel> GetProducts()
+        public IHttpActionResult GetProducts()
         {
             if (_list == null)
             {
                 InitialList();
             }
-            return _list;
+            return Json(from p in _list
+                        select new {
+                            ProductEntityId = p.ProductEntityId,
+                            ProductEntityName = p.ProductEntityName,
+                            ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
+                            ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
+                            ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
+                            PriceForAll = p.PriceForAll
+                        });
         }
 
         // GET: api/Products/5

@@ -19,28 +19,6 @@ namespace ProductViewer.WebUI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
-        {
-            if (Request != null && Request.HttpMethod.ToUpper().Equals("POST"))
-            {
-                if (_list == null)
-                {
-                    InitialList();
-                }
-
-                return Json(_list.ToDataSourceResult(request, p => new
-                {
-                    ProductEntityId = p.ProductEntityId,
-                    ProductEntityName = p.ProductEntityName,
-                    ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
-                    ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
-                    ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
-                    PriceForAll = p.PriceForAll
-                }));
-            }
-            return HttpNotFound("Http method is GET, but required POST");
-        }
-
         public ActionResult Index()
         {
             if (Request != null && Request.HttpMethod.ToUpper().Equals("GET"))
