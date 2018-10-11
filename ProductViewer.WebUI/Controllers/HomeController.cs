@@ -1,44 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-using ProductViewer.Domain.Abstract;
 using ProductViewer.WebUI.Models;
+using ProductViewer.WebUI.Repository;
+using ProductViewer.WebUI.ViewModels;
 
 namespace ProductViewer.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private IUnitOfWork _unitOfWork;
-        private IEnumerable<ProductViewModel> _list;
+        private ServiceRepository _service;
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController()
         {
-            _unitOfWork = unitOfWork;
-        }
-
-        public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
-        {
-            if (Request != null && Request.HttpMethod.ToUpper().Equals("POST"))
-            {
-                if (_list == null)
-                {
-                    InitialList();
-                }
-
-                return Json(_list.ToDataSourceResult(request, p => new
-                {
-                    ProductEntityId = p.ProductEntityId,
-                    ProductEntityName = p.ProductEntityName,
-                    ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
-                    ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
-                    ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
-                    PriceForAll = p.PriceForAll
-                }));
-            }
-            return HttpNotFound("Http method is GET, but required POST");
+            _service = new ServiceRepository();
         }
 
         public ActionResult Index()
@@ -54,13 +33,8 @@ namespace ProductViewer.WebUI.Controllers
         {
             if (Request != null && Request.HttpMethod.ToUpper().Equals("POST"))
             {
-                if (_list == null)
-                {
-                    InitialList();
-                }
-                var product = _list.First(p => p.ProductEntityId == id);
-                var builder = product.GetBuilder();
-                RemoveExistingProduct(builder);
+                HttpResponseMessage response = _service.DeleteResponse("api/Products/Delete?id=" + id.ToString());
+                response.EnsureSuccessStatusCode();
                 return RedirectToAction("Index", "Home");
             }
             return HttpNotFound("Http method is GET, but required POST");
@@ -70,14 +44,12 @@ namespace ProductViewer.WebUI.Controllers
         {
             if (Request != null && Request.HttpMethod.ToUpper().Equals("GET"))
             {
-                if (_list == null)
-                {
-                    InitialList();
-                }
                 if (isEditing)
                 {
                     ViewBag.Title = "Editing an existing product";
-                    var product1 = _list.First(p => p.ProductEntityId == id);
+                    HttpResponseMessage response = _service.GetResponse("api/Products/GetProduct?id=" + id.ToString());
+                    response.EnsureSuccessStatusCode();
+                    ProductViewModel product1 = response.Content.ReadAsAsync<ProductViewModel>().Result;
                     return PartialView("Partials/AddOrEditProduct", product1);
                 }
                 else
@@ -90,24 +62,24 @@ namespace ProductViewer.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ProductViewModelBuilder builder = null;
                     try
                     {
-                        builder = product.GetBuilder();
                         if (product.ProductEntityId != 0)
                         {
-                            UpdateExistingProduct(builder);
+                            HttpResponseMessage response = _service.PutResponse("api/Products/Update", product);
+                            response.EnsureSuccessStatusCode();
                             return true;
                         }
                         else
                         {
-                            CreateNewProduct(builder);
+                            HttpResponseMessage response = _service.PostResponse("api/Products/Create", product);
+                            response.EnsureSuccessStatusCode();
                             return true;
                         }
                     }
                     catch (Exception e)
                     {
-                        TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", builder?.ProductEntity.Name, e.Message);
+                        TempData["error"] = string.Format("{0} has not been saved! Error message: {1}", product.ProductEntityName, e.Message);
                         return PartialView("Partials/AddOrEditProduct", product);
                     }
                 }
@@ -122,56 +94,10 @@ namespace ProductViewer.WebUI.Controllers
 
         public ViewResult ProductDetails(int id)
         {
-            if (_list == null)
-            {
-                InitialList();
-            }
-            var product = _list.First(p => p.ProductEntityId == id);
+            HttpResponseMessage response = _service.GetResponse("api/Products/GetProduct?id=" + id.ToString());
+            response.EnsureSuccessStatusCode();
+            ProductViewModel product = response.Content.ReadAsAsync<ProductViewModel>().Result;
             return View(product);
-        }
-
-        private void InitialList()
-        {
-            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                     join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
-                     join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
-                     join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                     join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
-                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
-                     select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
-        }
-
-        private void CreateNewProduct(ProductViewModelBuilder builder)
-        {
-            _unitOfWork.ProductModelsRepository.Create(builder.ProductModelEntity);
-            _unitOfWork.ProductsRepository.Create(builder.ProductEntity);
-            _unitOfWork.ProductInventoriesRepository.Create(builder.ProductInventoryEntity);
-            _unitOfWork.ProductListPriceHistoriesRepository.Create(builder.ProductListPriceHistoryEntity);
-            _unitOfWork.ProductDescriptionsRepository.Create(builder.ProductDescriptionEntity);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Create(builder.ProductModelProductDescriptionCultureEntity);
-            _unitOfWork.Commit();
-        }
-
-        private void UpdateExistingProduct(ProductViewModelBuilder builder)
-        {
-            _unitOfWork.ProductModelsRepository.Update(builder.ProductModelEntity);
-            _unitOfWork.ProductsRepository.Update(builder.ProductEntity);
-            _unitOfWork.ProductInventoriesRepository.Update(builder.ProductInventoryEntity);
-            _unitOfWork.ProductListPriceHistoriesRepository.Update(builder.ProductListPriceHistoryEntity);
-            _unitOfWork.ProductDescriptionsRepository.Update(builder.ProductDescriptionEntity);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Update(builder.ProductModelProductDescriptionCultureEntity);
-            _unitOfWork.Commit();
-        }
-
-        private void RemoveExistingProduct(ProductViewModelBuilder builder)
-        {
-            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
-            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
-            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductId);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
-            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
-            _unitOfWork.Commit();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using ProductViewer.Domain.Entities;
+﻿using ProductViewer.WebUI.Models;
 
-namespace ProductViewer.WebUI.Models
+namespace ProductViewer.WebUI.ViewModels
 {
     public class ProductViewModelBuilder
     {

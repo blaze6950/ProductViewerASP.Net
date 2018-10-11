@@ -250,6 +250,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductDescription.cs" />
+    <Compile Include="Models\ProductInventory.cs" />
+    <Compile Include="Models\ProductListPriceHistory.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductModelProductDescriptionCulture.cs" />
+    <Compile Include="Repository\ServiceRepository.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2926,12 +2933,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ProductViewer.Domain\ProductViewer.Domain.csproj">
-      <Project>{a70588f5-c54a-4865-a96b-b6ada3ed4eeb}</Project>
-      <Name>ProductViewer.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

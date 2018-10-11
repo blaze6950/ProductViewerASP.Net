@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 
-namespace ProductViewer.WebUI.Models
+namespace ProductViewer.WebUI.ViewModels
 {
     public class ProductViewModel
     {

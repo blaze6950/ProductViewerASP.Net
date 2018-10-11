@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
 using Ninject;
-using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
 
 namespace ProductViewer.WebUI.Infrastructure
 {
@@ -30,11 +28,7 @@ namespace ProductViewer.WebUI.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            kernel.Bind<IConnectionFactory>().
-                To<ConnectionFactory>()
-                .WithConstructorArgument(typeof(string),
-                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            // e.g. kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
         }
     }
 }
