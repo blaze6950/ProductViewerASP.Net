@@ -247,7 +247,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
