@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductViewer.WebUI", "Prod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductViewer.UnitTests", "ProductViewer.UnitTests\ProductViewer.UnitTests.csproj", "{8B3C034D-BCCF-4143-8B44-7F05FC934F19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{2220605B-2E60-4770-99C3-1641C8662808}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductViewer.WebAPI", "WebAPI\ProductViewer.WebAPI.csproj", "{2220605B-2E60-4770-99C3-1641C8662808}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

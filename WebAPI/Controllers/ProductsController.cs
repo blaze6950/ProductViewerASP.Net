@@ -2,12 +2,14 @@
 using System.Configuration;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Concrete;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
+    [EnableCors(origins: "http://localhost:60750", headers: "*", methods: "*")]
     public class ProductsController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
