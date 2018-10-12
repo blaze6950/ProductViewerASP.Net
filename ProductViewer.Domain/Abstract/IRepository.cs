@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ProductViewer.Domain.Abstract
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetItemList(); // получение всех объектов
+        T FindById(Func<T, bool> predicate);
+
+        IEnumerable<T> Get(); // получение всех объектов
+
+        IEnumerable<T> Get(Func<T, bool> predicate);
 
         T Create(T item); // создание объекта
 
         void Update(T item); // обновление объекта
 
-        void Save();  // сохранение изменений
+        void Remove(T item); // удаление объекта
     }
 }
