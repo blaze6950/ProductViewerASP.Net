@@ -20,9 +20,9 @@ namespace ProductViewer.UnitTests.DomainTests
             //Arrange
             _products = new List<Product>
             {
-                new Product() {DaysToManufacture = 1, ListPrice = new decimal(11.11), Name = "Test1", ProductId = 0, ProductModelID = 0, ProductNumber = "TT-T001", ReorderPoint = 1, SafetyStockLevel = 1, SellStartDate = DateTime.Today, StandardCost = new decimal(11.11)},
-                new Product() {DaysToManufacture = 2, ListPrice = new decimal(22.22), Name = "Test2", ProductId = 2, ProductModelID = 2, ProductNumber = "TT-T002", ReorderPoint = 2, SafetyStockLevel = 2, SellStartDate = DateTime.Today, StandardCost = new decimal(22.22)},
-                new Product() {DaysToManufacture = 3, ListPrice = new decimal(33.33), Name = "Test3", ProductId = 3, ProductModelID = 3, ProductNumber = "TT-T003", ReorderPoint = 3, SafetyStockLevel = 3, SellStartDate = DateTime.Today, StandardCost = new decimal(33.33)},
+                new Product() {DaysToManufacture = 1, ListPrice = new decimal(11.11), Name = "Test1", ProductID = 0, ProductModelID = 0, ProductNumber = "TT-T001", ReorderPoint = 1, SafetyStockLevel = 1, SellStartDate = DateTime.Today, StandardCost = new decimal(11.11)},
+                new Product() {DaysToManufacture = 2, ListPrice = new decimal(22.22), Name = "Test2", ProductID = 2, ProductModelID = 2, ProductNumber = "TT-T002", ReorderPoint = 2, SafetyStockLevel = 2, SellStartDate = DateTime.Today, StandardCost = new decimal(22.22)},
+                new Product() {DaysToManufacture = 3, ListPrice = new decimal(33.33), Name = "Test3", ProductID = 3, ProductModelID = 3, ProductNumber = "TT-T003", ReorderPoint = 3, SafetyStockLevel = 3, SellStartDate = DateTime.Today, StandardCost = new decimal(33.33)},
             };
             //_productsRepository = new ProductRepository(_mock.Object);
         }
@@ -32,7 +32,7 @@ namespace ProductViewer.UnitTests.DomainTests
         {
             //Arrange
             int countRowsExcepted = _products.Count + 1;
-            var newProduct = new Product(){DaysToManufacture = 23, ProductId = 4, ProductModelID = 0, Name = "Test", SafetyStockLevel = 67, ListPrice = 77.77m, ProductNumber = "TestNumber", ReorderPoint = 34, SellStartDate = DateTime.Now, StandardCost = 33.33m};
+            var newProduct = new Product(){DaysToManufacture = 23, ProductID = 4, ProductModelID = 0, Name = "Test", SafetyStockLevel = 67, ListPrice = 77.77m, ProductNumber = "TestNumber", ReorderPoint = 34, SellStartDate = DateTime.Now, StandardCost = 33.33m};
             //Act
             _productsRepository.Create(newProduct);
             //Assert

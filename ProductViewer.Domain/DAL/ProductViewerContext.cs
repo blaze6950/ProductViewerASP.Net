@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using ProductViewer.Domain.Entities;
 
-namespace ProductViewer.Domain
+namespace ProductViewer.Domain.DAL
 {
     class ProductViewerContext : DbContext
     {
-        protected ProductViewerContext() : base()
+        protected ProductViewerContext() : base("ProductViewerContext")
         {
         }
 
@@ -20,5 +16,10 @@ namespace ProductViewer.Domain
         public DbSet<ProductListPriceHistory> ProductListPriceHistories { get; set; }
         public DbSet<ProductModel> ProductModels { get; set; }
         public DbSet<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
     }
 }

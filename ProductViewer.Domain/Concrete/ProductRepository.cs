@@ -53,7 +53,7 @@ namespace ProductViewer.Domain.Concrete
             p.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
             var connection = _connection;
             connection.Execute(SqlCreate, p, commandType: CommandType.StoredProcedure, transaction: _transaction);
-            item.ProductId = p.Get<int>("@Id");
+            item.ProductID = p.Get<int>("@Id");
             return item;
         }
 

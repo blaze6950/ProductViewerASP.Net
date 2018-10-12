@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductViewer.Domain.Entities
 {
@@ -7,6 +9,7 @@ namespace ProductViewer.Domain.Entities
         private int _productModelId;
         public event Action<int> ProductModelIDUpdated;
 
+        [Key]
         public int ProductModelID
         {
             get { return _productModelId; }

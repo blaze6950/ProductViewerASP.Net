@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductViewer.Domain.Entities
 {
@@ -9,7 +11,14 @@ namespace ProductViewer.Domain.Entities
             LocationID = 1;
         }
 
+        [Key]
+        [Column(Order = 1)]
+        [ForeignKey("Product")]
         public int ProductID { get; set; } // Product identification number. Foreign key to Product.ProductID
+        public Product Product { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
         public Int16 LocationID { get; set; } // Inventory location identification number. Foreign key to Location.LocationID
         public string Shelf { get; set; } // Storage compartment within an inventory location.
         public byte Bin { get; set; } // Storage container on a shelf in an inventory location.

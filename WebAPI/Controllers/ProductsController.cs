@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
             var builder = GetProduct(id).GetBuilder();
             _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
             _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
-            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductId);
+            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductID);
             _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
             _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
             _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
@@ -99,8 +99,8 @@ namespace WebAPI.Controllers
                      join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
                      join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
                      join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                     join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductId equals pi.ProductID
-                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductId equals plph.ProductID
+                     join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductID equals pi.ProductID
+                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductID equals plph.ProductID
                      select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
         }
     }

@@ -66,7 +66,7 @@ namespace WebAPI.Models
             };
             ProductEntity.Name = ProductEntity.Name;
             ProductModelEntity.ProductModelID = ProductModelEntity.ProductModelID;
-            ProductEntity.ProductId = ProductEntity.ProductId;
+            ProductEntity.ProductID = ProductEntity.ProductID;
             ProductDescriptionEntity.ProductDescriptionID = ProductDescriptionEntity.ProductDescriptionID;
         }
 
@@ -97,7 +97,7 @@ namespace WebAPI.Models
             _productViewModel = null;
             ProductDescriptionEntity.Description = value.ProductDescriptionEntityDescription;
             ProductEntity.DaysToManufacture = value.ProductEntityDaysToManufacture;
-            ProductEntity.ProductId = value.ProductEntityId;
+            ProductEntity.ProductID = value.ProductEntityId;
             ProductEntity.ListPrice = value.ProductEntityListPrice;
             ProductEntity.Name = value.ProductEntityName;
             ProductEntity.ProductNumber = value.ProductEntityNumber;
@@ -121,7 +121,7 @@ namespace WebAPI.Models
             {
                 ProductDescriptionEntityDescription = ProductDescriptionEntity.Description,
                 ProductEntityDaysToManufacture = ProductEntity.DaysToManufacture,
-                ProductEntityId = ProductEntity.ProductId,
+                ProductEntityId = ProductEntity.ProductID,
                 ProductEntityListPrice = ProductEntity.ListPrice,
                 ProductEntityName = ProductEntity.Name,
                 ProductEntityNumber = ProductEntity.ProductNumber,

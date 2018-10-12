@@ -68,13 +68,14 @@
     <Compile Include="Concrete\ProductModelRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
+    <Compile Include="DAL\ProductViewerInitializer.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDescription.cs" />
     <Compile Include="Entities\ProductInventory.cs" />
     <Compile Include="Entities\ProductListPriceHistory.cs" />
     <Compile Include="Entities\ProductModel.cs" />
     <Compile Include="Entities\ProductModelProductDescriptionCulture.cs" />
-    <Compile Include="ProductViewerContext.cs" />
+    <Compile Include="DAL\ProductViewerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
