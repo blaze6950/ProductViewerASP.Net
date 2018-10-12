@@ -90,5 +90,10 @@ namespace ProductViewer.UnitTests.Fakes
             get => _data[i];
             set => _data[i] = value;
         }
+
+        public int Length
+        {
+            get => _data.Count;
+        }
     }
 }

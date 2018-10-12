@@ -96,12 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DomainTests\ProductRepositoryTest.cs" />
-    <Compile Include="DomainTests\ProductModelRepositoryTest.cs" />
-    <Compile Include="DomainTests\ProductDescriptionRepositoryTest.cs" />
-    <Compile Include="DomainTests\ProductInventoryRepositoryTest.cs" />
-    <Compile Include="DomainTests\ProductModelProductDescriptionCultureRepositoryTest.cs" />
-    <Compile Include="DomainTests\ProductListPriceHistoryRepositoryTest.cs" />
+    <Compile Include="DomainTests\RepositoryTest.cs" />
     <Compile Include="DomainTests\UnitOfWorkTest.cs" />
     <Compile Include="Fakes\FakeDbSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
