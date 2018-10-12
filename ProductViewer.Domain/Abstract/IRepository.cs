@@ -11,10 +11,10 @@ namespace ProductViewer.Domain.Abstract
 
         IEnumerable<T> Get(Func<T, bool> predicate);
 
-        T Create(T item); // создание объекта
+        void Create(T item); // создание объекта
 
         void Update(T item); // обновление объекта
 
-        void Remove(T item); // удаление объекта
+        void Delete(T item); // удаление объекта
     }
 }

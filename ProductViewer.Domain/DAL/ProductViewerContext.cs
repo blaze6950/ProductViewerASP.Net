@@ -8,7 +8,7 @@ namespace ProductViewer.Domain.DAL
     {
         public ProductViewerContext() : base("name=ProductViewerContext")
         {
-            Database.SetInitializer<ProductViewerContext>(new ProductViewerInitializer());
+            Database.SetInitializer(new ProductViewerInitializer());
         }
 
         public DbSet<Product> Products { get; set; }

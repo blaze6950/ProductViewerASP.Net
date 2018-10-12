@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using ProductViewer.Domain.Abstract;
-using ProductViewer.Domain.Concrete;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -31,12 +29,12 @@ namespace WebAPI.Controllers
             return Json(from p in _list
                         select new
                         {
-                            ProductEntityId = p.ProductEntityId,
-                            ProductEntityName = p.ProductEntityName,
-                            ProductDescriptionEntityDescription = p.ProductDescriptionEntityDescription,
-                            ProductListPriceHistoryEntityListPrice = p.ProductListPriceHistoryEntityListPrice,
-                            ProductInventoryEntityQuantity = p.ProductInventoryEntityQuantity,
-                            PriceForAll = p.PriceForAll
+                            p.ProductEntityId,
+                            p.ProductEntityName,
+                            p.ProductDescriptionEntityDescription,
+                            p.ProductListPriceHistoryEntityListPrice,
+                            p.ProductInventoryEntityQuantity,
+                            p.PriceForAll
                         });
         }
 
@@ -84,23 +82,23 @@ namespace WebAPI.Controllers
         public void Delete(int id)
         {
             var builder = GetProduct(id).GetBuilder();
-            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity.LocationID, builder.ProductInventoryEntity.ProductID);
-            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity.ProductID, builder.ProductListPriceHistoryEntity.StartDate);
-            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity.ProductID);
-            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity.ProductModelID, builder.ProductModelProductDescriptionCultureEntity.ProductDescriptionID);
-            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity.ProductModelID);
-            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity.ProductDescriptionID);
+            _unitOfWork.ProductInventoriesRepository.Delete(builder.ProductInventoryEntity);
+            _unitOfWork.ProductListPriceHistoriesRepository.Delete(builder.ProductListPriceHistoryEntity);
+            _unitOfWork.ProductsRepository.Delete(builder.ProductEntity);
+            _unitOfWork.ProductModelProductDescriptionCulturesRepository.Delete(builder.ProductModelProductDescriptionCultureEntity);
+            _unitOfWork.ProductModelsRepository.Delete(builder.ProductModelEntity);
+            _unitOfWork.ProductDescriptionsRepository.Delete(builder.ProductDescriptionEntity);
             _unitOfWork.Commit();
         }
 
         private void InitialList()
         {
-            _list = (from p in _unitOfWork.ProductsRepository.GetProductList()
-                     join pm in _unitOfWork.ProductModelsRepository.GetProductModelList() on p.ProductModelID equals pm.ProductModelID
-                     join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.GetProductModelProductDescriptionCultureList() on pm.ProductModelID equals pmpdc.ProductModelID
-                     join pd in _unitOfWork.ProductDescriptionsRepository.GetProductDescriptionList() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
-                     join pi in _unitOfWork.ProductInventoriesRepository.GetProductInventoryList() on p.ProductID equals pi.ProductID
-                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.GetProductListPriceHistoryList() on p.ProductID equals plph.ProductID
+            _list = (from p in _unitOfWork.ProductsRepository.Get()
+                     join pm in _unitOfWork.ProductModelsRepository.Get() on p.ProductModelID equals pm.ProductModelID
+                     join pmpdc in _unitOfWork.ProductModelProductDescriptionCulturesRepository.Get() on pm.ProductModelID equals pmpdc.ProductModelID
+                     join pd in _unitOfWork.ProductDescriptionsRepository.Get() on pmpdc.ProductDescriptionID equals pd.ProductDescriptionID
+                     join pi in _unitOfWork.ProductInventoriesRepository.Get() on p.ProductID equals pi.ProductID
+                     join plph in _unitOfWork.ProductListPriceHistoriesRepository.Get() on p.ProductID equals plph.ProductID
                      select new ProductViewModelBuilder(p, pd, pi, plph, pmpdc, pm).ProductViewModel);
         }
     }

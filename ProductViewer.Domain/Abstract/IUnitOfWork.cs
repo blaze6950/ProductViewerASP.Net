@@ -1,15 +1,17 @@
 ﻿using System;
+using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Abstract
 {
     public interface IUnitOfWork : IDisposable
     {
-        IProductsRepository ProductsRepository { get; }
-        IProductDescriptionsRepository ProductDescriptionsRepository { get; }
-        IProductInventoriesRepository ProductInventoriesRepository { get; }
-        IProductListPriceHistoriesRepository ProductListPriceHistoriesRepository { get; }
-        IProductModelsRepository ProductModelsRepository { get; }
-        IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository { get; }
+        IRepository<Product> ProductsRepository { get; }
+        IRepository<ProductDescription> ProductDescriptionsRepository { get; }
+        IRepository<ProductInventory> ProductInventoriesRepository { get; }
+        IRepository<ProductListPriceHistory> ProductListPriceHistoriesRepository { get; }
+        IRepository<ProductModel> ProductModelsRepository { get; }
+        IRepository<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulturesRepository { get; }
+
         void Commit();
     }
 }

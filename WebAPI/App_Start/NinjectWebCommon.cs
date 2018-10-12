@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
@@ -7,6 +6,7 @@ using Ninject.Web.Common;
 using Ninject.Web.Common.WebHost;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Concrete;
+using ProductViewer.Domain.DAL;
 using WebAPI;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
@@ -42,11 +42,7 @@ namespace WebAPI
         }
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            kernel.Bind<IConnectionFactory>().
-                To<ConnectionFactory>()
-                .WithConstructorArgument(typeof(string),
-                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(new ProductViewerContext());
         }
     }
 }

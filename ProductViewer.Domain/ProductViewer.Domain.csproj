@@ -51,22 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IConnectionFactory.cs" />
-    <Compile Include="Abstract\IProductDescriptionsRepository.cs" />
-    <Compile Include="Abstract\IProductInventoriesRepository.cs" />
-    <Compile Include="Abstract\IProductListPriceHistoriesRepository.cs" />
-    <Compile Include="Abstract\IProductModelProductDescriptionCulturesRepository.cs" />
-    <Compile Include="Abstract\IProductModelsRepository.cs" />
-    <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
-    <Compile Include="Concrete\ConnectionFactory.cs" />
-    <Compile Include="Concrete\ProductDescriptionRepository.cs" />
-    <Compile Include="Concrete\ProductInventoryRepository.cs" />
-    <Compile Include="Concrete\ProductListPriceHistoryRepository.cs" />
-    <Compile Include="Concrete\ProductModelProductDescriptionCultureRepository.cs" />
-    <Compile Include="Concrete\ProductModelRepository.cs" />
-    <Compile Include="Concrete\ProductRepository.cs" />
+    <Compile Include="Concrete\Repository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="DAL\ProductViewerInitializer.cs" />
     <Compile Include="Entities\Product.cs" />

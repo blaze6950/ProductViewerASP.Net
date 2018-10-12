@@ -1,92 +1,70 @@
-﻿using System.Data;
+﻿using System.Data.Entity;
 using ProductViewer.Domain.Abstract;
+using ProductViewer.Domain.DAL;
+using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly ProductViewerContext _dbContext;
 
-        private IProductsRepository _productsRepository;
-        private IProductDescriptionsRepository _productDescriptionsRepository;
-        private IProductInventoriesRepository _productInventoriesRepository;
-        private IProductListPriceHistoriesRepository _productListPriceHistoriesRepository;
-        private IProductModelsRepository _productModelsRepository;
-        private IProductModelProductDescriptionCulturesRepository _productModelProductDescriptionCulturesRepository;
+        private IRepository<Product> _productsRepository;
+        private IRepository<ProductDescription> _productDescriptionsRepository;
+        private IRepository<ProductInventory> _productInventoriesRepository;
+        private IRepository<ProductListPriceHistory> _productListPriceHistoriesRepository;
+        private IRepository<ProductModel> _productModelsRepository;
+        private IRepository<ProductModelProductDescriptionCulture> _productModelProductDescriptionCulturesRepository;
 
-        public UnitOfWork(IConnectionFactory connectionFactory)
+        public UnitOfWork(ProductViewerContext dbContext)
         {
-            _connectionFactory = connectionFactory;
+            _dbContext = dbContext;
         }
 
-        public IProductsRepository ProductsRepository
+        public IRepository<Product> ProductsRepository
         {
-            get => _productsRepository ?? (ProductsRepository = new ProductRepository(_connectionFactory.GetTransaction));
+            get => _productsRepository ?? (ProductsRepository = new Repository<Product>(_dbContext));
             private set => _productsRepository = value;
         }
 
-        public IProductDescriptionsRepository ProductDescriptionsRepository
+        public IRepository<ProductDescription> ProductDescriptionsRepository
         {
-            get => _productDescriptionsRepository ?? (ProductDescriptionsRepository = new ProductDescriptionRepository(_connectionFactory.GetTransaction));
+            get => _productDescriptionsRepository ?? (ProductDescriptionsRepository = new Repository<ProductDescription>(_dbContext));
             private set => _productDescriptionsRepository = value;
         }
 
-        public IProductInventoriesRepository ProductInventoriesRepository
+        public IRepository<ProductInventory> ProductInventoriesRepository
         {
-            get => _productInventoriesRepository ?? (ProductInventoriesRepository = new ProductInventoryRepository(_connectionFactory.GetTransaction));
+            get => _productInventoriesRepository ?? (ProductInventoriesRepository = new Repository<ProductInventory>(_dbContext));
             private set => _productInventoriesRepository = value;
         }
 
-        public IProductListPriceHistoriesRepository ProductListPriceHistoriesRepository
+        public IRepository<ProductListPriceHistory> ProductListPriceHistoriesRepository
         {
-            get => _productListPriceHistoriesRepository ?? (ProductListPriceHistoriesRepository = new ProductListPriceHistoryRepository(_connectionFactory.GetTransaction));
+            get => _productListPriceHistoriesRepository ?? (ProductListPriceHistoriesRepository = new Repository<ProductListPriceHistory>(_dbContext));
             private set => _productListPriceHistoriesRepository = value;
         }
 
-        public IProductModelsRepository ProductModelsRepository
+        public IRepository<ProductModel> ProductModelsRepository
         {
-            get => _productModelsRepository ?? (ProductModelsRepository = new ProductModelRepository(_connectionFactory.GetTransaction));
+            get => _productModelsRepository ?? (ProductModelsRepository = new Repository<ProductModel>(_dbContext));
             private set => _productModelsRepository = value;
         }
 
-        public IProductModelProductDescriptionCulturesRepository ProductModelProductDescriptionCulturesRepository
+        public IRepository<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulturesRepository
         {
-            get => _productModelProductDescriptionCulturesRepository ?? (ProductModelProductDescriptionCulturesRepository = new ProductModelProductDescriptionCultureRepository(_connectionFactory.GetTransaction));
+            get => _productModelProductDescriptionCulturesRepository ?? (ProductModelProductDescriptionCulturesRepository = new Repository<ProductModelProductDescriptionCulture>(_dbContext));
             private set => _productModelProductDescriptionCulturesRepository = value;
         }
 
         public void Commit()
         {
-            try
-            {
-                _connectionFactory.GetTransaction.Commit();
-            }
-            catch
-            {
-                _connectionFactory.GetTransaction.Rollback();
-                throw;
-            }
-            finally
-            {
-                _connectionFactory.GetTransaction.Dispose();
-                _connectionFactory.ResetTransaction();
-                ResetRepositories();
-            }
-        }
-
-        private void ResetRepositories()
-        {
-            ProductsRepository = null;
-            ProductDescriptionsRepository = null;
-            ProductInventoriesRepository = null;
-            ProductListPriceHistoriesRepository = null;
-            ProductModelsRepository = null;
-            ProductModelProductDescriptionCulturesRepository = null;
+            _dbContext?.SaveChanges();
         }
 
         public void Dispose()
         {
-            _connectionFactory?.Dispose();
+            _dbContext?.Dispose();
         }
     }
 }

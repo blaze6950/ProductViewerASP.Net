@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+// ReSharper disable InconsistentNaming
 
 namespace ProductViewer.Domain.Entities
 {
