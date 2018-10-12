@@ -7,7 +7,7 @@ namespace ProductViewer.Domain.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ProductViewerContext _dbContext;
+        private readonly IProductViewerContext _dbContext;
 
         private IRepository<Product> _productsRepository;
         private IRepository<ProductDescription> _productDescriptionsRepository;
@@ -16,7 +16,7 @@ namespace ProductViewer.Domain.Concrete
         private IRepository<ProductModel> _productModelsRepository;
         private IRepository<ProductModelProductDescriptionCulture> _productModelProductDescriptionCulturesRepository;
 
-        public UnitOfWork(ProductViewerContext dbContext)
+        public UnitOfWork(IProductViewerContext dbContext)
         {
             _dbContext = dbContext;
         }

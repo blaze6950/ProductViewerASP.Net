@@ -19,6 +19,11 @@ namespace ProductViewer.Domain.DAL
         public DbSet<ProductModel> ProductModels { get; set; }
         public DbSet<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; }
 
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

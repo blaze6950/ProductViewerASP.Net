@@ -9,10 +9,10 @@ namespace ProductViewer.Domain.Concrete
 {
     public class Repository<T> : IRepository<T> where T: class
     {
-        private readonly ProductViewerContext _context;
+        private readonly IProductViewerContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(ProductViewerContext context)
+        public Repository(IProductViewerContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
