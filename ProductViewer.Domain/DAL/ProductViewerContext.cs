@@ -1,10 +1,11 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.DAL
 {
-    public class ProductViewerContext : DbContext
+    public class ProductViewerContext : DbContext, IProductViewerContext
     {
         public ProductViewerContext() : base("name=ProductViewerContext")
         {
