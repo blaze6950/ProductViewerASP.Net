@@ -4,10 +4,11 @@ using ProductViewer.Domain.Entities;
 
 namespace ProductViewer.Domain.DAL
 {
-    class ProductViewerContext : DbContext
+    public class ProductViewerContext : DbContext
     {
-        protected ProductViewerContext() : base("ProductViewerContext")
+        public ProductViewerContext() : base("name=ProductViewerContext")
         {
+            Database.SetInitializer<ProductViewerContext>(new ProductViewerInitializer());
         }
 
         public DbSet<Product> Products { get; set; }
