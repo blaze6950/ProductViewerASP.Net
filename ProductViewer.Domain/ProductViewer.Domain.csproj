@@ -74,6 +74,7 @@
     <Compile Include="Entities\ProductListPriceHistory.cs" />
     <Compile Include="Entities\ProductModel.cs" />
     <Compile Include="Entities\ProductModelProductDescriptionCulture.cs" />
+    <Compile Include="ProductViewerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
