@@ -42,7 +42,8 @@ namespace WebAPI
         }
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(new ProductViewerContext());
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+            kernel.Bind<IProductViewerContext>().To<ProductViewerContext>();
         }
     }
 }
