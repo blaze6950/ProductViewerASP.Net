@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.DAL;
@@ -40,12 +41,12 @@ namespace ProductViewer.Domain.Concrete
 
         public void Delete(T item)
         {
-            _context.Entry(item).State = EntityState.Deleted;
+            _context.SetDeleted(item);
         }
 
         public void Update(T item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _context.SetModified(item);
         }
     }
 }

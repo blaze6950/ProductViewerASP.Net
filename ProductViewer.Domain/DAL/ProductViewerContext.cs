@@ -28,5 +28,15 @@ namespace ProductViewer.Domain.DAL
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        public void SetModified(object entity)
+        {
+            if (entity != null) Entry(entity).State = EntityState.Modified;
+        }
+
+        public void SetDeleted(object entity)
+        {
+            if (entity != null) Entry(entity).State = EntityState.Deleted;
+        }
     }
 }

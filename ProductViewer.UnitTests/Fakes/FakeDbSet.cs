@@ -20,24 +20,24 @@ namespace ProductViewer.UnitTests.Fakes
             _query = _data.AsQueryable();
         }
 
-        public virtual T Find(params object[] keyValues)
+        public override T Find(params object[] keyValues)
         {
             throw new NotImplementedException("Derive from FakeDbSet<T> and override Find");
         }
 
-        public T Add(T item)
+        public override T Add(T item)
         {
             _data.Add(item);
             return item;
         }
 
-        public T Remove(T item)
+        public override T Remove(T item)
         {
             _data.Remove(item);
             return item;
         }
 
-        public T Attach(T item)
+        public override T Attach(T item)
         {
             _data.Add(item);
             return item;
@@ -47,16 +47,16 @@ namespace ProductViewer.UnitTests.Fakes
             _data.Remove(item);
             return item;
         }
-        public T Create()
+        public override T Create()
         {
             return Activator.CreateInstance<T>();
         }
-        public TDerivedEntity Create<TDerivedEntity>() where TDerivedEntity : class, T
+        public override TDerivedEntity Create<TDerivedEntity>()
         {
             return Activator.CreateInstance<TDerivedEntity>();
         }
 
-        public ObservableCollection<T> Local
+        public override ObservableCollection<T> Local
         {
             get { return _data; }
         }

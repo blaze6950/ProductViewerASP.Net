@@ -16,5 +16,7 @@ namespace ProductViewer.Domain.Abstract
         DbSet<T> Set<T>() where T : class;
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
+        void SetModified(object entity);
+        void SetDeleted(object entity);
     }
 }
