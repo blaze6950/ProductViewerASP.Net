@@ -19,7 +19,7 @@ namespace ProductViewer.Domain.Entities
                 ProductModelIDUpdated?.Invoke(_productModelId);
             }
         } // Primary key for ProductModel records
-
+        [Required]
         public string Name { get; set; } // Product model description
     }
 }

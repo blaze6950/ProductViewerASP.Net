@@ -22,6 +22,7 @@ namespace ProductViewer.Domain.Entities
             }
         } // Primary key for Product records.
 
+        [Required]
         public string Name
         {
             get { return _name; }
@@ -32,6 +33,7 @@ namespace ProductViewer.Domain.Entities
             }
         } // Name of the product.
 
+        [Required]
         public string ProductNumber { get; set; } // Unique product identification number.
         public Int16 SafetyStockLevel { get; set; } // Minimum inventory quantity.
         public Int16 ReorderPoint { get; set; } // Inventory level that triggers a purchase order or work order.

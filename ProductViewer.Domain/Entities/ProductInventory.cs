@@ -21,6 +21,7 @@ namespace ProductViewer.Domain.Entities
         [Key]
         [Column(Order = 2)]
         public Int16 LocationID { get; set; } // Inventory location identification number. Foreign key to Location.LocationID
+        [Required]
         public string Shelf { get; set; } // Storage compartment within an inventory location.
         public byte Bin { get; set; } // Storage container on a shelf in an inventory location.
         public Int16 Quantity { get; set; } // Quantity of products in the inventory location.

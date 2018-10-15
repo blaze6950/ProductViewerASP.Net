@@ -20,6 +20,7 @@ namespace ProductViewer.Domain.Entities
             }
         } // Primary key for ProductDescription records.
 
+        [Required]
         public string Description { get; set; } // Description of the product
     }
 }
