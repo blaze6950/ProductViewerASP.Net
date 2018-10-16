@@ -7,8 +7,8 @@
 
         </div>
         <div class="modal-footer">
-            <a onclick="" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
-            <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
+            <a onclick="M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' })" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+            <a onclick="sendInfo()" class="waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
         </div>
     </div>
 
@@ -19,7 +19,7 @@
                 <div class="card">
                     <div class="card-image">
                         <img class="materialboxed" data-caption="@Model.ProductDescriptionEntityDescription" src="/images/placeholder.gif">
-                        <span class="card-title">@Model.ProductEntityName</span>
+                        <span class="card-title" id="@Model.ProductEntityId">@Model.ProductEntityName</span>
                         <a onclick="addToCart()" data-position="right" data-tooltip="Add to cart..." class="btn-floating btn-large halfway-fab waves-effect waves-light green tooltipped"><i class="material-icons">add</i></a>
                         <a onclick="editProduct()" data-position="top" data-tooltip="Edit product..." class="btn-floating halfway-fab waves-effect waves-light orange tooltipped"><i class="material-icons">edit</i></a>
                         <a onclick="deleteProduct()" data-position="left" data-tooltip="Delete product..." class="btn-floating halfway-fab waves-effect waves-light red tooltipped"><i class="material-icons">delete</i></a>
@@ -71,11 +71,7 @@
     $(document).ready(function(){
         $('.tooltipped').tooltip();
         $('.materialboxed').materialbox();
-        $(".modal").modal({
-            onCloseEnd: function () {
-                M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' });
-            }
-        });
+        $(".modal").modal();
         $(document).ready(function(){
             $('.collapsible').collapsible({accordion:false});
         });
@@ -106,8 +102,8 @@
             text = `/Home/RemoveItem/${@Model.ProductEntityId}`;
             location.href = text;
             M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>' });
+            history.back();
         }
-        history.back();
     }
     function addToCart() {
         M.toast({
@@ -128,6 +124,7 @@
                     window.M.updateTextFields();
                     $("#modal1").modal('open');
                 }
+                location.reload();
             },
             error: function () {
                 M.toast({
@@ -135,7 +132,6 @@
                 });
             }
         });
-        location.reload();
     }
 </script>
 }
