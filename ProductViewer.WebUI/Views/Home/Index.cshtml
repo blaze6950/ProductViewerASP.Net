@@ -32,8 +32,8 @@
 
             </div>
             <div class="modal-footer">
-                <a onclick="" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
-                <a onclick="sendInfo()" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
+                <a onclick="M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' })" class="modal-close waves-effect waves-light btn-large"><i class="material-icons left">cancel</i>Cancel</a>
+                <a onclick="sendInfo()" class="waves-effect waves-light btn-large"><i class="material-icons left">send</i>Submit</a>
             </div>
         </div>
 
@@ -45,29 +45,28 @@
 @section scripts
 {
     <script>
-    $(document).ready(function() {
-        $(".modal").modal({ onCloseEnd: function() {
-            M.toast({ html: '<p><i class=\'material-icons right\'>cancel</i>Action cancelled</p>' });
-        }
-        });
-        $('.tr').click(function openProductDetails(el) {
-            var e = el || window.event;
-            var target = $(el.target || el.srcElement);
-            if (!target.is('i.material-icons')) {
-                var id = parseInt($(this).children('td.withId').attr('id'), 10);
-                if (id != undefined && typeof id === "number") {
-                    document.location = "/Home/ProductDetails/" + id;
+        var datasource;
+        var grid;
+        $(document).ready(function () {
+            $(".modal").modal();
+            $('.tr').click(function openProductDetails(el) {
+                var e = el || window.event;
+                var target = $(el.target || el.srcElement);
+                if (!target.is('i.material-icons')) {
+                    var id = parseInt($(this).children('td.withId').attr('id'), 10);
+                    if (id != undefined && typeof id === "number") {
+                        document.location = "/Home/ProductDetails/" + id;
+                    }
                 }
-            }
-        });
-        var datasource = new kendo.data.DataSource({
+            });
+            datasource = new kendo.data.DataSource({
                 transport: {
                     type: "json",
                     read: {
                         url: "@Url.Action("GetProductList", "Home")"
                     }
                 },
-                pageSize: 4,
+                pageSize: 6,
                 serverPaging: false,
                 serverFiltering: false,
                 serverSorting: false,
@@ -87,165 +86,170 @@
                     errors: "Errors"
                 },
                 sort: ({ field: "ProductEntityName", dir: "asc" })
-        });
-        var grid = $("#grid").kendoGrid({
-            dataSource: datasource,
-            columns: [
-                { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
-                { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
-                {
-                    field: "ProductDescriptionEntityDescription",
-                    title: "Description",
-                    type: "string",
-                    sortable: false,
-                    filterable: false
-                },
-                {
-                    field: "ProductListPriceHistoryEntityListPrice",
-                    title: "Price",
-                    type: "number",
-                    sortable: true,
-                    filterable: false
-                },
-                {
-                    field: "ProductInventoryEntityQuantity",
-                    title: "Quantity",
-                    type: "number",
-                    sortable: true,
-                    filterable: false
-                },
-                { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
-                {
-                    width: 80,
-                    title: "",
-                    template:
-                        "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
-                    selectable: false
-                },
-                {
-                    width: 80,
-                    title: "",
-                    template:
-                        "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
-                    selectable: false
-                }
-            ],
-            height: 600,
-            pageable: {
-                refresh: true,
-                alwaysVisible: false
-            },
-            filterable: true,
-            sortable: {
-                mode: "single",
-                allowUnsort: false
-            },
-            selectable: "cell",
-            change: function (arg) {
-                var $grid = arg.sender; //grid ref
-                var $cell = $grid.select(); // selected td
-                var $row = $cell.closest('tr'); //selected tr
-                var cell_index = $cell.index(); //cell index 0 based
-                if (cell_index != undefined && typeof cell_index === "number" && cell_index < 6) {
-                    var selectedId = $row.find('td').first().text();
-                    document.location = "/Home/ProductDetails/" + selectedId;
-                }
-            }
-        });
-        $('#search').keypress(function (event) {
-            if ( event.which === 13 ) {
-                datasource.filter({
-                    field: "ProductEntityName",
-                    operator: "contains",
-                    value: $("#search").val()
-                });
-                grid.dataSource(datasource);
-            }
-        });
-
-    });
-    function callConfirmationAlert(idRemovableItem) {
-        if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
-            let text = $(`#${idRemovableItem}`).text();
-            const confirmation = confirm(`Are you sure? Deleting ${text}...`);
-            if (confirmation) {
-                $.ajax({
-                    url: '@Url.Action("RemoveItem", "Home")/' + idRemovableItem,
-                    cache: false,
-                    type: "POST",
-                    success: function() {
-                        M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>'});
+            });
+            grid = $("#grid").kendoGrid({
+                dataSource: datasource,
+                columns: [
+                    { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
+                    { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                    {
+                        field: "ProductDescriptionEntityDescription",
+                        title: "Description",
+                        type: "string",
+                        sortable: false,
+                        filterable: false
                     },
-                    error: function() {
-                        M.toast({ html: '<p><i class=\'material-icons right\'>error</i>Something went wrong! Try again!</p>'});
+                    {
+                        field: "ProductListPriceHistoryEntityListPrice",
+                        title: "Price",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    {
+                        field: "ProductInventoryEntityQuantity",
+                        title: "Quantity",
+                        type: "number",
+                        sortable: true,
+                        filterable: false
+                    },
+                    { field: "PriceForAll", title: "Price for all", type: "number", sortable: true, filterable: false },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                        selectable: false
+                    },
+                    {
+                        width: 80,
+                        title: "",
+                        template:
+                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
+                        selectable: false
                     }
-                });
+                ],
+                height: 600,
+                pageable: {
+                    refresh: true,
+                    alwaysVisible: false
+                },
+                filterable: true,
+                sortable: {
+                    mode: "single",
+                    allowUnsort: false
+                },
+                selectable: "cell",
+                scrollable: false,
+                change: function (arg) {
+                    var $grid = arg.sender; //grid ref
+                    var $cell = $grid.select(); // selected td
+                    var $row = $cell.closest('tr'); //selected tr
+                    var cell_index = $cell.index(); //cell index 0 based
+                    if (cell_index != undefined && typeof cell_index === "number" && cell_index < 6) {
+                        var selectedId = $row.find('td').first().text();
+                        document.location = "/Home/ProductDetails/" + selectedId;
+                    }
+                }
+            });
+            $('#search').keypress(function (event) {
+                if ( event.which === 13 ) {
+                    datasource.filter({
+                        field: "ProductEntityName",
+                        operator: "contains",
+                        value: $("#search").val()
+                    });
+                    grid.dataSource(datasource);
+                }
+            });
+
+        });
+        function callConfirmationAlert(idRemovableItem) {
+            if (idRemovableItem != undefined && typeof idRemovableItem === "number") {
+                let text = $(`#${idRemovableItem}`).text();
+                const confirmation = confirm(`Are you sure? Deleting ${text}...`);
+                if (confirmation) {
+                    $.ajax({
+                        url: '@Url.Action("RemoveItem", "Home")/' + idRemovableItem,
+                        cache: false,
+                        type: "POST",
+                        success: function() {
+                            M.toast({ html: '<p><i class=\'material-icons right\'>delete</i>Product deleted!</p>' });
+                            datasource.read();
+                            grid.data('kendoGrid').refresh();
+                        },
+                        error: function() {
+                            M.toast({ html: '<p><i class=\'material-icons right\'>error</i>Something went wrong! Try again!</p>'});
+                        }
+                    });
+                }
             }
         }
-    }
-    function openModal(isEditing, id) {
-        if (isEditing != undefined && typeof isEditing === "boolean" && id != undefined && typeof id === "number") {
-            var url;
-            if (isEditing === false) {
-                url = "@Url.Action("AddOrEditProduct")";
-                $.ajax({
-                    url: url,
-                    cache: false,
-                    type: "GET",
-                    success: function (result) {
+        function openModal(isEditing, id) {
+            if (isEditing != undefined && typeof isEditing === "boolean" && id != undefined && typeof id === "number") {
+                var url;
+                if (isEditing === false) {
+                    url = "@Url.Action("AddOrEditProduct")";
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        type: "GET",
+                        success: function (result) {
 
-                        $('.modal-content').html(result);
-                        /* little fade in effect */
-                        $('.modal-content').fadeIn('fast');
-                    },
-                    error: function (reponse) {
-                        alert("error : " + reponse);
-                    }
-                });
-            } else {
-                url = "@Url.Action("AddOrEditProduct", new{isEditing = true, id = 0})";
-                url = url.replace("0", id);
-                $.ajax({
-                    url: url,
-                    cache: false,
-                    type: "GET",
-                    success: function (result) {
+                            $('.modal-content').html(result);
+                            /* little fade in effect */
+                            $('.modal-content').fadeIn('fast');
+                        },
+                        error: function (reponse) {
+                            alert("error : " + reponse);
+                        }
+                    });
+                } else {
+                    url = "@Url.Action("AddOrEditProduct", new{isEditing = true, id = 0})";
+                    url = url.replace("0", id);
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        type: "GET",
+                        success: function (result) {
 
-                        $('.modal-content').html(result);
-                        /* little fade in effect */
-                        $('.modal-content').fadeIn('fast');
+                            $('.modal-content').html(result);
+                            /* little fade in effect */
+                            $('.modal-content').fadeIn('fast');
+                            window.M.updateTextFields();
+                        },
+                        error: function (reponse) {
+                            alert("error : " + reponse);
+                        }
+                    });
+                }
+                $("#modal1").modal('open');
+            }
+        }
+        function sendInfo() {
+            var formData = $('#addOrEditForm').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddOrEditProduct",
+                data: formData,
+                success: function (isSuccess) {
+                    if (isSuccess != undefined && isSuccess === 'True') {
+                        $("#modal1").modal('close');
+                        M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' });
+                        datasource.read();
+                        grid.data('kendoGrid').refresh();
+                    } else if(isSuccess != undefined) {
+                        $('.modal-content').html(isSuccess);
                         window.M.updateTextFields();
-                    },
-                    error: function (reponse) {
-                        alert("error : " + reponse);
+                        $("#modal1").modal('open');
                     }
-                });
-            }
-            $("#modal1").modal('open');
-        }
-    }
-    function sendInfo() {
-        $.ajax({
-            type: "POST",
-            url: "/Home/AddOrEditProduct",
-            data: $('#addOrEditForm').serialize(),
-            success: function (isSuccess) {
-                if (isSuccess != undefined && isSuccess === 'True') {
-                    $("#modal1").modal('close');
-                    M.toast({ html: '<p><i class=\'material-icons right\'>done</i>Product has been saved!</p>' });
-                } else if(isSuccess != undefined) {
-                    $('.modal-content').html(isSuccess);
-                    window.M.updateTextFields();
-                    $("#modal1").modal('open');
+                },
+                error: function () {
+                    M.toast({
+                        html: '<p><i class=\'material-icons right\'>error</i>Something went wrong!Try again</p>'
+                    });
                 }
-            },
-            error: function () {
-                M.toast({
-                    html: '<p><i class=\'material-icons right\'>warning</i>Something went wrong!Try again</p>'
-                });
-            }
-        });
-        location.reload();
-    }
+            });
+        }
     </script>
 }

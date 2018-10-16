@@ -51,11 +51,13 @@ namespace ProductViewer.WebUI.Controllers
                     HttpResponseMessage response = _service.GetResponse("api/Products/GetProduct?id=" + id.ToString());
                     response.EnsureSuccessStatusCode();
                     ProductViewModel product1 = response.Content.ReadAsAsync<ProductViewModel>().Result;
+                    ModelState.Clear();
                     return PartialView("Partials/AddOrEditProduct", product1);
                 }
                 else
                 {
                     ViewBag.Title = "Adding new product";
+                    ModelState.Clear();
                     return PartialView("Partials/AddOrEditProduct");
                 }
             }

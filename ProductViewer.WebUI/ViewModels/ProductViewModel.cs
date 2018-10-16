@@ -79,7 +79,7 @@ namespace ProductViewer.WebUI.ViewModels
         }
 
         [Required(ErrorMessage = "Please enter standard cost")]
-        [Range(1, 922337203685477, ErrorMessage = "The standart cost must be positive!")]
+        [Range(1, 922337203685477, ErrorMessage = "The standart cost must be positive and between 1 and 922337203685477!")]
         [DataType(DataType.Currency)]
         public virtual decimal ProductEntityStandardCost
         {
