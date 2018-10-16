@@ -91,7 +91,14 @@
                 dataSource: datasource,
                 columns: [
                     { field: "ProductEntityId", title: "ID", type: "number", hidden: true },
-                    { field: "ProductEntityName", title: "Name", type: "string", sortable: true, filterable: false },
+                    {
+                        field: "ProductEntityName",
+                        title: "Name",
+                        type: "string",
+                        sortable: true,
+                        filterable: false,
+                        template: "<p id=\"#:data.ProductEntityId#\">#:data.ProductEntityName#</p>"
+                    },
                     {
                         field: "ProductDescriptionEntityDescription",
                         title: "Description",
@@ -118,7 +125,7 @@
                         width: 80,
                         title: "",
                         template:
-                            "<a onclick=\"event.stopPropagation(); openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                            "<a onclick=\"event.stopPropagation(); openModal(true, #:data.ProductEntityId#)\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
                         selectable: false
                     },
                     {
