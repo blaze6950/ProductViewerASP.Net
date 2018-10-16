@@ -118,14 +118,14 @@
                         width: 80,
                         title: "",
                         template:
-                            "<a onclick=\"openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
+                            "<a onclick=\"event.stopPropagation(); openModal(true, #:data.ProductEntityId#)\" id=\"#:data.ProductEntityId#\" class=\"btn-floating btn waves-effect waves-light orange\"><i class=\"material-icons\">edit</i></a>",
                         selectable: false
                     },
                     {
                         width: 80,
                         title: "",
                         template:
-                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
+                            "<a class=\"btn-floating btn waves-effect waves-light red\" onclick=\"event.stopPropagation(); callConfirmationAlert(#:data.ProductEntityId#)\"><i class=\"material-icons\">delete</i></a>",
                         selectable: false
                     }
                 ],
@@ -139,7 +139,7 @@
                     mode: "single",
                     allowUnsort: false
                 },
-                selectable: "cell",
+                selectable: "row",
                 scrollable: false,
                 change: function (arg) {
                     var $grid = arg.sender; //grid ref
