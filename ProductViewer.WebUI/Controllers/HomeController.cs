@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
@@ -91,13 +92,20 @@ namespace ProductViewer.WebUI.Controllers
             }
         }
 
-
         public ViewResult ProductDetails(int id)
         {
             HttpResponseMessage response = _service.GetResponse("api/Products/GetProduct?id=" + id.ToString());
             response.EnsureSuccessStatusCode();
             ProductViewModel product = response.Content.ReadAsAsync<ProductViewModel>().Result;
             return View(product);
+        }
+
+        public async Task<ContentResult> GetProductList()
+        {
+            HttpResponseMessage response = _service.GetResponse("api/Products");
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+            return Content(result, "application/json");
         }
     }
 }
