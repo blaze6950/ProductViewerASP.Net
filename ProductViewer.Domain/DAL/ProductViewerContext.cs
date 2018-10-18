@@ -2,6 +2,7 @@
 using System.Data.Entity.ModelConfiguration.Conventions;
 using ProductViewer.Domain.Abstract;
 using ProductViewer.Domain.Entities;
+using ProductViewer.Domain.Migrations;
 
 namespace ProductViewer.Domain.DAL
 {
@@ -9,7 +10,8 @@ namespace ProductViewer.Domain.DAL
     {
         public ProductViewerContext() : base("name=ProductViewerContext")
         {
-            Database.SetInitializer(new ProductViewerInitializer());
+            //Database.SetInitializer(new ProductViewerInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductViewerContext, Configuration>());
         }
 
         public DbSet<Product> Products { get; set; }
